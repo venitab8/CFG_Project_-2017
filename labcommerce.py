@@ -1,11 +1,11 @@
-#LabX
-#Status: Got everything except description of item
+#LabCommerce
+#Status: In Progress
 
 import re
 import string
 import urllib2
 from bs4 import BeautifulSoup
-testpage = "http://www.labx.com/v2/adsearch/search.cfm?sw=bio%20rad%20pump"
+testpage = "http://www.labcommerce.com/searchresults.php?txtsearch=air+pump&image.x=0&image.y=0"
 page = urllib2.urlopen(testpage)
 soup = BeautifulSoup(page,"html.parser")
 
