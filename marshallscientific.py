@@ -4,7 +4,7 @@ Created on Mon Jan  9 18:06:56 2017
 
 @author: thotran
 """
-
+import re
 import urllib
 from bs4 import BeautifulSoup
 #Learning Beautiful Area
@@ -63,7 +63,22 @@ def equipment_properties(search_word):
     equips=[]
     for equip in products:
         price_div=equip.find('div', class_='product_productprice')
-        price=price_div.find_all(text=True)
+        for e in price_div.find_all(text=True):
+            if e==' ':
+                continue
+            else:
+                price=e
+        #price_div.find_all()
+        #print price_div.f
+        #print price_div.find_all(string=re.compile('$'))
+        
+        #for text in price_div.find_all(text=True):
+            
+         
+            
+                
+        
+       
         #print price_div.find(text=True)
         #prices.append(price_b.find_all(text=True)[1])
         
@@ -73,7 +88,6 @@ def equipment_properties(search_word):
         #for detail in equip_details:
         #urls.append(detail.find('a').get('href'))
         equips.append((price,url,photo))
-         
          
          
     return equips
