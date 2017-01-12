@@ -1,3 +1,8 @@
+'''
+Created by Abigail Katcoff (complete)
+
+'''
+
 import urllib2
 from bs4 import BeautifulSoup
 from Result import Result

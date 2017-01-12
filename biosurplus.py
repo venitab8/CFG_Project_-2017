@@ -1,4 +1,9 @@
 import urllib2
+'''
+Created by Abigail Katcoff (complete)
+
+'''
+
 import gzip
 import StringIO
 from bs4 import BeautifulSoup
