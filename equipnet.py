@@ -1,5 +1,6 @@
 import urllib2
 from bs4 import BeautifulSoup
+from Result import Result
 
 MAIN_URL= "http://www.equipnet.com/search/?q="
 
@@ -19,17 +20,16 @@ def extract_results(search_term):
 	table=soup.find('div', id='tbl-listings')
 	rows= table.findAll("div", class_="search-row")
 
-	url=[]
-	price=[]
-	title=[]
+	results=[]
 	for row in rows:
-		price.append(row.find('span', class_="listing-price").find(text=True))
-		url.append(row.find('a').get('href'))
-		title.append(row.find('h3', class_="listing-title").find("a").find(text=True))
-	return url, price, title
-
+		new_result=Result(row.find('h3', class_="listing-title").find("a").find(text=True))
+		new_result.price=row.find('span', class_="listing-price").find(text=True)
+		new_result.url=row.find('a').get('href')
+		new_result.image_src=row.find('img', class_="search-thumbnail").get('src')
+		results.append(new_result)
+	return results
 
 def main():
-    extract_results("Beckman Coulter Biomek Workstation")
+    print extract_results("Beckman Coulter Biomek Workstation")
 
 if __name__ == "__main__": main()

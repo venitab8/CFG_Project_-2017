@@ -2,6 +2,7 @@ import urllib2
 import gzip
 import StringIO
 from bs4 import BeautifulSoup
+from Result import Result
 
 MAIN_URL= "http://www.biosurplus.com/store/search/?per_page=24&product_search_q="
 
@@ -31,16 +32,14 @@ def extract_results(search_term):
 	soup = BeautifulSoup(unzipped_page)
 	table=soup.find('div', class_='product_browse')
 	rows= table.findAll("div", class_="fps_featured_product")
-	url=[]
-	price=[]
-	title=[]
-	image=[]
+	results=[]
 	for row in rows:
-		image.append(row.find('div', class_="fps_fp_image_inner").find('img').get('src'))
-		url.append("www.biosurplus.com" +  row.find('a').get('href'))
-		price.append(row.find('p', class_='product_price').find(text=True))
-		title.append(row.find('h2', class_="fps_fp_heading").find("a").find(text=True))
-	return url, price, title, image
+		new_result=Result(row.find('h2', class_="fps_fp_heading").find("a").find(text=True))
+		new_result.price=row.find('p', class_='product_price').find(text=True)
+		new_result.image_src=row.find('div', class_="fps_fp_image_inner").find('img').get('src')
+		new_result.url="www.biosurplus.com" +  row.find('a').get('href')
+		results.append(new_result)
+	return results
 
 
 def main():
