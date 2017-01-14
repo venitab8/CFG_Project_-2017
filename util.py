@@ -18,6 +18,17 @@ def is_valid_price(price):
     price=get_price(price)
     return bool(price)
 
+
+def create_url(main_url, search_term, delimiter):
+    specific_url=main_url
+    search_words=search_term.split()
+    for i in range(len(search_words)):
+        if i!=0:
+            specific_url= specific_url + delimiter+ search_words[i]
+        else:
+            specific_url= specific_url + search_words[i]
+    return specific_url
+
 def min_price(results):
     #results is list of result objects
     prices=[]
