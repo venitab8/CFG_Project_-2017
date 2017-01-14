@@ -23,7 +23,7 @@ def create_url(item):
 			specific_url= specific_url + search_words[i]
 	return specific_url
 
-def get_results(item):
+def get_results(item,requested_condition=None):
         page = urllib2.urlopen(create_url(item))
         soup = BeautifulSoup(page,"html.parser" )
         #table = soup.find_all('ol',attrs={'class':'products-list'})
@@ -45,7 +45,9 @@ def get_results(item):
                 for word in conditions:
                         if word in condition:
                                 new_result.condition = word
-                results.append(new_result)
+                                if requested_condition == None or \
+                                   requested_condition.lower()==word.lower():
+                                        results.append(new_result)
         return results
 
 def main():

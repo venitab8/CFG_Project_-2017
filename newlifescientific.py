@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
-Website: SibGene
-Status: Complete
+Website: NewLifeScientific
+Status: TBD
 """
 
 import urllib2
