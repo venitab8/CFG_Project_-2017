@@ -25,7 +25,8 @@ def equipment_properties(search_word):
     soup=BeautifulSoup(page)
     #product_grid=soup.find('table',class_='results-table table table-striped')
     products=soup.find('tbody')
-    print products.find('tr')
+    for product in products.find_all('tr'):
+        
     #for row in products.find('tr'):
         #return row
     #return products
