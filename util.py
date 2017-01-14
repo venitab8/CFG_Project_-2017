@@ -9,11 +9,14 @@ Takes in a string containing the price of the equipment and results the price on
 @return number a String containing only numbers and a decimal pt representing the price of the equipment
 '''
 def get_price(price):
-  #price input is string
-  allow = string.digits
-  number = re.sub('[^%s]' %allow,'',price)
-  return number
+    #price input is string
+    allow = string.digits + '.,'
+    number = re.sub('[^%s]' %allow,'',price)
+    return number.strip()
 
+def is_valid_price(price):
+    price=get_price(price)
+    return bool(price)
 
 def min_price(results):
     #results is list of result objects
@@ -24,7 +27,6 @@ def min_price(results):
         
     return min(prices)
     
-
 def max_price(results):
     prices=[]
     for equip in results:

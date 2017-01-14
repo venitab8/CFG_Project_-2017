@@ -2,7 +2,7 @@
 Created by Abigail Katcoff (complete)
 
 '''
-
+import util
 import urllib2
 from bs4 import BeautifulSoup
 from Result import Result
@@ -19,7 +19,10 @@ def create_url(search_term):
 			specific_url= specific_url + search_words[i]
 	return specific_url
 
-def extract_results(search_term):
+def extract_results(search_term, condition=None):
+	#This website sells used equipment
+	if condition=='new':
+		return []
 	page=urllib2.urlopen(create_url(search_term))
 	soup = BeautifulSoup(page)
 	table=soup.find('div', id='tbl-listings')
@@ -28,10 +31,12 @@ def extract_results(search_term):
 	results=[]
 	for row in rows:
 		new_result=Result(row.find('h3', class_="listing-title").find("a").find(text=True))
-		new_result.price=row.find('span', class_="listing-price").find(text=True)
+		new_result.price=util.get_price(row.find('span', class_="listing-price").find(text=True))
 		new_result.url=row.find('a').get('href')
 		new_result.image_src=row.find('img', class_="search-thumbnail").get('src')
-		results.append(new_result)
+		new_result.condition='used'
+		if util.is_valid_price(new_result.price):
+			results.append(new_result)
 	return results
 
 def main():

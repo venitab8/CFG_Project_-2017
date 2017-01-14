@@ -3,7 +3,7 @@ import urllib2
 Created by Abigail Katcoff (complete)
 
 '''
-
+import util
 import gzip
 import StringIO
 from bs4 import BeautifulSoup
@@ -21,7 +21,10 @@ def create_url(search_term):
 			specific_url= specific_url + search_words[i]
 	return specific_url
 
-def extract_results(search_term):
+def extract_results(search_term, condition=None):
+	#This website sells pre-owned equipment
+	if condition=='new':
+		return []
 	headers={
 	'Host': 'www.biosurplus.com',
 	'Connection': 'keep-alive',
@@ -40,10 +43,12 @@ def extract_results(search_term):
 	results=[]
 	for row in rows:
 		new_result=Result(row.find('h2', class_="fps_fp_heading").find("a").find(text=True))
-		new_result.price=row.find('p', class_='product_price').find(text=True)
+		new_result.price=util.get_price(row.find('p', class_='product_price').find(text=True))
 		new_result.image_src=row.find('div', class_="fps_fp_image_inner").find('img').get('src')
 		new_result.url="www.biosurplus.com" +  row.find('a').get('href')
-		results.append(new_result)
+		new_result.condition='used'
+		if util.is_valid_price(new_result.price):
+			results.append(new_result)
 	return results
 
 
