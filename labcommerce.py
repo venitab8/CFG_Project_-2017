@@ -34,8 +34,8 @@ def get_results(item):
         
         results=[]
         for row in table:
-                #.encode('utf-8').strip() is used because not all of the characters
-                # are recognized
+                #.encode('utf-8').strip() is used because to convert text to str since
+                #not all of the characters are recognized
                 new_result = Result(row.a.text.encode('utf-8').strip())
                 url = re.sub('/catid/','.php?catid=',row.find('a').get('href'))
                 #Omit last slash
