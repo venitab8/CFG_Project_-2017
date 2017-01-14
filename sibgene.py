@@ -1,9 +1,7 @@
 """
 @author Venita Boodhoo
-Website: LabCommerce
-Status: Complete
-Note: LabCommerce is also a reseller of previously-owned, 
-       used and surplus/unused laboratory equipment
+Website: SibGene
+Status: In Progress
 """
 
 import urllib2
@@ -13,7 +11,7 @@ from Result import Result
 import re
 import string
 
-page = "http://www.labcommerce.com/searchresults.php?txtsearch="
+page = "http://www.sibgene.com/index.php/catalogsearch/result/?q="
 
 def create_url(item):
 	specific_url=page
@@ -23,19 +21,24 @@ def create_url(item):
 			specific_url= specific_url + "+"+ search_words[i]
 		else:
 			specific_url= specific_url + search_words[i]
-	specific_url = specific_url + "&image.x=0&image.y=0"
 	return specific_url
 
 def get_results(item):                
         page = urllib2.urlopen(create_url(item))
         soup = BeautifulSoup(page,"html.parser" )
-
-        table = soup.find_all('div',class_="search_result")
-        
+        print create_url(item)
+        table = soup.find('ol',attrs={'class':'products-list'})
+        print soup.select("li")
         results=[]
+##        print table.category-products
+        
         for row in table:
+                print row
+                print ""
+                '''
                 #.encode('utf-8').strip() is used because not all of the characters
                 # are recognized
+                print row.find('a').get('href')
                 new_result = Result(row.a.text.encode('utf-8').strip())
                 url = re.sub('/catid/','.php?catid=',row.find('a').get('href'))
                 #Omit last slash
@@ -50,10 +53,10 @@ def get_results(item):
                 new_result.image_src = 'http://www.labcommerce.com'+new_soup.find('td',align='center')\
                                        .find('img').get('src')[1:].encode('utf-8').strip()
                 results.append(new_result)
-        
+                '''
         return results
 
 def main():
     print get_results("pump")
 
-
+main()
