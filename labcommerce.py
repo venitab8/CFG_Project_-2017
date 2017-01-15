@@ -13,6 +13,7 @@ from Result import Result
 import re
 import string
 
+main_url = 'http://www.labcommerce.com'
 page = "http://www.labcommerce.com/searchresults.php?txtsearch="
 
 def create_url(item):
@@ -34,22 +35,29 @@ def get_results(item):
         
         results=[]
         for row in table:
-                #.encode('utf-8').strip() is used because to convert text to str since
+                #.encode('utf-8') is used because to convert text to str since
                 #not all of the characters are recognized
                 new_result = Result(row.a.text.encode('utf-8').strip())
                 url = re.sub('/catid/','.php?catid=',row.find('a').get('href'))
                 #Omit last slash
                 specific_url = re.sub('/prodid/','&prodid=',url)[:-1]
-                new_result.url = 'http://www.labcommerce.com'+ specific_url.encode('utf-8').strip()
+                new_result.url = main_url+ specific_url.encode('utf-8').strip()
                 new_result.condition = "used"
                 new_soup = BeautifulSoup(urllib2.urlopen(new_result.url),"html.parser")
                 #Omit surrounding text, get decimal only
                 new_result.price = str(new_soup.find('td',class_='price').find_all(text=True)[0])\
-                                   .encode('utf-8').strip()
+                                   .encode('utf-8').strip()[1:]
                 #Omit 1st char (a period)
-                new_result.image_src = 'http://www.labcommerce.com'+new_soup.find('td',align='center')\
+                new_result.image_src = main_url+new_soup.find('td',align='center')\
                                        .find('img').get('src')[1:].encode('utf-8').strip()
-                results.append(new_result)
+                
+                bad_condition_types = ['bad','poor','not working','broken','not functional']
+                condition_type_text = new_soup.find(text='Condition:')
+                if condition_type_text != None:
+                        condition_type = condition_type_text.find_next(text=True)
+                        for word in bad_condition_types:
+                                if word not in condition_type:
+                                        results.append(new_result)
         
         return results
 

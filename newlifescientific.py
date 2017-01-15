@@ -1,7 +1,8 @@
 """
 @author Venita Boodhoo
 Website: NewLifeScientific
-Status: TBD
+Status: Complete
+Note: Assumes all items are used
 """
 
 import urllib2
@@ -11,7 +12,8 @@ from Result import Result
 import re
 import string
 
-page = "http://sibgene.com/index.php/catalogsearch/result/?q="
+main_url = "http://newlifescientific.com"
+page = "http://newlifescientific.com/search?q="
 
 def create_url(item):
 	specific_url=page
@@ -23,31 +25,31 @@ def create_url(item):
 			specific_url= specific_url + search_words[i]
 	return specific_url
 
-def get_results(item):
+def get_results(item,condition=None):
         page = urllib2.urlopen(create_url(item))
         soup = BeautifulSoup(page,"html.parser" )
-        #table = soup.find_all('ol',attrs={'class':'products-list'})
-        results=[]
-##        print table.category-products
         table = soup.find_all('li',class_='item')
-        
+        results = []
         for row in table:
                 new_result = Result(row.find('a').get('title'))
-                new_result.url = row.find('a').get('href')
-                new_result.price = str(row.find('span',class_='price').find_all(text=True)[0])\
-                                   .encode('utf-8')
+                new_result.url = main_url+row.find('a').get('href')
+                new_result.price = row.find('span',class_='price').text
                 new_result.image_src = row.find('img').get('src')
                 
                 specific_page = urllib2.urlopen(new_result.url)
                 new_soup = BeautifulSoup(specific_page,"html.parser")
-                condition = new_soup.find('div',class_='product-collateral').find('div',class_='std').text
-                conditions = ['new','New','used','Used']
-                for word in conditions:
-                        if word in condition:
-                                new_result.condition = word
-                results.append(new_result)
+                item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
+
+                bad_condition_types = ['bad','poor','not working','broken','not functional']
+                if condition != "new" or condition != "New":
+                        #Only add working good equipment
+                        for type_word in bad_condition_types:
+                                if type_word not in item_condition:
+                                        new_result.condition = "used"
+                                        results.append(new_result)
+                
         return results
 
 def main():
-    print get_results("pump")
+    print get_results("balance scale")
 
