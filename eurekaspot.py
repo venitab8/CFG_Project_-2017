@@ -22,22 +22,14 @@ import re
 import string
 
 main_url = "http://www.eurekaspot.com"
-page = "http://www.eurekaspot.com/estore/searchtmp2.cfm?quiksrch_keywords="
+search_url = "http://www.eurekaspot.com/estore/searchtmp2.cfm?quiksrch_keywords="
+DELIMITER ="%20"
 
-def create_url(item):
-	specific_url=page
-	search_words=item.split()
-	for i in range(len(search_words)):
-		if i!=0:
-			specific_url= specific_url + "%20"+ search_words[i]
-		else:
-			specific_url= specific_url + search_words[i]
-	return specific_url
-
-def get_results(item,condition=None):
+def extract_results(item,condition=None):
         results=[]
         if condition != "new":
-                page = urllib2.urlopen(create_url(item))
+                #print create_url(main_url,item,DELIMITER)
+                page = urllib2.urlopen(create_url(search_url,item,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
                 
                 table = soup.find_all('td',class_='productname')
@@ -64,5 +56,6 @@ def get_results(item,condition=None):
         return results
 
 def main():
-    print get_results("pump")
+    print extract_results("pump")
 
+if __name__ == "__main__": main()

@@ -11,20 +11,11 @@ from Result import Result
 import re
 import string
 
-page = "http://sibgene.com/index.php/catalogsearch/result/?q="
+MAIN_URL = "http://sibgene.com/index.php/catalogsearch/result/?q="
+DELIMITER = "+"
 
-def create_url(item):
-	specific_url=page
-	search_words=item.split()
-	for i in range(len(search_words)):
-		if i!=0:
-			specific_url= specific_url + "+"+ search_words[i]
-		else:
-			specific_url= specific_url + search_words[i]
-	return specific_url
-
-def get_results(item,requested_condition=None):
-        page = urllib2.urlopen(create_url(item))
+def extract_results(item,requested_condition=None):
+        page = urllib2.urlopen(create_url(MAIN_URL,item,DELIMITER))
         soup = BeautifulSoup(page,"html.parser" )
         results=[]
         table = soup.find_all('li',class_='item')
@@ -52,4 +43,6 @@ def get_results(item,requested_condition=None):
         return results
 
 def main():
-    print get_results("bio pump")
+    print extract_results("bio pump")
+    
+if __name__ == "__main__": main()

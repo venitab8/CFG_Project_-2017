@@ -12,29 +12,20 @@ from Result import Result
 import re
 import string
 
-main_url = "http://newlifescientific.com"
-page = "http://newlifescientific.com/search?q="
+MAIN_URL = "http://newlifescientific.com"
+SEARCH_URL = "http://newlifescientific.com/search?q="
+DELIMITER = "+"
 
-def create_url(item):
-	specific_url=page
-	search_words=item.split()
-	for i in range(len(search_words)):
-		if i!=0:
-			specific_url= specific_url + "+"+ search_words[i]
-		else:
-			specific_url= specific_url + search_words[i]
-	return specific_url
-
-def get_results(item,condition=None):
+def extract_results(item,condition=None):
         results = []
         if condition != 'new':
-                page = urllib2.urlopen(create_url(item))
+                page = urllib2.urlopen(create_url(SEARCH_URL,item,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
                 table = soup.find_all('li',class_='item')
                 
                 for row in table:
                         new_result = Result(row.find('a').get('title'))
-                        new_result.url = main_url+row.find('a').get('href')
+                        new_result.url = MAIN_URL+row.find('a').get('href')
                         new_result.price = row.find('span',class_='price').text
                         new_result.image_src = row.find('img').get('src')
                         
@@ -47,11 +38,11 @@ def get_results(item,condition=None):
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
                                         if type_word not in item_condition:
-                                                new_result.condition = "used"
                                                 results.append(new_result)
                 
         return results
 
 def main():
-    print get_results("balance scale")
+    print extract_results("balance scale")
 
+if __name__ == "__main__": main()
