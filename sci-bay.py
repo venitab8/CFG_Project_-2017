@@ -31,13 +31,13 @@ def extract_results(search_term, condition=None):
 		new_result.url=result_url
 		new_result.price=util.get_price(result_soup.find('span', class_="amount").find(text=True))
 		new_result.image_src=result_soup.find('div', class_='images').find('img').get('src')
-		new_result.condition='used'
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
 	return results
 
 def main():
     results= extract_results("Beckman")
+    #Printing the results the usual way gives an error because some elements contain u'2013
     try:
     	print results
     except:

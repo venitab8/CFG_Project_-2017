@@ -41,7 +41,6 @@ def extract_results(search_term, condition=None):
 		new_result.price=util.get_price(row.find('p', class_='product_price').find(text=True))
 		new_result.image_src=row.find('div', class_="fps_fp_image_inner").find('img').get('src')
 		new_result.url="www.biosurplus.com" +  row.find('a').get('href')
-		new_result.condition='used'
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
 	return results

@@ -26,7 +26,6 @@ def extract_results(search_term, condition=None):
 		new_result.price=util.get_price(row.find('span', class_="listing-price").find(text=True))
 		new_result.url=row.find('a').get('href')
 		new_result.image_src=row.find('img', class_="search-thumbnail").get('src')
-		new_result.condition='used'
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
 	return results
