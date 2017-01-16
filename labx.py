@@ -2,6 +2,7 @@
 @author Venita Boodhoo
 Website: LabX
 Status: Complete
+Note: Have not sorted broken equipment yet
 """
 
 import urllib2
