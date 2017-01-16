@@ -40,10 +40,8 @@ def get_results(item,condition=None):
                   new_result.url = row.find('a').get('href')
                   new_result.price = row.find_all('td')[4].contents[0]
                   new_soup = BeautifulSoup(urllib2.urlopen(new_result.url),"html.parser")
-                  #D.append(new_soup.find('span'),class_='AdDetailsTitle')
-                  #E.append(new_soup.find('div', class_='sellerInformation'))
+                  #print new_soup.find_all('span',class_='AdDetailsValue')
                   number = get_price(new_result.title)
-                  new_result.condition = condition
                   new_result.image_src = "https://photos.labx.com/labx/"+number+"/"+number+"-0.jpg"
                   results.append(new_result)
         return results
@@ -51,4 +49,4 @@ def get_results(item,condition=None):
 def main():
     print get_results("Bio rad pump","used")
 
-
+main()

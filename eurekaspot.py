@@ -35,32 +35,34 @@ def create_url(item):
 	return specific_url
 
 def get_results(item,condition=None):
-        page = urllib2.urlopen(create_url(item))
-        soup = BeautifulSoup(page,"html.parser" )
         results=[]
-        table = soup.find_all('td',class_='productname')
-        for row in table:
-                new_result = Result(row.find('a').text)
-                specific_url = main_url+row.find('a').get('href')
-                new_result.url = re.sub('%2E','.',specific_url)
-                new_result.image_src = main_url+\
-                                       soup.find_all('td',class_='image')[0].find('img').get('src')
-                specific_page = urllib2.urlopen(new_result.url)
-                new_soup = BeautifulSoup(specific_page,"html.parser")
-                #Omit '$' at beginning of price by slicing
-                new_result.price = new_soup.find('span',class_='sellprice').text[1:]
-                new_result.condition = "used"
-                #Code to add only functional items
-                description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
-                description_page = urllib2.urlopen(description_url)
-                description_soup = BeautifulSoup(description_page,"html.parser")
-                for item in description_soup.find_all('td',id='first'):
-                        if "Functional" in item.text:
-                                working = item.find_next_sibling('td').text
-                                if "yes" in working or "Yes" in working:
-                                        results.append(new_result)
+        if condition != "new":
+                page = urllib2.urlopen(create_url(item))
+                soup = BeautifulSoup(page,"html.parser" )
                 
+                table = soup.find_all('td',class_='productname')
+                for row in table:
+                        new_result = Result(row.find('a').text)
+                        specific_url = main_url+row.find('a').get('href')
+                        new_result.url = re.sub('%2E','.',specific_url)
+                        new_result.image_src = main_url+\
+                                               soup.find_all('td',class_='image')[0].find('img').get('src')
+                        specific_page = urllib2.urlopen(new_result.url)
+                        new_soup = BeautifulSoup(specific_page,"html.parser")
+                        #Omit '$' at beginning of price by slicing
+                        new_result.price = new_soup.find('span',class_='sellprice').text[1:]
+                        #Code to add only functional items
+                        description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
+                        description_page = urllib2.urlopen(description_url)
+                        description_soup = BeautifulSoup(description_page,"html.parser")
+                        for item in description_soup.find_all('td',id='first'):
+                                if "Functional" in item.text:
+                                        working = item.find_next_sibling('td').text
+                                        if "yes" in working or "Yes" in working:
+                                                results.append(new_result)
+                        
         return results
 
 def main():
     print get_results("pump")
+

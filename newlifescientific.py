@@ -26,27 +26,29 @@ def create_url(item):
 	return specific_url
 
 def get_results(item,condition=None):
-        page = urllib2.urlopen(create_url(item))
-        soup = BeautifulSoup(page,"html.parser" )
-        table = soup.find_all('li',class_='item')
         results = []
-        for row in table:
-                new_result = Result(row.find('a').get('title'))
-                new_result.url = main_url+row.find('a').get('href')
-                new_result.price = row.find('span',class_='price').text
-                new_result.image_src = row.find('img').get('src')
+        if condition != 'new':
+                page = urllib2.urlopen(create_url(item))
+                soup = BeautifulSoup(page,"html.parser" )
+                table = soup.find_all('li',class_='item')
                 
-                specific_page = urllib2.urlopen(new_result.url)
-                new_soup = BeautifulSoup(specific_page,"html.parser")
-                item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
+                for row in table:
+                        new_result = Result(row.find('a').get('title'))
+                        new_result.url = main_url+row.find('a').get('href')
+                        new_result.price = row.find('span',class_='price').text
+                        new_result.image_src = row.find('img').get('src')
+                        
+                        specific_page = urllib2.urlopen(new_result.url)
+                        new_soup = BeautifulSoup(specific_page,"html.parser")
+                        item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
 
-                bad_condition_types = ['bad','poor','not working','broken','not functional']
-                if condition != "new" or condition != "New":
-                        #Only add working good equipment
-                        for type_word in bad_condition_types:
-                                if type_word not in item_condition:
-                                        new_result.condition = "used"
-                                        results.append(new_result)
+                        bad_condition_types = ['bad','poor','not working','broken','not functional']
+                        if condition != "new" or condition != "New":
+                                #Only add working good equipment
+                                for type_word in bad_condition_types:
+                                        if type_word not in item_condition:
+                                                new_result.condition = "used"
+                                                results.append(new_result)
                 
         return results
 

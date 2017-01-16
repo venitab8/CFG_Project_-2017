@@ -43,7 +43,6 @@ def get_results(item,requested_condition=None):
                 bad_condition_types = ['bad','poor','not working','broken','not functional']
                 for word in conditions:
                         if word in condition:
-                                new_result.condition = word.lower()
                                 if (requested_condition == None and word.lower() == 'used') or \
                                         (requested_condition != None and requested_condition.lower()== word.lower()):
                                         #Only add working good equipment
