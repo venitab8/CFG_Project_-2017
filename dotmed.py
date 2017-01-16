@@ -4,11 +4,12 @@ Created on Fri Jan 13 12:32:55 2017
 
 @author: thotran
 """
-from Result import*
+from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
 #Code in Progress
 main_url='https://www.dotmed.com/listings/search/equipment.html?key='
+auction_url='https://www.dotmed.com/auction/'
    
 def search_url(search_word):
     if len(search_word)==0:
@@ -21,24 +22,29 @@ def search_url(search_word):
     
 def equipments(search_word):
     web=search_url(search_word)
-    page =urllib2.urlopen(web).read()
+    page =urllib2.urlopen(web)
     soup=BeautifulSoup(page)
-    product_grid=soup.find('div', class_='v-product-grid')
-    products=product_grid.find_all('div',class_='v-product')
+    product_grid=soup.find('div', id='totalListings')
+    #auction items
     equips=[]
-    for equip in products:
-        price_div=equip.find('div', class_='product_productprice')
-        for e in price_div.find_all(text=True):
-            if e==' ':
-                continue
-            else:
-                price=e
-        url=equip.find('a').get('href')
-        photo=equip.find('img').get('src')
-        title=equip.find_all('a')[1].get('title')
+    auction_equips=product_grid.find_all('div',class_='auction_table')
+    for auction_equip in auction_equips:
+        equips.append(Result('Auction Equipment'))
+    
+    sale_equips=product_grid.find_all('div', class_='listings_table_d') 
+    # tries to fix this later
+    for equip in sale_equips[1::]:
+        if equip.find('dl', class_='datePosted').find('p')==None:
+            equips.append(Result('No price'))
+            continue
+        title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)
-        equipment.url=url
-        equipment.image_src=photo
-        equipment.price=price
+        equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
+        equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
+        price=equip.find('dl', class_='datePosted').find('p').find_all(text=True)
+        equipment.price=str(''.join(price).strip('Asking Price: ').strip())
         equips.append(equipment)
     return equips
+   
+print equipments('bio centrifuge')
+#print search_url('Applied Biosystems 9700')

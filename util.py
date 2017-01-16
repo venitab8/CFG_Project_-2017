@@ -40,6 +40,5 @@ def median_price(results):
             prices.append(equip.price)
     return numpy.median(numpy.array(prices))
     
-    
         
         
