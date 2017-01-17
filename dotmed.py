@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
 DELIMITER='+'
     
-def exact_results(search_word):
+def extract_results(search_word):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
@@ -33,11 +33,12 @@ def exact_results(search_word):
         equipment=Result(title)
         equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
         equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
-        price=equip.find('dl', class_='datePosted').find('p').find_all(text=True)
-        equipment.price=str(''.join(price).strip('Asking Price: ').strip())
-        equips.append(equipment)
+        price=equip.find('dl', class_='datePosted').find('p').find(text=True)
+        equipment.price=util.get_price(price)
+        if util.is_valid_price(equipment.price):
+            equips.append(equipment)
     return equips
     
 def main():
-    print exact_results('bio centrifuge')
+    print extract_results('bio centrifuge')
 if __name__=='__main__': main()

@@ -11,7 +11,7 @@ Takes in a string containing the price of the equipment and results the price on
 def get_price(price):
     #price input is string
     allow = string.digits + '.,'
-    number = re.sub('[^%s]' %allow,'',price)
+    number = re.sub('[^%s]' %allow,'',str(price))
     return number.strip()
 
 def is_valid_price(price):

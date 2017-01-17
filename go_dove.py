@@ -4,6 +4,7 @@ Created on Wed Jan 11 00:49:07 2017
 
 @author: thotran
 """
+import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
@@ -20,19 +21,19 @@ def search_url(search_word):
     return main_url+search
     
     
-def equipment_properties(search_word):
-    web=search_url(search_word)
-    page=urllib2.urlopen(web)
-    #product_grid=soup.find('table',class_='results-table table table-striped')
-    products=soup.find('tbody')
-    for product in products.find_all('tr'):
+# def equipment_properties(search_word):
+#     web=search_url(search_word)
+#     page=urllib2.urlopen(web)
+#     #product_grid=soup.find('table',class_='results-table table table-striped')
+#     products=soup.find('tbody')
+#     for product in products.find_all('tr'):
         
     #for row in products.find('tr'):
         #return row
     #return products
         
         
-def equipments(search_word):
+def extract_results(search_word):
     web=search_url(search_word)
     page =urllib2.urlopen(web)
     soup=BeautifulSoup(page)
@@ -47,9 +48,12 @@ def equipments(search_word):
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-        equipment.price=equip.find('div', class_='price').find('span').find(text=True).strip()
-        equips.append(equipment)
+        equipment.price=util.get_price(equip.find('div', class_='price').find('span').find(text=True).strip())
+        if util.is_valid_price(equipment.price):
+            equips.append(equipment)
     return equips
     
-    
-print equipment_properties('centrifuge')
+def main():
+    print equipment_properties('centrifuge')
+
+if __name__ == "__main__": main()

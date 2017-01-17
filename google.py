@@ -29,7 +29,6 @@ def extract_results(search_term, condition=None):
 	results=[]
 	for row in rows:
 		#ensure that if we're looking for used results to include used results only
-		print row.find('span', class_='price')
 		if condition!='new' and ('used' not in str(row.find('span', class_='price'))) :
 			continue
 		new_result=Result(row.find('a', class_='pstl').find(text=True))

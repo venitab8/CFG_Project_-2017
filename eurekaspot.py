@@ -42,7 +42,7 @@ def extract_results(item,condition=None):
                         specific_page = urllib2.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         #Omit '$' at beginning of price by slicing
-                        new_result.price = new_soup.find('span',class_='sellprice').text[1:]
+                        new_result.price = get_price(new_soup.find('span',class_='sellprice').text[1:])
                         #Code to add only functional items
                         description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
                         description_page = urllib2.urlopen(description_url)
@@ -50,7 +50,7 @@ def extract_results(item,condition=None):
                         for item in description_soup.find_all('td',id='first'):
                                 if "Functional" in item.text:
                                         working = item.find_next_sibling('td').text
-                                        if "yes" in working or "Yes" in working:
+                                        if "yes" in working or "Yes" in working and is_valid_price(new_result.price):
                                                 results.append(new_result)
                         
         return results

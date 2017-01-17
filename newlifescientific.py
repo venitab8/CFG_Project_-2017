@@ -26,7 +26,7 @@ def extract_results(item,condition=None):
                 for row in table:
                         new_result = Result(row.find('a').get('title'))
                         new_result.url = MAIN_URL+row.find('a').get('href')
-                        new_result.price = row.find('span',class_='price').text
+                        new_result.price = get_price(row.find('span',class_='price').text)
                         new_result.image_src = row.find('img').get('src')
                         
                         specific_page = urllib2.urlopen(new_result.url)
@@ -37,7 +37,7 @@ def extract_results(item,condition=None):
                         if condition != "new" or condition != "New":
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
-                                        if type_word not in item_condition:
+                                        if type_word not in item_condition and is_valid_price(new_result.price):
                                                 results.append(new_result)
                 
         return results

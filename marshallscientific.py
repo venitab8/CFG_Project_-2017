@@ -13,7 +13,7 @@ MAIN_URL="http://www.marshallscientific.com/searchresults.asp?Search="
 DELIMITER='+'
 
 
-def exact_results(search_word):
+def exact_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
@@ -25,9 +25,11 @@ def exact_results(search_word):
         equipment=Result(title)
         equipment.url=equip.find('a',class_='v-product__img').get('href')
         equipment.image_src='http:'+equip.find('img').get('src')
-        price=equip.find('div', class_='product_productprice').find_all(text=True)
-        equipment.price=''.join(price).strip('Our Price:').strip()
-        equips.append(equipment)
+        price=equip.find('div', class_='product_productprice').find(text=True)
+        #equipment.price=''.join(price).strip('Our Price:').strip()
+        equipment.price=util.get_price(price)
+        if util.is_valid_price(equipment.price):
+            equips.append(equipment)
     return equips
 
 def main():
