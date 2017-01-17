@@ -20,7 +20,7 @@ def extract_results(search_word, condition=None):
     total_equips=product_grid.find_all('div',class_='el')
     equips=[]
     for equip in total_equips:
-        # tries to fix this later
+        # items_details have names of generic device, model, manufacturer bundled together
         items_details=equip.find('div', class_='item_details').find_all(text=True)
         title=' '.join(items_details).strip()
         equipment=Result(title)
