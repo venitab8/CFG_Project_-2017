@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
 DELIMITER='+'
    
-def exact_results(search_word):
+def extract_results(search_word):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
@@ -24,6 +24,7 @@ def exact_results(search_word):
         equipment=Result(title)
         equipment.url=equip.find('a').get('href')
         equipment.image_src=equip.find('div', class_='Image').find('img').get('src')
+<<<<<<< HEAD
         price_text=equip.find('div', class_='price').find_all(text=True)
         equipment.price=util.get_price(''.join(price_text))
         equips.append(equipment)
@@ -31,5 +32,15 @@ def exact_results(search_word):
 
 def main():
     print(exact_results('bio centrifuge'))
+=======
+        price=equip.find('div', class_='price').find_all(text=True)
+        equipment.price=util.get_price(price)
+        if util.is_valid_price(equipment.price):
+            equips.append(equipment)
+    return equips
+
+def main():
+    print(extract_results('centrifuge'))
+>>>>>>> dcad00968b14d5f309439f287eec950e3b7ed279
 
 if __name__=='__main__': main()

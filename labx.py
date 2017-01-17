@@ -29,12 +29,13 @@ def extract_results(item,condition=None):
         for row in table.find_all('tr'):
                   new_result = Result(row.find('a').get('title'))
                   new_result.url = row.find('a').get('href')
-                  new_result.price = row.find_all('td')[4].contents[0]
+                  new_result.price = get_price(row.find_all('td')[4].contents[0])
                   new_soup = BeautifulSoup(urllib2.urlopen(new_result.url),"html.parser")
                   #print new_soup.find_all('span',class_='AdDetailsValue')
                   number = get_price(new_result.title)
                   new_result.image_src = "https://photos.labx.com/labx/"+number+"/"+number+"-0.jpg"
-                  results.append(new_result)
+                  if is_valid_price(new_result.price):
+                    results.append(new_result)
         return results
 
 def main():

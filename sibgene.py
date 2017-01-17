@@ -23,8 +23,8 @@ def extract_results(item,requested_condition=None):
         for row in table:
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = row.find('a').get('href')
-                new_result.price = str(row.find('span',class_='price').find_all(text=True)[0])\
-                                   .encode('utf-8')[1:]
+                new_result.price = get_price(str(row.find('span',class_='price').find_all(text=True)[0])\
+                                   .encode('utf-8')[1:])
                 new_result.image_src = row.find('img').get('src')
                 
                 specific_page = urllib2.urlopen(new_result.url)
@@ -38,7 +38,7 @@ def extract_results(item,requested_condition=None):
                                         (requested_condition != None and requested_condition.lower()== word.lower()):
                                         #Only add working good equipment
                                         for type_word in bad_condition_types:
-                                                if type_word not in condition:
+                                                if type_word not in condition and is_valid_price(new_result.price):
                                                         results.append(new_result)
         return results
 

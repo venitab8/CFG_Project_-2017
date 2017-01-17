@@ -37,8 +37,8 @@ def extract_results(item,condition=None):
                         new_result.url = main_url+ specific_url.encode('utf-8').strip()
                         new_soup = BeautifulSoup(urllib2.urlopen(new_result.url),"html.parser")
                         #Omit surrounding text, get decimal only
-                        new_result.price = str(new_soup.find('td',class_='price').find_all(text=True)[0])\
-                                           .encode('utf-8').strip()[1:]
+                        new_result.price = get_price(str(new_soup.find('td',class_='price').find_all(text=True)[0])\
+                                           .encode('utf-8').strip()[1:])
                         #Omit 1st char (a period)
                         new_result.image_src = main_url+new_soup.find('td',align='center')\
                                                .find('img').get('src')[1:].encode('utf-8').strip()
@@ -52,7 +52,7 @@ def extract_results(item,condition=None):
                                 for word in bad_condition_types:
                                         if word not in condition_type:
                                                 results.append(new_result)
-                        else:
+                        elif is_valid_price(new_result.price):
                                 results.append(new_result)
         
         return results

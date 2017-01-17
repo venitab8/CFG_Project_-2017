@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
 DELIMITER='+'
     
-def exact_results(search_word):
+def extract_results(search_word):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
@@ -28,6 +28,7 @@ def exact_results(search_word):
         title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)
         equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
+<<<<<<< HEAD
         if equip.find('dd',class_='img')!=None:
             equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
         price_tag=equip.find('dl', class_='datePosted').find('p')
@@ -35,8 +36,15 @@ def exact_results(search_word):
         if price_tag!=None and 'USD' in ''.join(price_tag.find_all(text=True)):
             equipment.price=util.get_price(''.join(price_tag.find_all(text=True)))
         equips.append(equipment)
+=======
+        equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
+        price=equip.find('dl', class_='datePosted').find('p').find(text=True)
+        equipment.price=util.get_price(price)
+        if util.is_valid_price(equipment.price):
+            equips.append(equipment)
+>>>>>>> dcad00968b14d5f309439f287eec950e3b7ed279
     return equips
     
 def main():
-    print exact_results('bio centrifuge')
+    print extract_results('bio centrifuge')
 if __name__=='__main__': main()
