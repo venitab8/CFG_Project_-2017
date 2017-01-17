@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
 DELIMITER='+'
    
-def extract_results(search_word):
+def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
