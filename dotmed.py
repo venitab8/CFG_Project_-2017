@@ -19,9 +19,11 @@ def extract_results(search_word):
     product_grid=soup.find('div', id='totalListings')
     equips=[]
     #items for auction
+    '''
     auction_equips=product_grid.find_all('div',class_='auction_table')
     for auction_equip in auction_equips:
         equips.append(Result('Equipment For Auction'))
+    '''
     #items for sale
     sale_equips=product_grid.find_all('div', class_='listings_table_d') 
     for equip in sale_equips:
