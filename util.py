@@ -35,15 +35,13 @@ def min_price(results):
     for equip in results:
         if equip.price!=None and equip.price!='': 
             prices.append(equip.price)
-        
     return min(prices)
     
 def max_price(results):
     prices=[]
     for equip in results:
         if equip.price!=None and equip.price!='': 
-            prices.append(equip.price)
-        
+            prices.append(equip.price) 
     return max(prices)
     
 def median_price(results):

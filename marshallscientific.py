@@ -4,24 +4,18 @@ Created on Mon Jan  9 18:06:56 2017
 
 @author: thotran
 """
+import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
 #Code in Progress
-main_url="http://www.marshallscientific.com/searchresults.asp?Search="
-   
-def search_url(search_word):
-    if len(search_word)==0:
-        return 'Please use a keyword for searching'
-    if ' ' in search_word:
-        search=search_word.replace(' ', '+')
-    else:
-        search=search_word
-    return main_url+search+'&Submit='
+MAIN_URL="http://www.marshallscientific.com/searchresults.asp?Search="
+DELIMITER='+'
 
-def equipments(search_word):
-    web=search_url(search_word)
-    page =urllib2.urlopen(web)
+
+def exact_results(search_word):
+    url=util.create_url(MAIN_URL,search_word,DELIMITER)
+    page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
     product_grid=soup.find('div', class_='v-product-grid')
     total_equips=product_grid.find_all('div',class_='v-product')
@@ -36,7 +30,7 @@ def equipments(search_word):
         equips.append(equipment)
     return equips
 
-print equipments('centrifuge')
+print exact_results('centrifuge')
     
 
         

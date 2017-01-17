@@ -4,23 +4,17 @@ Created on Sun Jan 15 16:04:08 2017
 
 @author: thotran
 """
+import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
-
-main_url='http://www.used-line.com/search/s_index.cfm?search_term='
-def search_url(search_word):
-    if len(search_word)==0:
-        return 'Please use a keyword for searching'
-    if ' ' in search_word:
-        search=search_word.replace(' ', '+')
-    else:
-        search=search_word
-    return main_url+search
-    
-def equipments(search_word):
-    web=search_url(search_word)
-    page =urllib2.urlopen(web)
+#Code in Progress
+MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
+DELIMITER='+'
+   
+def exact_results(search_word):
+    url=util.create_url(MAIN_URL,search_word,DELIMITER)
+    page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
     product_grid=soup.find('ul', class_='Products_ul')
     total_equips=product_grid.find_all('li',class_='Products')
@@ -35,4 +29,4 @@ def equipments(search_word):
         equips.append(equipment)
     return equips
     
-print(equipments('centrifuge'))
+print(exact_results('centrifuge'))

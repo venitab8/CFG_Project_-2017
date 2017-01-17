@@ -4,24 +4,17 @@ Created on Fri Jan 13 15:21:14 2017
 
 @author: thotran
 """
+import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
 
-main_url='http://www.medwow.com/tag/fronthandler/browse?actions=sales&searchstring='
-def search_url(search_word):
-    if len(search_word)==0:
-        return 'Please use a keyword for searching'
-    if ' ' in search_word:
-        search=search_word.replace(' ', '%20')
-    else:
-        search=search_word
-    return main_url+search
-    
+MAIN_URL='http://www.medwow.com/tag/fronthandler/browse?actions=sales&searchstring='
+DELIMITER='%20'
 
-def equipments(search_word):
-    web=search_url(search_word)
-    page =urllib2.urlopen(web)
+def exact_results(search_word):
+    url=util.create_url(MAIN_URL,search_word,DELIMITER)
+    page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
     product_grid=soup.find('div', class_='pagebody')
     total_equips=product_grid.find_all('div',class_='el')
@@ -38,4 +31,4 @@ def equipments(search_word):
         equips.append(equipment)
     return equips
     
-print equipments('centrifuge')
+print exact_results('centrifuge')

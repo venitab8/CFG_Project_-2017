@@ -4,36 +4,28 @@ Created on Fri Jan 13 12:32:55 2017
 
 @author: thotran
 """
+import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
-#Code in Progress
-main_url='https://www.dotmed.com/listings/search/equipment.html?key='
-auction_url='https://www.dotmed.com/auction/'
-   
-def search_url(search_word):
-    if len(search_word)==0:
-        return 'Please use a keyword for searching'
-    if ' ' in search_word:
-        search=search_word.replace(' ', '+')
-    else:
-        search=search_word
-    return main_url+search
+#Code in Progress  
+MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
+DELIMITER='+'
     
-def equipments(search_word):
-    web=search_url(search_word)
-    page =urllib2.urlopen(web)
+def exact_results(search_word):
+    url=util.create_url(MAIN_URL,search_word,DELIMITER)
+    page =urllib2.urlopen(url)
     soup=BeautifulSoup(page)
     product_grid=soup.find('div', id='totalListings')
-    #auction items
     equips=[]
+    #auction items
     auction_equips=product_grid.find_all('div',class_='auction_table')
     for auction_equip in auction_equips:
         equips.append(Result('Auction Equipment'))
-    
+    #sale items
     sale_equips=product_grid.find_all('div', class_='listings_table_d') 
-    # tries to fix this later
-    for equip in sale_equips[1::]:
+    # tries to fix unicode encode error later
+    for equip in sale_equips:
         if equip.find('dl', class_='datePosted').find('p')==None:
             equips.append(Result('No price'))
             continue
@@ -46,5 +38,4 @@ def equipments(search_word):
         equips.append(equipment)
     return equips
    
-print equipments('bio centrifuge')
-#print search_url('Applied Biosystems 9700')
+print exact_results('bio centrifuge')
