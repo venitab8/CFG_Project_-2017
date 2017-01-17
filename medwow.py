@@ -26,15 +26,10 @@ def extract_results(search_word, condition=None):
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-<<<<<<< HEAD
         price_text=equip.find('div', class_='price').find('span').find(text=True)
         equipment.price=util.get_price(''.join(price_text))
-        equips.append(equipment)
-=======
-        equipment.price=util.get_price(equip.find('div', class_='price').find('span').find(text=True))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
->>>>>>> dcad00968b14d5f309439f287eec950e3b7ed279
     return equips
     
 def main():

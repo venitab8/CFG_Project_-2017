@@ -24,23 +24,13 @@ def extract_results(search_word):
         equipment=Result(title)
         equipment.url=equip.find('a').get('href')
         equipment.image_src=equip.find('div', class_='Image').find('img').get('src')
-<<<<<<< HEAD
         price_text=equip.find('div', class_='price').find_all(text=True)
         equipment.price=util.get_price(''.join(price_text))
-        equips.append(equipment)
-    return equips
-
-def main():
-    print(exact_results('bio centrifuge'))
-=======
-        price=equip.find('div', class_='price').find_all(text=True)
-        equipment.price=util.get_price(price)
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
     return equips
 
 def main():
     print(extract_results('centrifuge'))
->>>>>>> dcad00968b14d5f309439f287eec950e3b7ed279
 
 if __name__=='__main__': main()

@@ -28,21 +28,15 @@ def extract_results(search_word):
         title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)
         equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
-<<<<<<< HEAD
-        if equip.find('dd',class_='img')!=None:
-            equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
+        img_tag=equip.find('dd',class_='img')
+        if img_tag!=None:
+            equipment.image_src=img_tag.find('img').get('src')
         price_tag=equip.find('dl', class_='datePosted').find('p')
-        #filters out products with no price or foreign prices
+        #filters out products with no price or with foreign prices
         if price_tag!=None and 'USD' in ''.join(price_tag.find_all(text=True)):
             equipment.price=util.get_price(''.join(price_tag.find_all(text=True)))
-        equips.append(equipment)
-=======
-        equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
-        price=equip.find('dl', class_='datePosted').find('p').find(text=True)
-        equipment.price=util.get_price(price)
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
->>>>>>> dcad00968b14d5f309439f287eec950e3b7ed279
     return equips
     
 def main():
