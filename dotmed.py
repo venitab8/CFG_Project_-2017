@@ -37,5 +37,7 @@ def exact_results(search_word):
         equipment.price=str(''.join(price).strip('Asking Price: ').strip())
         equips.append(equipment)
     return equips
-   
-print exact_results('bio centrifuge')
+    
+def main():
+    print exact_results('bio centrifuge')
+if __name__=='__main__': main()
