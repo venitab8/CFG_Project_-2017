@@ -25,9 +25,8 @@ def exact_results(search_word, condition=None):
         equipment=Result(title)
         equipment.url=equip.find('a',class_='v-product__img').get('href')
         equipment.image_src='http:'+equip.find('img').get('src')
-        price=equip.find('div', class_='product_productprice').find(text=True)
-        #equipment.price=''.join(price).strip('Our Price:').strip()
-        equipment.price=util.get_price(price)
+        price_text=equip.find('div', class_='product_productprice').find_all(text=True)
+        equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
     return equips

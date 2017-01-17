@@ -20,14 +20,14 @@ def extract_results(search_word, condition=None):
     total_equips=product_grid.find_all('div',class_='el')
     equips=[]
     for equip in total_equips:
-        # tries to fix this later
+        # items_details have names of generic device, model, manufacturer bundled together
         items_details=equip.find('div', class_='item_details').find_all(text=True)
-        #print items_details
         title=' '.join(items_details).strip()
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-        equipment.price=util.get_price(equip.find('div', class_='price').find('span').find(text=True))
+        price_text=equip.find('div', class_='price').find('span').find(text=True)
+        equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
     return equips
