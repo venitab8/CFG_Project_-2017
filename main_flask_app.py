@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 
 search_words = []
+search_condition=None
 
 @app.route('/')
 def main_page():
@@ -11,13 +12,13 @@ def main_page():
 
 @app.route('/search/<condition>')
 def display_search_page(condition=None):
+    search_condition=condition
     return render_template('search_page.html')
 
 '''Currently request.form is empty :('''
 @app.route('/search',methods=['GET','POST'])
 def enter_values():
-    #search_words = request.args('search')
-    #search_words = request.form['text']
+    search_words = request.args.get('search')
     return search_words
 
 @app.route('/results/<condition>')
