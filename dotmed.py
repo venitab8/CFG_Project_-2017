@@ -18,23 +18,22 @@ def exact_results(search_word):
     soup=BeautifulSoup(page)
     product_grid=soup.find('div', id='totalListings')
     equips=[]
-    #auction items
+    #items for auction
     auction_equips=product_grid.find_all('div',class_='auction_table')
     for auction_equip in auction_equips:
-        equips.append(Result('Auction Equipment'))
-    #sale items
+        equips.append(Result('Equipment For Auction'))
+    #items for sale
     sale_equips=product_grid.find_all('div', class_='listings_table_d') 
-    # tries to fix unicode encode error later
     for equip in sale_equips:
-        if equip.find('dl', class_='datePosted').find('p')==None:
-            equips.append(Result('No price'))
-            continue
         title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)
         equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
-        equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
-        price=equip.find('dl', class_='datePosted').find('p').find_all(text=True)
-        equipment.price=str(''.join(price).strip('Asking Price: ').strip())
+        if equip.find('dd',class_='img')!=None:
+            equipment.image_src=equip.find('dd',class_='img').find('img').get('src')
+        price_tag=equip.find('dl', class_='datePosted').find('p')
+        #filters out products with no price or foreign prices
+        if price_tag!=None and 'USD' in ''.join(price_tag.find_all(text=True)):
+            equipment.price=util.get_price(''.join(price_tag.find_all(text=True)))
         equips.append(equipment)
     return equips
     

@@ -24,12 +24,12 @@ def exact_results(search_word):
         equipment=Result(title)
         equipment.url=equip.find('a').get('href')
         equipment.image_src=equip.find('div', class_='Image').find('img').get('src')
-        price=equip.find('div', class_='price').find_all(text=True)
-        equipment.price=''.join(price).strip()
+        price_text=equip.find('div', class_='price').find_all(text=True)
+        equipment.price=util.get_price(''.join(price_text))
         equips.append(equipment)
     return equips
 
 def main():
-    print(exact_results('centrifuge'))
+    print(exact_results('bio centrifuge'))
 
 if __name__=='__main__': main()
