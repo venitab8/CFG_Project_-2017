@@ -13,13 +13,18 @@ def main_page():
 @app.route('/search/<condition>')
 def display_search_page(condition=None):
     search_condition=condition
-    return render_template('search_page.html')
+    if condition == "new":
+        search_words = request.args.get('search')
+        return render_template('search_page_new.html',condition=condition)
+    if condition == "used":
+        search_words = request.args.get('search')
+        return render_template('search_page_used.html',condition=condition)
+    return "Invalid address"
 
-'''Currently request.form is empty :('''
 @app.route('/search',methods=['GET','POST'])
 def enter_values():
     search_words = request.args.get('search')
-    return search_words
+    return redirect('results/'+search_words)
 
 @app.route('/results/<condition>')
 def results(condition=None):
