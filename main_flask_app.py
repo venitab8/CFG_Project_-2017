@@ -18,6 +18,7 @@ def display_search_page(condition=None):
     search_words = request.args.get('search')
     return render_template('search_page.html',condition=condition)
 
+<<<<<<< HEAD
 @app.route('/search',methods=['GET','POST'])
 def enter_values():
     search_words = request.args.get('search')
@@ -27,6 +28,12 @@ def enter_values():
 @app.route('/results/<condition>/')
 def results(search_words=None):
 	return render_template('result_page', search_words=search_words)
+=======
+@app.route('/results/<condition>')
+def results(condition=None):
+    search_words = request.args.get('search')
+    return search_words
+>>>>>>> 3615c32433952f6b40a6a6ce6d5bcff226d4fc5f
     
 def finish(self):
          if not self.wfile.closed:
