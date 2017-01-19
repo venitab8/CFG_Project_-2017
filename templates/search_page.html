@@ -2,8 +2,11 @@
 <html lang="en">
  
 <head>
+    {% if condition == "new" %}
     <title>Find Replacement Value</title>
- 
+ 	{% else %}
+ 	<title>Find Free Market Value</title>
+ 	{% endif %}
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
@@ -24,7 +27,12 @@
         </div>
  
         <div class="jumbotron">
+            {% if condition == "new" %}
             <h1>Search for New Equipment</h1>
+            {% else %}
+            <h1>Search for Used Equipment</h1>
+            {% endif %}
+            
             <div class="search">
                 <form action="/search">
                     <input type=text name=search ></br>

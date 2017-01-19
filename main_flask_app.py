@@ -12,19 +12,17 @@ def main_page():
 
 @app.route('/search/<condition>')
 def display_search_page(condition=None):
+    if condition != "new" and condition != "used":
+        return "Invalid address"
     search_condition=condition
-    if condition == "new":
-        search_words = request.args.get('search')
-        return render_template('search_page_new.html',condition=condition)
-    if condition == "used":
-        search_words = request.args.get('search')
-        return render_template('search_page_used.html',condition=condition)
-    return "Invalid address"
+    search_words = request.args.get('search')
+    return render_template('search_page.html',condition=condition)
 
 @app.route('/search',methods=['GET','POST'])
 def enter_values():
     search_words = request.args.get('search')
-    return redirect('results/'+search_words)
+    return search_words
+    #return redirect('results/'+search_condition+"/"+search_words)
 
 @app.route('/results/<condition>')
 def results(condition=None):
