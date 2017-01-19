@@ -1,3 +1,4 @@
+from backend
 from flask import Flask
 from flask import render_template, request, redirect
 app = Flask(__name__)
@@ -16,6 +17,7 @@ def display_search_page(condition=None):
 @app.route('/results/<condition>/')
 def results(search_words=None):
     search_words = request.args.get('search')
+    print(str(do_search(search_words))
     return render_template('result_page.html', search_words=search_words)
 
 

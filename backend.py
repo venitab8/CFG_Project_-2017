@@ -1,5 +1,5 @@
 from Result import Result
-#import the 15 websites
+#import the 1 websites
 import ebay
 #import marshallscientific doesn't work yet
 import equipnet
@@ -13,7 +13,6 @@ import labx
 import biosurplus
 import sci_bay
 import dotmed
-import go_dove
 import sibgene
 
 import util 
@@ -22,9 +21,11 @@ import math
 #TODO: add marshallscientific, medwow when they work
 FUNCTIONS=[ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
-dotmed.extract_results, go_dove.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
+dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
 
-
+website_names={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
+eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
+dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx"}
 
 MATCH_RATIO=.8
 
@@ -34,22 +35,26 @@ MIN_RESULTS=3
 
 
 '''
-searches the 15 websites until MAX_RESULTS close results are found or all the websites are searched
+searches the 14 websites until MAX_RESULTS close results are found or all the websites are searched
 returns search_successful (boolean), message (string), results (list of Results)
 '''
 def do_search(search_term, condition=None):
 	results=[]
+	error_message=""
 	for func in FUNCTIONS:
-		website_results=func(search_term, condition)
+		try:
+			website_results=func(search_term, condition)
+		except:
+			error_message=error_message + "Error scraping %s.\n" %(website_names[func])
 		for website_result in website_results:
 			if is_close_match(search_term, website_result.title):
 				results.append(website_result)
 			if len(results) >=MAX_RESULTS:
-				return True, "", results
+				return True, error_message, results
 		if len(results) >= MAX_RESULTS:
-			return True, "", results
+			return True, error_message, results
 	if len(results) < MIN_RESULTS:
-		return False, "Fewer than %s results found" %MIN_RESULTS, results
+		return False, error_message + "Fewer than %s results found" %MIN_RESULTS, results
 
 
 '''
