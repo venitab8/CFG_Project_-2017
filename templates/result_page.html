@@ -28,6 +28,22 @@
                         </div>
                 
           </div>
+        
+
+      <div class="jumbotron">
+            {% if condition == "new" %}
+            <h1>Search for New Equipment</h1>
+            {% else %}
+            <h1>Search for Used Equipment</h1>
+            {% endif %}
+            
+            <div class="search">
+                <form action="/results/{{ condition }}">
+                    <input type=text name=search ></br>
+                        <div class="actions"><input type=submit value="Search"></div>
+                </form>
+            </div>
+        </div>
 
             
 
