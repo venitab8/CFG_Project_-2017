@@ -2,10 +2,6 @@ from flask import Flask
 from flask import render_template, request, redirect
 app = Flask(__name__)
 
-
-search_words = []
-search_condition=None
-
 @app.route('/')
 def main_page():
     return render_template('main_equipment_page.html')
@@ -14,8 +10,6 @@ def main_page():
 def display_search_page(condition=None):
     if condition != "new" and condition != "used":
         return "Invalid address"
-    search_condition=condition
-    search_words = request.args.get('search')
     return render_template('search_page.html',condition=condition)
 
 
