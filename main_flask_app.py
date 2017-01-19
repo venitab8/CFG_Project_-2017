@@ -22,7 +22,7 @@ def display_search_page(condition=None):
 @app.route('/results/<condition>/')
 def results(search_words=None):
     search_words = request.args.get('search')
-    return render_template('result_page', search_words=search_words)
+    return render_template('result_page.html', search_words=search_words)
 
 
     
