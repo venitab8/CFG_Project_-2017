@@ -26,9 +26,9 @@ def enter_values():
     search_words = request.args.get('search')
     return redirect('results/'+search_words)
 
-@app.route('/results/<condition>')
-def results(condition=None):
-	return "result page"
+@app.route('/results/<condition>/')
+def results(search_words=None):
+	return render_template('result_page', search_words=search_words)
     
 def finish(self):
          if not self.wfile.closed:
