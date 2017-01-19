@@ -18,15 +18,10 @@ def display_search_page(condition=None):
     search_words = request.args.get('search')
     return render_template('search_page.html',condition=condition)
 
-@app.route('/search',methods=['GET','POST'])
-def enter_values():
-    search_words = request.args.get('search')
-    return search_words
-    #return redirect('results/'+search_condition+"/"+search_words)
-
 @app.route('/results/<condition>')
 def results(condition=None):
-	return "result page"
+    search_words = request.args.get('search')
+    return search_words
     
 def finish(self):
          if not self.wfile.closed:
