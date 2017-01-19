@@ -20,7 +20,6 @@ DELIMITER = "+"
 def extract_results(item,condition=None):
         results=[]
         if condition != 'new':
-                print create_url(search_url,item,DELIMITER)+"&image.x=0&image.y=0"
                 page = urllib2.urlopen(create_url(search_url,item,DELIMITER)+"&image.x=0&image.y=0")
                 soup = BeautifulSoup(page,"html.parser" )
 
