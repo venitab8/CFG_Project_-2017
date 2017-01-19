@@ -1,10 +1,7 @@
+import backend
 from flask import Flask
 from flask import render_template, request, redirect
 app = Flask(__name__)
-
-
-search_words = []
-search_condition=None
 
 @app.route('/')
 def main_page():
@@ -14,14 +11,15 @@ def main_page():
 def display_search_page(condition=None):
     if condition != "new" and condition != "used":
         return "Invalid address"
-    search_condition=condition
-    search_words = request.args.get('search')
     return render_template('search_page.html',condition=condition)
 
-@app.route('/results/<condition>')
+
+@app.route('/results/<condition>/')
 def results(condition=None):
     search_words = request.args.get('search')
-    return search_words
+    return str(backend.do_search(search_words,condition)[2])
+    #return render_template('result_page', search_words=search_words)
+
     
 def finish(self):
          if not self.wfile.closed:
