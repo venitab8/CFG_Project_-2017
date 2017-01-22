@@ -10,8 +10,7 @@ import urllib2
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
-import re
-import string
+
 
 main_url = 'http://www.labcommerce.com'
 search_url = "http://www.labcommerce.com/searchresults.php?txtsearch="
@@ -47,9 +46,9 @@ def extract_results(item,condition=None):
                         
                         if condition_type_text != None:
                                 condition_type = condition_type_text.find_next(text=True)
-                                print condition_type
                                 for word in bad_condition_types:
                                         if word not in condition_type:
+                                                new_result.description = condition_type.encode('utf-8').strip()
                                                 results.append(new_result)
                         elif is_valid_price(new_result.price):
                                 results.append(new_result)
@@ -57,6 +56,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("bench scale")
+    print extract_results("pump")
 
 if __name__ == "__main__": main()

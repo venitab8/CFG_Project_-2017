@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
 Website: EurekaSpot
-Status: Complete
+Status: Description debug
 Comment: Search only single words, NOT multiple words because
          their web search engine includes the "20" between
          words when it should be recognized as a space
@@ -11,15 +11,14 @@ Comment: Search only single words, NOT multiple words because
          I cannot change :(
 
          Same thing with "+"
->>Assumes all items are used on this website
+
+Assumes all items are used on this website
 """
 
 import urllib2
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
-import re
-import string
 
 main_url = "http://www.eurekaspot.com"
 search_url = "http://www.eurekaspot.com/estore/searchtmp2.cfm?quiksrch_keywords="
@@ -28,7 +27,6 @@ DELIMITER ="%20"
 def extract_results(item,condition=None):
         results=[]
         if condition != "new":
-                #print create_url(main_url,item,DELIMITER)
                 page = urllib2.urlopen(create_url(search_url,item,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
                 
@@ -47,11 +45,13 @@ def extract_results(item,condition=None):
                         description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
                         description_page = urllib2.urlopen(description_url)
                         description_soup = BeautifulSoup(description_page,"html.parser")
-                        for item in description_soup.find_all('td',id='first'):
-                                if "Functional" in item.text:
-                                        working = item.find_next_sibling('td').text
-                                        if "yes" in working or "Yes" in working and is_valid_price(new_result.price):
-                                                results.append(new_result)
+
+                        functional_tag = description_soup.find(text='Functional:')
+                        working = functional_tag.find_next('td').text
+                        if "yes" in working or "Yes" in working and is_valid_price(new_result.price):
+                                description_tag = description_soup.find(text='Seller comments:') 
+                                #new_result.description = description_tag.find_next('td').text.decode('utf-8', 'ignore').encode('utf-8', 'ignore')
+                                results.append(new_result)                                                
                         
         return results
 

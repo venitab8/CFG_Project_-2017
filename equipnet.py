@@ -16,7 +16,7 @@ def extract_results(search_term, condition=None):
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
 	page=urllib2.urlopen(url)
-	soup = BeautifulSoup(page)
+	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='tbl-listings')
 	rows= table.findAll("div", class_="search-row")
 

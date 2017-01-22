@@ -17,7 +17,7 @@ def extract_results(search_term, condition=None):
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
 	page=urllib2.urlopen(url)
-	soup = BeautifulSoup(page)
+	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', class_='content-area')
 	rows= table.findAll("article")
 
@@ -27,7 +27,7 @@ def extract_results(search_term, condition=None):
 		result_url=row.find('a').get('href')
 
 		#scrape from the result's page
-		result_soup=BeautifulSoup(urllib2.urlopen(result_url))
+		result_soup=BeautifulSoup(urllib2.urlopen(result_url),"html.parser")
 		new_result.url=result_url
 		new_result.price=util.get_price(result_soup.find('span', class_="amount").find(text=True))
 		new_result.image_src=result_soup.find('div', class_='images').find('img').get('src')

@@ -13,10 +13,10 @@ MAIN_URL="http://www.marshallscientific.com/searchresults.asp?Search="
 DELIMITER='+'
 
 
-def exact_results(search_word, condition=None):
+def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
-    soup=BeautifulSoup(page)
+    soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', class_='v-product-grid')
     total_equips=product_grid.find_all('div',class_='v-product')
     equips=[]
