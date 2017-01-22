@@ -1,4 +1,4 @@
-from backend
+import backend
 from flask import Flask
 from flask import render_template, request, redirect
 app = Flask(__name__)
@@ -13,13 +13,13 @@ def display_search_page(condition=None):
         return "Invalid address"
     return render_template('search_page.html',condition=condition)
 
-
 @app.route('/results/<condition>/')
-def results(search_words=None):
+def results(condition=None):
     search_words = request.args.get('search')
-    print(str(do_search(search_words))
-    return render_template('result_page.html', search_words=search_words)
-
+    #print(str(do_search(search_words))
+    #return render_template('result_page.html', search_words=search_words)
+    result= str(backend.do_search(search_words,condition))
+    return render_template('result_page.html', search_words=search_words,result=result)
 
     
 def finish(self):
