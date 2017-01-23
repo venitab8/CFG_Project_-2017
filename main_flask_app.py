@@ -1,7 +1,9 @@
 import backend
 from flask import Flask
 from flask import render_template, request, redirect
+import flask_excel as excel
 app = Flask(__name__)
+global search_words, is_keyword_matched, message, result
 
 @app.route('/')
 def main_page():
@@ -16,9 +18,19 @@ def display_search_page(condition=None):
 @app.route('/results/<condition>/')
 def results(condition=None):
     search_words = request.args.get('search')
-    return str(backend.do_search(search_words,condition)[2])
-    #return render_template('result_page', search_words=search_words)
-    
+    is_keyword_matched, message, result= backend.do_search(search_words,condition)
+    return render_template('result_page.html', search_words=search_words,result=result)
+
+@app.route('/download/', methods=['GET'])
+def download_file():
+    #search_words = request.args.get('search')
+    is_keyword_matched, message, result= backend.do_search('scale')
+    #exported_list=[[1,2],[3,4]]
+    exported_list=[['Title','Price', 'Image', 'URL', 'Condition']]
+    for r in result:
+        exported_list.append([r.title, r.price, r.image_src, r.url, r.condition])
+    return excel.make_response_from_array(exported_list, "xls")
+
 def finish(self):
          if not self.wfile.closed:
             self.wfile.flush()
@@ -30,6 +42,7 @@ def finish(self):
                 pass
          self.wfile.close()
          self.rfile.close()
-         
+        
 if __name__== "__main__":
+    #download_file()
     app.run()

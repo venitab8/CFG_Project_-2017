@@ -26,7 +26,7 @@ def extract_results(search_word, condition=None):
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-        price_text=equip.find('div', class_='price').find('span').find(text=True)
+        price_text=equip.find('div', class_='price').find(text=True)
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)

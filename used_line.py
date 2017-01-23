@@ -17,7 +17,10 @@ def extract_results(search_word, condition=None):
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('ul', class_='Products_ul')
-    total_equips=product_grid.find_all('li',class_='Products')
+    try:
+        total_equips=product_grid.find_all('li',class_='Products')
+    except:
+        return []
     equips=[]
     for equip in total_equips:
         title=equip.find('div', class_='title').find('span').find(text=True).strip()

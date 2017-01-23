@@ -20,8 +20,8 @@
                         <div class="menu">
                             <nav>
                               <ul class="nav nav-pills pull-right">
-                                <li role="presentation" ><a href="search_page.html">Back to Search</a></li>
-                                <li role="presentation" class="active"><a href="#">Download Results</a></li>
+                                <li role="presentation" ><a href="/">Back to Search</a></li>
+                                <li role="presentation" class="active"><a href="/download">Download Results</a></li>
                               </ul>
                             </nav> 
                             <h1 class="keyword">Keyword</h1>
@@ -31,112 +31,40 @@
         
 
       <div class="jumbotron">
+               
             {% if condition == "new" %}
             <h1>Search for New Equipment</h1>
             {% else %}
             <h1>Search for Used Equipment</h1>
             {% endif %}
-            
-            <div class="search">
-                <form action="/results/{{ condition }}">
-                    <input type=text name=search ></br>
-                        <div class="actions"><input type=submit value="Search"></div>
-                </form>
-            </div>
+           
+                   
+
+                   <div class="result_table">
+
+                         <table>
+                                  <tr style="padding: 0 15px 0 15px">
+                                    <td style="padding: 0 15px 0 15px">Title</td>
+                                    <td style="padding: 0 15px 0 15px">Price</td>
+                                    <td style="padding: 0 15px 0 15px">Image</td>
+                                    <td style="padding: 0 15px 0 15px">URL</td>
+                                    <td style="padding: 0 15px 0 15px">Condition</td>
+                                  </tr>
+
+                            {% for r in result %}
+                                  <tr style="padding: 0 15px 0 15px">
+                                    <td style="padding: 0 15px 0 15px"> {{r.title}} </td>
+                                    <td style="padding: 0 15px 0 15px">{{r.price}}</td>
+                                    <td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
+                                    <td style="padding: 0 15px 0 15px"><a href={{r.url}}> Go To Site</a></td>
+                                    <td style="padding: 0 15px 0 15px">{{r.condition}}</td>
+                                  </tr>
+                            {% endfor %}
+                         </table>    
+                  </div>
+
         </div>
 
-            
-
-
-    
-      <div class="result_table">
-         <table>
-
-                  <tr>
-                    <td>Title</td>
-                    <td>Price</td>
-                    <td>Image</td>
-                    <td>URL</td>
-                  </tr>
-                  <tr>
-                    <td>A Project Guide to UX Design by Russ Unger &#38; Carolyn Chandler</td>
-                    <td>In Stock</td>
-                    <td>2</td>
-                    <td>$52.94 ($26.47 &#215; 2)</td>
-                  </tr>
-                  <tr>
-                    <td>Introducing HTML5 by Bruce Lawson &#38; Remy Sharp</td>
-                    <td>Out of Stock</td>
-                    <td>1</td>
-                    <td>$22.23</td>
-                  </tr>
-                  <tr>
-                    <td>Bulletproof Web Design by Dan Cederholm</td>
-                    <td>In Stock</td>
-                    <td>1</td>
-                    <td>$30.17</td>
-                  </tr>
-
-                          <tr>
-                    <td>Don&#8217;t Make Me Think by Steve Krug</td>
-                    <td>In Stock</td>
-                    <td>1</td>
-                    <td>$30.02</td>
-                  </tr>
-                  <tr>
-                    <td>A Project Guide to UX Design by Russ Unger &#38; Carolyn Chandler</td>
-                    <td>In Stock</td>
-                    <td>2</td>
-                    <td>$52.94 ($26.47 &#215; 2)</td>
-                  </tr>
-                  <tr>
-                    <td>Introducing HTML5 by Bruce Lawson &#38; Remy Sharp</td>
-                    <td>Out of Stock</td>
-                    <td>1</td>
-                    <td>$22.23</td>
-                  </tr>
-                  <tr>
-                    <td>Bulletproof Web Design by Dan Cederholm</td>
-                    <td>In Stock</td>
-                    <td>1</td>
-                    <td>$30.17</td>
-                  </tr>
-
-                              <tr>
-                    <td>Don&#8217;t Make Me Think by Steve Krug</td>
-                    <td>In Stock</td>
-                    <td>1</td>
-                    <td>$30.02</td>
-                  </tr>
-                  <tr>
-                    <td>A Project Guide to UX Design by Russ Unger &#38; Carolyn Chandler</td>
-                    <td>In Stock</td>
-                    <td>2</td>
-                    <td>$52.94 ($26.47 &#215; 2)</td>
-                  </tr>
-                  <tr>
-                    <td>Introducing HTML5 by Bruce Lawson &#38; Remy Sharp</td>
-                    <td>Out of Stock</td>
-                    <td>1</td>
-                    <td>$22.23</td>
-                  </tr>
-                  <tr>
-                    <td>Bulletproof Web Design by Dan Cederholm</td>
-                    <td>In Stock</td>
-                    <td>1</td>
-                    <td>$30.17</td>
-                  </tr>
-         </table>
-
-        
-
-
-
- 
-      
- 
-      </div>
- 
       <footer class="footer">
         <p>&copy; Seeding Labs</p>
       </footer>

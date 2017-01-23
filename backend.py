@@ -57,7 +57,6 @@ def do_search(search_term, condition=None):
 		return False, error_message + "Fewer than %s results found" %MIN_RESULTS, results
 	return True, error_message, results
 
-
 '''
 checks if the result contains at least MATCH_RATIO of the search words
 '''
@@ -65,7 +64,7 @@ def is_close_match(search_term, result_term):
 	search_words=search_term.split()
 	match_number=0
 	for word in search_words:
-		if word in result_term:
+		if word.lower() in result_term.lower():
 			match_number+=1
 	return match_number >= math.ceil(len(search_words)*MATCH_RATIO)
 
@@ -74,4 +73,3 @@ def main():
     print do_search("bio centrifuge")
 
 if __name__ == "__main__": main()
-

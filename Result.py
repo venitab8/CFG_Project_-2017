@@ -6,7 +6,7 @@ This class represents one search result corresponding to one item of equipment o
 #TODO: Delete condition attribute
 class Result: 
 	def __init__(self, title):
-		self.image_src=None
+		self.image_src="http://dhakaprice.com/images/No-image-found.jpg"
 		self.title=title
 		self.url=None
 		self.price=None
