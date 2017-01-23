@@ -1,7 +1,7 @@
 from Result import Result
 #import the 14 websites
 import ebay
-#import marshallscientific doesn't work yet
+import marshallscientific
 import equipnet
 import google
 import medwow
@@ -18,12 +18,11 @@ import sibgene
 import util 
 import math
 
-#TODO: add marshallscientific, medwow when they work
-FUNCTIONS=[ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
+FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
 dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
 
-website_names={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
+WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx"}
 
@@ -51,7 +50,7 @@ def do_search(search_term, condition=None):
 					return True, error_message, results
 		except Exception, e: 
 			print e.message
-			error_message=error_message + "Error scraping %s.\n" %(website_names[func])
+			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
 	if len(results) < MIN_RESULTS:
