@@ -3,7 +3,7 @@ from flask import Flask
 from flask import render_template, request, redirect
 import flask_excel as excel
 app = Flask(__name__)
-global search_words, is_keyword_matched, message, result
+#global search_words
 
 @app.route('/')
 def main_page():
@@ -21,14 +21,12 @@ def results(condition=None):
     is_keyword_matched, message, result= backend.do_search(search_words,condition)
     return render_template('result_page.html', search_words=search_words,result=result)
 
-@app.route('/download/', methods=['GET'])
-def download_file():
-    #search_words = request.args.get('search')
-    is_keyword_matched, message, result= backend.do_search('scale')
-    #exported_list=[[1,2],[3,4]]
-    exported_list=[['Title','Price', 'Image', 'URL', 'Condition']]
+@app.route('/download/<search_words>/', methods=['GET'])
+def download_file(search_words, condition=None):
+    is_keyword_matched, message, result= backend.do_search(search_words,condition)
+    exported_list=[['Title','Price', 'Image', 'URL']]
     for r in result:
-        exported_list.append([r.title, r.price, r.image_src, r.url, r.condition])
+        exported_list.append([r.title, r.price, r.image_src, r.url])
     return excel.make_response_from_array(exported_list, "xls")
 
 def finish(self):
