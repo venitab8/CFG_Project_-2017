@@ -18,7 +18,7 @@ def display_search_page(condition=None):
 def results(condition=None):
     search_words = request.args.get('search')
     is_keyword_matched, message, result= backend.do_search(search_words,condition)
-    return render_template('result_page.html', search_words=search_words,result=result, message=message)
+    return render_template('result_page.html', search_words=search_words,result=result, message=message, condition=condition)
 
 @app.route('/download/<search_words>/', methods=['GET'])
 def download_file(search_words, condition=None):

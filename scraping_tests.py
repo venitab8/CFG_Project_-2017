@@ -1,7 +1,8 @@
 from Result import Result
+import unittest
 #import the 14 websites
 import ebay
-import marshallscientific #doesn't work yet
+import marshallscientific
 import equipnet
 import google
 import medwow
@@ -15,9 +16,6 @@ import sci_bay
 import dotmed
 import sibgene
 
-import unittest
-
-#TODO: ignore used line, doesn't work now? used_line.extract_results,
 FUNCTIONS=[used_line.extract_results, marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results,  \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
 dotmed.extract_results, sibgene.extract_results, labx.extract_results] 
@@ -28,8 +26,8 @@ dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.ex
 "marshallscientific"}
 
 '''
-If any function throws an error the test will fail
-Otherwise it will pass
+If any function throws an error, the test will fail
+Otherwise, it will pass
 Check manually that these tests print logical outputs
 '''
 class TestWebScraping(unittest.TestCase):

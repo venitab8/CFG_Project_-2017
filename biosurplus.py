@@ -1,8 +1,8 @@
-import urllib2
 '''
 Created by Abigail Katcoff (complete)
 
 '''
+import urllib2
 import util
 import gzip
 import StringIO
@@ -40,7 +40,9 @@ def extract_results(search_term, condition=None):
 		return []
 	results=[]
 	for row in rows:
-		new_result=Result(row.find('h2', class_="fps_fp_heading").find("a").find(text=True))
+		manufacturer= row.find('p', class_="fps_fp_description").find(text=True)
+		title= row.find('h2', class_="fps_fp_heading").find("a").find(text=True)
+		new_result=Result(manufacturer+ " " + title)
 		new_result.price=util.get_price(row.find('p', class_='product_price').find(text=True))
 		new_result.image_src=row.find('div', class_="fps_fp_image_inner").find('img').get('src')
 		new_result.url="www.biosurplus.com" +  row.find('a').get('href')

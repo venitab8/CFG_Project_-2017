@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Python Flask Bucket List App</title>
+    <title>Equipment Search Results</title>
      
     
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
                                 <li role="presentation" ><a href="/download/{{search_words}}/">Download Results</a></li>
                               </ul>
                             </nav> 
-                            <h1 class="keyword">Keyword: {{search_words}}</h1>
+                            <h3 class="text-muted">Equipment Valuation</h3>
                         </div>
                 
           </div>
@@ -33,9 +33,9 @@
       <div class="jumbotron">
                
             {% if condition == "new" %}
-            <h1> New Equipment</h1>
+            <h2> Results for New Equipment with Keywords: {{search_words}}</h2>
             {% else %}
-            <h1> Used Equipment</h1>
+            <h2> Results for Used Equipment with Keywords: {{search_words}}</h2>
             {% endif %}
            
                    
@@ -67,7 +67,7 @@
         </div>
 
       <footer class="footer">
-        <p>&copy; Seeding Labs</p>
+        <p>Seeding Labs</p>
       </footer>
  
     </div>
