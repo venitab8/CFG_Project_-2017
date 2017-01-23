@@ -12,6 +12,7 @@ class Result:
 		self.price=None
 		self.condition=None
 		self.description=None
+		self.origin_website=None
 
 	def __str__(self):
 		string=""
@@ -27,6 +28,8 @@ class Result:
 			string=string+ "\ndescription: " + self.description
 		if self.condition!=None:
 			string=string+"\ncondition: " + self.condition
+		if self.origin_website!=None:
+			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"
 
 	def __repr__(self):
@@ -43,4 +46,6 @@ class Result:
 			string=string+ "\ndescription: " + self.description
 		if self.condition!=None:
 			string=string+"\ncondition: " + self.condition
+		if self.origin_website!=None:
+			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"

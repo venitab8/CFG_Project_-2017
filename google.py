@@ -36,7 +36,6 @@ def extract_results(search_term, condition=None):
 		new_result=Result(row.find('a', class_='pstl').find(text=True))
 		new_result.url='https://www.google.com'+row.find('a', class_='pstl').get('href')
 		new_result.price=util.get_price(row.find('span', class_='price').b.find(text=True))
-		new_result.image_src=row.find('img').get('src')
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
 	return results

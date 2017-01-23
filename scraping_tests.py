@@ -38,9 +38,9 @@ class TestWebScraping(unittest.TestCase):
     	for func in FUNCTIONS:
     		print "blank test: "
         	print WEBSITE_NAMES[func]
-        	print func('')
+        	print func('', None)
 
-    def test_multiword1(self):
+    def test_multiword_biosystems(self):
     	for func in FUNCTIONS:
     		print "applied biosystems 9700:"
         	print WEBSITE_NAMES[func]
@@ -50,9 +50,11 @@ class TestWebScraping(unittest.TestCase):
         	except TypeError, e: 
         		if "unicode" not in e.message.lower():
         			raise TypeError(e.message)
+        	except UnicodeEncodeError:
+        		pass
 
 
-    def test_multiword2(self):
+    def test_multiword_diasorin(self):
     	for func in FUNCTIONS:
     		print "Diasorin Liaison:"
         	print WEBSITE_NAMES[func]
@@ -61,6 +63,20 @@ class TestWebScraping(unittest.TestCase):
         	except TypeError, e: 
         		if "unicode" not in e.message.lower():
         			raise TypeError(e.message)
+        	except UnicodeEncodeError:
+        		pass
+
+    def test_multiword_biomek(self):
+    	for func in FUNCTIONS:
+    		print "Beckman Coulter Biomek Workstation:"
+        	print WEBSITE_NAMES[func]
+        	try:
+        		print func('Beckman Coulter Biomek Workstation')
+        	except TypeError, e: 
+        		if "unicode" not in e.message.lower():
+        			raise TypeError(e.message)
+        	except UnicodeEncodeError:
+        		pass
 
 
 if __name__ == '__main__':

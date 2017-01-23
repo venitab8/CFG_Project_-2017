@@ -49,7 +49,8 @@ def do_search(search_term, condition=None):
 					results.append(website_result)
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
-		except: 
+		except Exception, e: 
+			print e.message
 			error_message=error_message + "Error scraping %s.\n" %(website_names[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
