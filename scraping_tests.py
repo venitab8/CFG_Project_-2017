@@ -38,7 +38,7 @@ class TestWebScraping(unittest.TestCase):
     	for func in FUNCTIONS:
     		print "blank test: "
         	print WEBSITE_NAMES[func]
-        	print func('')
+        	print func('', None)
 
     def test_multiword1(self):
     	for func in FUNCTIONS:
