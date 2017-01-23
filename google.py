@@ -21,7 +21,7 @@ def extract_results(search_term, condition=None):
 	'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'}
 	req =urllib2.Request(url, headers=headers)
 	page=urllib2.urlopen(req)
-	soup = BeautifulSoup(page)
+	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='search')
 	#table=soup.find('div', class_='sh-pr__product-results')
 	rows=table.findAll('div', class_='psli')

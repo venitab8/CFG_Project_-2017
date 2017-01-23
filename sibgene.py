@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
 Website: SibGene
-Status: Complete
+Status: Needs description
 """
 
 import urllib2
@@ -39,6 +39,7 @@ def extract_results(item,requested_condition=None):
                                         #Only add working good equipment
                                         for type_word in bad_condition_types:
                                                 if type_word not in condition and is_valid_price(new_result.price):
+                                                        #new_result.description = condition.encode('utf-8', 'ignore')
                                                         results.append(new_result)
         return results
 

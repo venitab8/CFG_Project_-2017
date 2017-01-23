@@ -15,7 +15,7 @@ DELIMITER='+'
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
-    soup=BeautifulSoup(page)
+    soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('ul', class_='Products_ul')
     total_equips=product_grid.find_all('li',class_='Products')
     equips=[]

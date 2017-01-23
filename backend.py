@@ -1,5 +1,5 @@
 from Result import Result
-#import the 1 websites
+#import the 14 websites
 import ebay
 #import marshallscientific doesn't work yet
 import equipnet
@@ -44,17 +44,18 @@ def do_search(search_term, condition=None):
 	for func in FUNCTIONS:
 		try:
 			website_results=func(search_term, condition)
-		except:
+			for website_result in website_results:
+				if is_close_match(search_term, website_result.title):
+					results.append(website_result)
+				if len(results) >=MAX_RESULTS:
+					return True, error_message, results
+		except: 
 			error_message=error_message + "Error scraping %s.\n" %(website_names[func])
-		for website_result in website_results:
-			if is_close_match(search_term, website_result.title):
-				results.append(website_result)
-			if len(results) >=MAX_RESULTS:
-				return True, error_message, results
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
 	if len(results) < MIN_RESULTS:
 		return False, error_message + "Fewer than %s results found" %MIN_RESULTS, results
+	return True, error_message, results
 
 
 '''
@@ -70,7 +71,7 @@ def is_close_match(search_term, result_term):
 
 
 def main():
-    print do_search("Beckman Coulter Biomek Workstation")
+    print do_search("bio centrifuge")
 
 if __name__ == "__main__": main()
 

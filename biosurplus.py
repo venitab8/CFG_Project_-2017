@@ -32,7 +32,7 @@ def extract_results(search_term, condition=None):
 	stringified_data = StringIO.StringIO(page.read())
 	unzipped_page = gzip.GzipFile(fileobj=stringified_data)
 
-	soup = BeautifulSoup(unzipped_page)
+	soup = BeautifulSoup(unzipped_page,"html.parser")
 	table=soup.find('div', class_='product_browse')
 	rows= table.findAll("div", class_="fps_featured_product")
 	results=[]

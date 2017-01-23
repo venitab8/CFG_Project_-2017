@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
 Website: NewLifeScientific
-Status: Complete
+Status: Needs description
 Note: Assumes all items are used
 """
 
@@ -32,12 +32,13 @@ def extract_results(item,condition=None):
                         specific_page = urllib2.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
-
+                        
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
                         if condition != "new" or condition != "New":
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
                                         if type_word not in item_condition and is_valid_price(new_result.price):
+                                                #new_result.description = item_condition.encode("utf-8","ignore").strip()
                                                 results.append(new_result)
                 
         return results
