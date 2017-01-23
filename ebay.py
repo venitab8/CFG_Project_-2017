@@ -22,8 +22,10 @@ def extract_results(search_term, condition=None):
 	page=urllib2.urlopen(url)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='ResultSetItems')
-	rows=table.findAll('li', class_='sresult lvresult clearfix li')
-
+	try:
+		rows=table.findAll('li', class_='sresult lvresult clearfix li')
+	except:
+		return []
 	results=[]
 	for row in rows: 
 		new_result=Result(row.find('h3', class_="lvtitle").find(text=True))

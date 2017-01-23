@@ -23,8 +23,10 @@ def extract_results(search_term, condition=None):
 	page=urllib2.urlopen(req)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='search')
-	#table=soup.find('div', class_='sh-pr__product-results')
-	rows=table.findAll('div', class_='psli')
+	try:
+		rows=table.findAll('div', class_='psli')
+	except:
+		return []
 
 	results=[]
 	for row in rows:

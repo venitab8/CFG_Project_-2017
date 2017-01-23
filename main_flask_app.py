@@ -16,7 +16,9 @@ def display_search_page(condition=None):
 @app.route('/results/<condition>/')
 def results(condition=None):
     search_words = request.args.get('search')
-    return str(backend.do_search(search_words,condition)[2])
+    worked_bool, message, results = backend.do_search(search_words.strip(),condition)
+    print results
+    return str(results)
     #return render_template('result_page', search_words=search_words)
     
 def finish(self):
