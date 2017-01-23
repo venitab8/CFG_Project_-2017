@@ -17,7 +17,10 @@ def extract_results(search_word, condition=None):
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', class_='pagebody')
-    total_equips=product_grid.find_all('div',class_='el')
+    try:
+        total_equips=product_grid.find_all('div',class_='el')
+    except:
+        return []
     equips=[]
     for equip in total_equips:
         # items_details have names of generic device, model, manufacturer bundled together
