@@ -29,13 +29,13 @@ def extract_results(search_word, condition=None):
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-        price_text=equip.find('div', class_='price').find(text=True)
+        price_text=equip.find('div', class_='price').find(text=True) if equip.find('span', class_='price_element')==None else equip.find('span', class_='price_element').find(text=True)
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
     return equips
     
 def main():
-    print extract_results('centrifuge')
+    print extract_results('Hair Removal Laser')
 
 if __name__=='__main__': main()

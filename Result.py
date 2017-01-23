@@ -10,7 +10,6 @@ class Result:
 		self.title=title
 		self.url=None
 		self.price=None
-		self.condition=None
 		self.description=None
 		self.origin_website=None
 
@@ -26,8 +25,6 @@ class Result:
 			string=string+ "\nprice: " + self.price
 		if self.description!=None:
 			string=string+ "\ndescription: " + self.description
-		if self.condition!=None:
-			string=string+"\ncondition: " + self.condition
 		if self.origin_website!=None:
 			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"
@@ -44,8 +41,6 @@ class Result:
 			string=string+ "\nprice: " + self.price
 		if self.description!=None:
 			string=string+ "\ndescription: " + self.description
-		if self.condition!=None:
-			string=string+"\ncondition: " + self.condition
 		if self.origin_website!=None:
 			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"

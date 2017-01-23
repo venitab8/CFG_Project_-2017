@@ -1,7 +1,8 @@
 from Result import Result
+import unittest
 #import the 14 websites
 import ebay
-import marshallscientific #doesn't work yet
+import marshallscientific
 import equipnet
 import google
 import medwow
@@ -15,10 +16,7 @@ import sci_bay
 import dotmed
 import sibgene
 
-import unittest
-
-#TODO: ignore used line, doesn't work now? used_line.extract_results,
-FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results,  \
+FUNCTIONS=[used_line.extract_results, marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results,  \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
 dotmed.extract_results, sibgene.extract_results, labx.extract_results] 
 
@@ -28,22 +26,20 @@ dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.ex
 "marshallscientific"}
 
 '''
-If any function throws an error the test will fail
-Otherwise they will pass
+If any function throws an error, the test will fail
+Otherwise, it will pass
 Check manually that these tests print logical outputs
 '''
 class TestWebScraping(unittest.TestCase):
 
     def test_blank(self):
     	for func in FUNCTIONS:
-    		print "blank test: "
-        	print WEBSITE_NAMES[func]
+    		print "blank test, %s:" %WEBSITE_NAMES[func]
         	print func('', None)
 
     def test_multiword_biosystems(self):
     	for func in FUNCTIONS:
-    		print "applied biosystems 9700:"
-        	print WEBSITE_NAMES[func]
+    		print "applied biosystems 9700, %s:" %WEBSITE_NAMES[func]
         	try:
         		print func('applied biosystems 9700')
         	#ignore error caused by printing unicode
@@ -56,8 +52,7 @@ class TestWebScraping(unittest.TestCase):
 
     def test_multiword_diasorin(self):
     	for func in FUNCTIONS:
-    		print "Diasorin Liaison:"
-        	print WEBSITE_NAMES[func]
+    		print "Diasorin Liaison, %s:" %WEBSITE_NAMES[func]
         	try:
         		print func('Diasorin Liaison')
         	except TypeError, e: 
@@ -68,8 +63,7 @@ class TestWebScraping(unittest.TestCase):
 
     def test_multiword_biomek(self):
     	for func in FUNCTIONS:
-    		print "Beckman Coulter Biomek Workstation:"
-        	print WEBSITE_NAMES[func]
+    		print "Beckman Coulter Biomek Workstation, %s:" %WEBSITE_NAMES[func]
         	try:
         		print func('Beckman Coulter Biomek Workstation')
         	except TypeError, e: 
@@ -78,6 +72,18 @@ class TestWebScraping(unittest.TestCase):
         	except UnicodeEncodeError:
         		pass
 
+    def test_returns_results(self):
+    	for func in FUNCTIONS:
+    		print "Test to make sure %s returns results: " %WEBSITE_NAMES[func]
+    		results=[]
+    		terms=["GenomeLab GeXP", "1200 Series HPLC System", 'Beckman Coulter Biomek Workstation', "Homogenizer Probe", "Sartorius", "Hair Removal Laser"]
+    		for search_term in terms:
+    			print search_term
+        		results.extend(func(search_term))
+        		if len(results)>0:
+        			break
+        	if len(results)==0:
+        		self.fail(WEBSITE_NAMES[func] + " does not return any results.")
 
 if __name__ == '__main__':
     unittest.main()

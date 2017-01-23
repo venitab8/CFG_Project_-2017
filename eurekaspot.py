@@ -27,9 +27,9 @@ DELIMITER ="%20"
 def extract_results(item,condition=None):
         results=[]
         if condition != "new":
-                page = urllib2.urlopen(create_url(search_url,item,DELIMITER))
+                search_term=get_good_search_term(item)
+                page = urllib2.urlopen(create_url(search_url,search_term,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
-                
                 table = soup.find_all('td',class_='productname')
                 for row in table:
                         new_result = Result(row.find('a').text)
@@ -39,8 +39,10 @@ def extract_results(item,condition=None):
                                                soup.find_all('td',class_='image')[0].find('img').get('src')
                         specific_page = urllib2.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
-                        #Omit '$' at beginning of price by slicing
-                        new_result.price = get_price(new_soup.find('span',class_='sellprice').text[1:])
+                        try:
+                            new_result.price = get_price(new_soup.find('span',class_='sellprice').text)
+                        except:
+                            continue
                         #Code to add only functional items
                         description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
                         description_page = urllib2.urlopen(description_url)
@@ -55,7 +57,19 @@ def extract_results(item,condition=None):
                         
         return results
 
+'''
+Added by Abigail
+Finds a term that looks like a model number (contains a digit) and returns that term
+If no terms containing digits exist, returns first word 
+'''
+def get_good_search_term(search_terms):
+    terms=search_terms.split()
+    for term in search_terms.split():
+        if any(char.isdigit() for char in term):
+            return term
+    return "" if len(terms)==0 else terms[0]
+
 def main():
-    print extract_results("pump")
+    print extract_results("pump HX7400")
 
 if __name__ == "__main__": main()
