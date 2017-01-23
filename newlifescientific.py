@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
 Website: NewLifeScientific
-Status: Needs description
+Status: Complete
 Note: Assumes all items are used
 """
 
@@ -38,7 +38,7 @@ def extract_results(item,condition=None):
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
                                         if type_word not in item_condition and is_valid_price(new_result.price):
-                                                #new_result.description = item_condition.encode("utf-8","ignore").strip()
+                                                new_result.description = item_condition
                                                 results.append(new_result)
                 
         return results
