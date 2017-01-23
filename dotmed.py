@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
 DELIMITER='+'
     
-def extract_results(search_word):
+def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
@@ -25,7 +25,10 @@ def extract_results(search_word):
         equips.append(Result('Equipment For Auction'))
     '''
     #items for sale
-    sale_equips=product_grid.find_all('div', class_='listings_table_d') 
+    try:
+        sale_equips=product_grid.find_all('div', class_='listings_table_d') 
+    except:
+        return []
     for equip in sale_equips:
         title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)

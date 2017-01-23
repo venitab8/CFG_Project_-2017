@@ -34,7 +34,10 @@ def extract_results(search_term, condition=None):
 
 	soup = BeautifulSoup(unzipped_page,"html.parser")
 	table=soup.find('div', class_='product_browse')
-	rows= table.findAll("div", class_="fps_featured_product")
+	try:
+		rows= table.findAll("div", class_="fps_featured_product")
+	except:
+		return []
 	results=[]
 	for row in rows:
 		new_result=Result(row.find('h2', class_="fps_fp_heading").find("a").find(text=True))

@@ -29,7 +29,6 @@ def download_file(search_words, condition=None):
         exported_list.append([r.title, r.price, r.image_src, r.url])
     return excel.make_response_from_array(exported_list, "xls")
 
-   
 def finish(self):
          if not self.wfile.closed:
             self.wfile.flush()

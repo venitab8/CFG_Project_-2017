@@ -18,8 +18,11 @@ def extract_results(search_term, condition=None):
 	page=urllib2.urlopen(url)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='tbl-listings')
-	rows= table.findAll("div", class_="search-row")
-
+	try:
+		rows= table.findAll("div", class_="search-row")
+		rows[0].find('h3', class_="listing-title").find("a").find(text=True)
+	except:
+		return []
 	results=[]
 	for row in rows:
 		new_result=Result(row.find('h3', class_="listing-title").find("a").find(text=True))

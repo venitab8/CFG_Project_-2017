@@ -23,8 +23,11 @@ def extract_results(item,condition=None):
 
         table = soup.find('tbody', class_='ResultsNewTable')
         results=[]
-
-        for row in table.find_all('tr'):
+        try:
+                  rows=table.find_all('tr')
+        except:
+                  return []
+        for row in rows:
                   new_result = Result(row.find('a').get('title'))
                   new_result.url = row.find('a').get('href')
                   new_result.price = get_price(row.find_all('td')[4].contents[0])

@@ -17,7 +17,10 @@ def extract_results(search_word, condition=None):
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', class_='pagebody')
-    total_equips=product_grid.find_all('div',class_='el')
+    try:
+        total_equips=product_grid.find_all('div',class_='el')
+    except:
+        return []
     equips=[]
     for equip in total_equips:
         # items_details have names of generic device, model, manufacturer bundled together
@@ -26,7 +29,7 @@ def extract_results(search_word, condition=None):
         equipment=Result(title)
         equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
         equipment.image_src=equip.find('div',class_='image').find('img').get('src')
-        price_text=equip.find('div', class_='price').find('span').find(text=True)
+        price_text=equip.find('div', class_='price').find(text=True)
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
