@@ -20,11 +20,11 @@
                         <div class="menu">
                             <nav>
                               <ul class="nav nav-pills pull-right">
-                                <li role="presentation" ><a href="/">Back to Search</a></li>
-                                <li role="presentation" class="active"><a href="/download">Download Results</a></li>
+                                <li role="presentation" class="active"><a href="/">Home</a></li>
+                                <li role="presentation" ><a href="/download/{{search_words}}/">Download Results</a></li>
                               </ul>
                             </nav> 
-                            <h1 class="keyword">Keyword</h1>
+                            <h1 class="keyword">{{search_words}}</h1>
                         </div>
                 
           </div>
@@ -47,17 +47,14 @@
                                     <td style="padding: 0 15px 0 15px">Title</td>
                                     <td style="padding: 0 15px 0 15px">Price</td>
                                     <td style="padding: 0 15px 0 15px">Image</td>
-                                    <td style="padding: 0 15px 0 15px">URL</td>
-                                    <td style="padding: 0 15px 0 15px">Condition</td>
                                   </tr>
 
                             {% for r in result %}
                                   <tr style="padding: 0 15px 0 15px">
-                                    <td style="padding: 0 15px 0 15px"> {{r.title}} </td>
+                                    <td style="padding: 0 15px 0 15px"> <a href={{r.url}}> {{r.title}}</a></td>
                                     <td style="padding: 0 15px 0 15px">{{r.price}}</td>
                                     <td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
-                                    <td style="padding: 0 15px 0 15px"><a href={{r.url}}> Go To Site</a></td>
-                                    <td style="padding: 0 15px 0 15px">{{r.condition}}</td>
+        
                                   </tr>
                             {% endfor %}
                          </table>    
