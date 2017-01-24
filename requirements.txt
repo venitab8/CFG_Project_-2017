@@ -14,8 +14,6 @@ jsonschema==2.4.0
 lxml==3.5.0
 MarkupSafe==0.23
 numpy==1.10.4
-path.py==0.0.0
-ply==3.8
 psutil==3.4.2
 py==1.4.31
 pyexcel==0.4.2
