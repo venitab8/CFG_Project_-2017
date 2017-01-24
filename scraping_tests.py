@@ -72,6 +72,17 @@ class TestWebScraping(unittest.TestCase):
         	except UnicodeEncodeError:
         		pass
 
+    def test_multiword_pump(self):
+    	for func in FUNCTIONS:
+    		print "Bell and Gossett centrifugal pump, %s:" %WEBSITE_NAMES[func]
+        	try:
+        		print func('Bell and Gossett centrifugal pump')
+        	except TypeError, e: 
+        		if "unicode" not in e.message.lower():
+        			raise TypeError(e.message)
+        	except UnicodeEncodeError:
+        		pass
+
     def test_returns_results(self):
     	for func in FUNCTIONS:
     		print "Test to make sure %s returns results: " %WEBSITE_NAMES[func]
