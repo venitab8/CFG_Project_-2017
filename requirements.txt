@@ -1,17 +1,7 @@
-alabaster==0.7.7
-anaconda-client==1.2.2
-argcomplete==1.0.0
-astropy==1.1.1
-beautifulsoup4==4.4.1
 Flask==0.12
 Flask-Excel==0.0.5
-gevent==1.0.2
-gevent-websocket==0.9.5
-gunicorn==19.6.0
-itsdangerous==0.24
 Jinja2==2.8.1
 jsonschema==2.4.0
-lxml==3.5.0
 MarkupSafe==0.23
 numpy==1.10.4
 psutil==3.4.2
@@ -27,5 +17,4 @@ requests==2.9.1
 unicodecsv==0.14.1
 virtualenv==15.1.0
 Werkzeug==0.11.3
-xlrd==0.9.4
-XlsxWriter==0.8.4
+
