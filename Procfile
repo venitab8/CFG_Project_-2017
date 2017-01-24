@@ -1,2 +1,2 @@
-web: gunicorn main_flask_app:app
+web: python main_flask_app.py $PORT
  
