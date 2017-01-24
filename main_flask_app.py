@@ -1,6 +1,7 @@
 import backend
 from flask import Flask
 from flask import render_template, request, redirect
+from os import environ
 import flask_excel as excel
 app = Flask(__name__)
 
@@ -42,5 +43,5 @@ def finish(self):
         
 if __name__== "__main__":
     port = int(environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)
     #app.run()
