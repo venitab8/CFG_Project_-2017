@@ -16,9 +16,21 @@ import sci_bay
 import dotmed
 import sibgene
 
-FUNCTIONS=[used_line.extract_results, marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results,  \
-eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
-dotmed.extract_results, sibgene.extract_results, labx.extract_results] 
+FUNCTIONS=[biosurplus.extract_results, \
+dotmed.extract_results, \
+ebay.extract_results, \
+equipnet.extract_results, \
+eurekaspot.extract_results, \
+google.extract_results, \
+labcommerce.extract_results, \
+labx.extract_results, \
+marshallscientific.extract_results, \
+medwow.extract_results, \
+newlifescientific.extract_results, \
+sci_bay.extract_results, \
+sibgene.extract_results, \
+used_line.extract_results ]
+
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
