@@ -1,1 +1,1 @@
-web: python main_flask_app.py
+web: python main_flask_app.py -p $PORT
