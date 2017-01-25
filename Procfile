@@ -1,2 +1,2 @@
-web: python main_flask_app.py $PORT
+worker: python main_flask_app.py $PORT
  
