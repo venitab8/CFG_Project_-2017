@@ -28,7 +28,15 @@
                         </div>
                 
           </div>
-        
+
+      <div class="jumbotron">
+               
+            {% if condition == "new" %}
+            <h2> Replacement Value is: ${{median}}</h2>
+            {% else %}
+            <h2> Full Market Value is: ${{median}}</h2>
+            {% endif %}  
+            </div>
 
       <div class="jumbotron">
                
@@ -52,9 +60,10 @@
                                         </tr>
                                         {% for r in result %}
                                               <tr style="padding: 0 15px 0 15px">
+                                              	<td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
                                                 <td style="padding: 0 15px 0 15px"> <a href={{r.url}}> {{r.title}}</a></td>
                                                 <td style="padding: 0 15px 0 15px">{{r.price}}</td>
-                                                <td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
+                                                
                                               </tr>
                                         {% endfor %}
                                     {% else %}
