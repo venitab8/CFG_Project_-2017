@@ -15,16 +15,28 @@ app = Flask(__name__)
 
 @app.route('/')
 def main_page():
+    #clear queue
+    qfail = Queue("failed", connection=conn)
+    qfail.empty()
+
     return render_template('main_equipment_page.html')
 
 @app.route('/search/<condition>')
 def display_search_page(condition=None):
+    #clear queue
+    qfail = Queue("failed", connection=conn)
+    qfail.empty()
+
     if condition != "new" and condition != "used":
         return "Invalid address"
     return render_template('search_page.html',condition=condition)
 
 @app.route('/results/<condition>/')
 def run_search(condition=None):
+    #clear queue
+    qfail = Queue("failed", connection=conn)
+    qfail.empty()
+
     search_words = request.args.get('search')
     if len(q)==0:
         #start a new job to conduct the search
@@ -42,6 +54,10 @@ def run_search(condition=None):
 
 @app.route('/results/<condition>/<job_id>')
 def wait_and_display_results(condition=None,  job_id=None):
+    #clear queue
+    qfail = Queue("failed", connection=conn)
+    qfail.empty()
+
     job = q.fetch_job(job_id)
     search_words = request.args.get('search')
     if job==None:
