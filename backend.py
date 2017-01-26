@@ -64,7 +64,7 @@ def is_close_match(search_term, result_term):
 	search_words=search_term.split()
 	match_number=0
 	for word in search_words:
-		if word.lower() in result_term.lower():
+		if word.lower().strip() in result_term.lower():
 			match_number+=1
 	return match_number >= math.ceil(len(search_words)*MATCH_RATIO)
 
