@@ -54,7 +54,7 @@ def do_search(search_term, condition=None):
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
 	if len(results) < MIN_RESULTS:
-		return False, error_message + "Fewer than %s results found" %MIN_RESULTS, results
+		return False, error_message, results
 	return True, error_message, results
 
 '''
