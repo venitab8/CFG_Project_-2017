@@ -40,6 +40,7 @@ def extract_results(item,condition=None):
                                         if type_word not in item_condition and is_valid_price(new_result.price):
                                                 new_result.description = item_condition
                                                 results.append(new_result)
+                                                break
                 
         return results
 
