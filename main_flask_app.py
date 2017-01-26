@@ -31,7 +31,7 @@ def run_search(condition=None):
         job=q.enqueue_call(func=backend.do_search,
                args=(search_words, condition,),
                timeout=30)
-        time.sleep(4)
+        time.sleep(6)
         return redirect('/results/'+ condition+"/"+ job.id+ "?search=" + search_words)
     else:
         #select the first job that is running
@@ -54,8 +54,8 @@ def wait_and_display_results(condition=None,  job_id=None):
         median = util.median_price(result)
         return render_template('result_page.html', search_words=search_words,result=result, median=median,message=message, condition=condition)
     else:
-        #check every 4 seconds for a result
-        time.sleep(4)
+        #check every 6 seconds for a result
+        time.sleep(6)
         return redirect('/results/'+ condition+"/"+ job.id +"?search=" + search_words)
 
 @app.route('/download/<search_words>/', methods=['GET'])
