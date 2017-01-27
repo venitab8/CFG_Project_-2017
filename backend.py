@@ -18,7 +18,8 @@ import sibgene
 import util 
 import math
 
-FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
+#ebay.extract_results,
+FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results,  equipnet.extract_results, google.extract_results, used_line.extract_results, \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
 dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
 
