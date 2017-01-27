@@ -35,7 +35,6 @@ def extract_results(item,condition=None):
                   number = get_price(new_result.title)
                   new_result.image_src = "https://photos.labx.com/labx/"+number+"/"+number+"-0.jpg"
                   if is_valid_price(new_result.price):
-                    new_result.description = new_soup.find('div',class_='AdInformationBlock')
                     results.append(new_result)
         return results
 

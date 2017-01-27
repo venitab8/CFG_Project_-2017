@@ -40,10 +40,6 @@ def run_search(condition=None):
         time.sleep(6)
         return redirect('/results/'+ condition+"/"+ job.id+ "?search=" + search_words)
     else:
-        #select the first job that is running
-        # queued_jobs = q.jobs
-        # job=queued_jobs[0]
-        # return redirect('/results/'+ condition+"/"+ job.id +"?search=" + search_words)
         q.empty()
         return redirect('/search/'+ condition+"/")
 
@@ -60,7 +56,7 @@ def wait_and_display_results(condition=None,  job_id=None):
             return "Invalid Address"
     elif job.is_finished:
         is_keyword_matched, message, result=job.result
-        median = util.median_price(result)
+        median = util.price_prettify(util.median_price(result))
         for item in result:
             item.price = util.price_prettify(util.str_to_float(item.price))
         return render_template('result_page.html', search_words=search_words,result=result, median=median,message=message, condition=condition)

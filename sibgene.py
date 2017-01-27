@@ -39,7 +39,6 @@ def extract_results(item,requested_condition=None):
                                         #Only add working good equipment
                                         for type_word in bad_condition_types:
                                                 if type_word not in condition and is_valid_price(new_result.price):
-                                                        new_result.description = condition
                                                         results.append(new_result)
         return results
 
