@@ -52,5 +52,15 @@ def median_price(results):
     for equip in results:
         if equip.price!=None and equip.price!='': 
             prices.append(str_to_float(equip.price))
-    return numpy.median(numpy.array(prices))
+    if prices == []:
+        return "None"
+    avg = float(sum(prices))/len(prices)
+    prices.sort()
+    length = len(prices)
+    if length % 2 == 0:
+        if abs(prices[(length-1)/2]-avg) <= abs(prices[math.ceil((length-1)/2)]-avg):
+            return prices[(length-1)/2]
+        return prices[math.ceil((length-1)/2)]
+    #Odd length prices list
+    return prices[(length-1)/2]
     
