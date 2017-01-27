@@ -16,16 +16,14 @@ app = Flask(__name__)
 @app.route('/')
 def main_page():
     #clear queue
-    qfail = Queue("failed", connection=conn)
-    qfail.empty()
+    q.empty()
 
     return render_template('main_equipment_page.html')
 
 @app.route('/search/<condition>')
 def display_search_page(condition=None):
     #clear queue
-    qfail = Queue("failed", connection=conn)
-    qfail.empty()
+    q.empty()
 
     if condition != "new" and condition != "used":
         return "Invalid address"
@@ -33,10 +31,6 @@ def display_search_page(condition=None):
 
 @app.route('/results/<condition>/')
 def run_search(condition=None):
-    #clear queue
-    qfail = Queue("failed", connection=conn)
-    qfail.empty()
-
     search_words = request.args.get('search')
     if len(q)==0:
         #start a new job to conduct the search
@@ -47,9 +41,11 @@ def run_search(condition=None):
         return redirect('/results/'+ condition+"/"+ job.id+ "?search=" + search_words)
     else:
         #select the first job that is running
-        queued_jobs = q.jobs
-        job=queued_jobs[0]
-        return redirect('/results/'+ condition+"/"+ job.id +"?search=" + search_words)
+        # queued_jobs = q.jobs
+        # job=queued_jobs[0]
+        # return redirect('/results/'+ condition+"/"+ job.id +"?search=" + search_words)
+        q.empty()
+        return redirect('/search/'+ condition+"/")
 
 
 @app.route('/results/<condition>/<job_id>')
@@ -60,6 +56,7 @@ def wait_and_display_results(condition=None,  job_id=None):
 
     job = q.fetch_job(job_id)
     search_words = request.args.get('search')
+    print search_words
     if job==None:
         try:
             return redirect('/results/'+ condition+"/" + "?search=" + search_words)
@@ -76,11 +73,11 @@ def wait_and_display_results(condition=None,  job_id=None):
 
 @app.route('/download/<search_words>/', methods=['GET'])
 def download_file(search_words, condition=None):
-    #is_keyword_matched, message, result=q.enqueue(backend.do_search, search_words, condition)
     is_keyword_matched, message, result= backend.do_search(search_words,condition)
     exported_list=[['Title','Price', 'Image', 'URL']]
     for r in result:
         exported_list.append([r.title, r.price, r.image_src, r.url])
+    print exported_list
     return excel.make_response_from_array(exported_list, "xls")
 
 def finish(self):
