@@ -18,8 +18,7 @@ import sibgene
 import util 
 import math
 
-#ebay.extract_results,
-FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results,  equipnet.extract_results, google.extract_results, used_line.extract_results, \
+FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
 eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
 dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
 
@@ -51,8 +50,7 @@ def do_search(search_term, condition=None):
 					results.append(website_result)
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
-		except Exception, e: 
-			print e.message
+		except: 
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
