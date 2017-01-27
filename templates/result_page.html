@@ -8,8 +8,10 @@
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <!--
     <link href="../static/signup.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="main.css">
+    -->
     
   </head>
  
@@ -34,7 +36,7 @@
             {% if condition == "new" %}
             <h2> Replacement Value is: ${{median}}</h2>
             {% else %}
-            <h2> Full Market Value is: ${{median}}</h2>
+            <h2> Free Market Value is: ${{median}}</h2>
             {% endif %}  
             </div>
 
@@ -54,9 +56,9 @@
                                  
                                     {% if result|length>0 %}
                                         <tr style="padding: 0 15px 0 15px">
+                                            <td style="padding: 0 15px 0 15px">Image</td>
                                             <td style="padding: 0 15px 0 15px">Title</td>
                                             <td style="padding: 0 15px 0 15px">Price</td>
-                                            <td style="padding: 0 15px 0 15px">Image</td>
                                         </tr>
                                         {% for r in result %}
                                               <tr style="padding: 0 15px 0 15px">
@@ -67,7 +69,7 @@
                                               </tr>
                                         {% endfor %}
                                     {% else %}
-                                       <p style="font-size:25px" > {{message}}</p>
+                                       <p style="font-size:25px" > No Results Found </p>
                                     {% endif %}
 
                          </table>    

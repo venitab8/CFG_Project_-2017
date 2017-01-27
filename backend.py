@@ -24,7 +24,8 @@ dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene 
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
-dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx"}
+dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
+"marshallscientific"}
 
 MATCH_RATIO=.8
 
@@ -42,19 +43,19 @@ def do_search(search_term, condition=None):
 	error_message=""
 	for func in FUNCTIONS:
 		try:
+			print "scraping ",  WEBSITE_NAMES[func]
 			website_results=func(search_term, condition)
 			for website_result in website_results:
 				if is_close_match(search_term, website_result.title):
 					results.append(website_result)
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
-		except Exception, e: 
-			print e.message
+		except: 
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
 	if len(results) < MIN_RESULTS:
-		return False, error_message + "Fewer than %s results found" %MIN_RESULTS, results
+		return False, error_message, results
 	return True, error_message, results
 
 '''
@@ -64,7 +65,7 @@ def is_close_match(search_term, result_term):
 	search_words=search_term.split()
 	match_number=0
 	for word in search_words:
-		if word.lower() in result_term.lower():
+		if word.lower().strip() in result_term.lower():
 			match_number+=1
 	return match_number >= math.ceil(len(search_words)*MATCH_RATIO)
 

@@ -22,6 +22,9 @@ def str_to_float(price):
     price = price.replace(',','')
     return float(price)
 
+def price_prettify(float_price):
+    return "$" +'{:20,.2f}'.format(price)
+
 def create_url(main_url, search_term, delimiter):
     specific_url=main_url
     search_words=search_term.split()
