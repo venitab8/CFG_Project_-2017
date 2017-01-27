@@ -1,7 +1,6 @@
 import backend
 import time
 import util
-import math
 from flask import Flask
 from flask import render_template, request, redirect
 from os import environ
