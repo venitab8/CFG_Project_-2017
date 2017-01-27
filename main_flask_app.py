@@ -50,10 +50,6 @@ def run_search(condition=None):
 
 @app.route('/results/<condition>/<job_id>')
 def wait_and_display_results(condition=None,  job_id=None):
-    #clear queue
-    qfail = Queue("failed", connection=conn)
-    qfail.empty()
-
     job = q.fetch_job(job_id)
     search_words = request.args.get('search')
     print search_words
