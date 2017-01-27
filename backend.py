@@ -42,6 +42,7 @@ def do_search(search_term, condition=None):
 	error_message=""
 	for func in FUNCTIONS:
 		try:
+			print "scraping " WEBSITE_NAMES[func]
 			website_results=func(search_term, condition)
 			for website_result in website_results:
 				if is_close_match(search_term, website_result.title):
