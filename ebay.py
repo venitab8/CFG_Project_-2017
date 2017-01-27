@@ -37,6 +37,6 @@ def extract_results(search_term, condition=None):
 	return results
 
 def main():
-    print extract_results("Beckman Coulter Biomek Workstation")
+    print extract_results("Eppendorf 5415D Centrifuge")
 
 if __name__ == "__main__": main()

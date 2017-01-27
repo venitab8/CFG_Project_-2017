@@ -51,6 +51,7 @@ def do_search(search_term, condition=None):
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
 		except: 
+			print "error scraping ",  WEBSITE_NAMES[func]
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
