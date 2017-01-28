@@ -51,8 +51,6 @@ def extract_results(item,condition=None):
                         functional_tag = description_soup.find(text='Functional:')
                         working = functional_tag.find_next('td').text
                         if "yes" in working or "Yes" in working and is_valid_price(new_result.price):
-                                description_tag = description_soup.find(text='Seller comments:') 
-                                new_result.description = description_tag.find_next('td').text#.decode('utf-8', 'ignore').encode('utf-8', 'ignore')
                                 results.append(new_result)                                                
                         
         return results

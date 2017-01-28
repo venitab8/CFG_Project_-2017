@@ -48,7 +48,6 @@ def extract_results(item,condition=None):
                                 condition_type = condition_type_text.find_next(text=True)
                                 for word in bad_condition_types:
                                         if word not in condition_type:
-                                                new_result.description = condition_type.encode('utf-8').strip()
                                                 results.append(new_result)
                         elif is_valid_price(new_result.price):
                                 results.append(new_result)

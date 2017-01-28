@@ -10,7 +10,6 @@ class Result:
 		self.title=title
 		self.url=None
 		self.price=None
-		self.description=None
 		self.origin_website=None
 
 	def __str__(self):
@@ -23,8 +22,6 @@ class Result:
 			string=string+ "\nurl: " + self.url
 		if self.price!=None:
 			string=string+ "\nprice: " + self.price
-		if self.description!=None:
-			string=string+ "\ndescription: " + self.description
 		if self.origin_website!=None:
 			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"
@@ -39,8 +36,6 @@ class Result:
 			string=string+ "\nurl: " + self.url
 		if self.price!=None:
 			string=string+ "\nprice: " + self.price
-		if self.description!=None:
-			string=string+ "\ndescription: " + self.description
 		if self.origin_website!=None:
 			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"
