@@ -56,18 +56,18 @@ def do_search(search_term, condition=None, func_group='1'):
 	error_message=""
 	functions=FUNC_DIC[func_group]
 	for func in functions:
-		try:
-			print "scraping ",  WEBSITE_NAMES[func]
-			website_results=func(search_term, condition)
-			for website_result in website_results:
-				if is_close_match(search_term, website_result.title):
-					results.append(website_result)
-				if len(results) >=MAX_RESULTS:
-					return True, error_message, results
-		except Exception, e: 
-			print "error scraping ",  WEBSITE_NAMES[func]
-			print "Error was: ", e.message, repr(e) 
-			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
+		#try:
+		print "scraping ",  WEBSITE_NAMES[func]
+		website_results=func(search_term, condition)
+		for website_result in website_results:
+			if is_close_match(search_term, website_result.title):
+				results.append(website_result)
+			if len(results) >=MAX_RESULTS:
+				return True, error_message, results
+		#except Exception, e: 
+			# print "error scraping ",  WEBSITE_NAMES[func]
+			# print "Error was: ", e.message, repr(e) 
+			# error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
 	if len(results) < MIN_RESULTS:
