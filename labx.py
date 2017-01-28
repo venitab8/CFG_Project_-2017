@@ -27,7 +27,8 @@ def extract_results(item,condition=None):
                   rows=table.find_all('tr')
         except:
                   return []
-        for row in rows:
+        for i in range(10):
+                  row= rows[i]
                   new_result = Result(row.find('a').get('title'))
                   new_result.url = row.find('a').get('href')
                   new_result.price = get_price(row.find_all('td')[4].contents[0])
