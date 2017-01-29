@@ -20,7 +20,8 @@ def extract_results(item,requested_condition=None):
         results=[]
         table = soup.find_all('li',class_='item')
         
-        for row in table:
+        for i in range(min(len(table), 10)):
+                row=table[i]
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = row.find('a').get('href')
                 new_result.price = get_price(str(row.find('span',class_='price').find_all(text=True)[0])\

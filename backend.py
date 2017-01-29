@@ -33,7 +33,7 @@ sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
 
-FUNC_DIC={'1': FUNCTIONS[:8], '2' : FUNCTIONS[8:], "all": FUNCTIONS, None: FUNCTIONS[:8]}
+FUNC_DIC={'1': FUNCTIONS[:7], '2' : FUNCTIONS[7:], "all": FUNCTIONS, None: FUNCTIONS[:7]}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
@@ -64,8 +64,9 @@ def do_search(search_term, condition=None, func_group='1'):
 					results.append(website_result)
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
-		except: 
+		except Exception, e: 
 			print "error scraping ",  WEBSITE_NAMES[func]
+			print "Error was: ", e.message 
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
