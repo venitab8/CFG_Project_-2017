@@ -3,12 +3,13 @@
 Created on Thu Jan 26 22:29:01 2017
 
 @author: thotran
+Status:Complete
 """
 import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
-#Code in Progress
+
 MAIN_URL="http://www.ika.com/owa/ika/catalog.search?iString="
 DELIMITER='+'
 home_url='http://www.ika.com'
@@ -30,10 +31,10 @@ def extract_results(search_word, condition=None):
         equipment.url=product_url
         equipment.image_src=home_url+product_page_content.find('img',{"id": "big_product_img"}).get('src')
         equipment.price=util.get_price(product_page_content.find('div', class_='pr_price2').find(text=True))
-        
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
-    return equips
+        if len(equips)>=10:
+            return equips
 
 def main():
     print extract_results('centrifuge')
