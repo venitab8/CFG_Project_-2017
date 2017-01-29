@@ -18,9 +18,22 @@ import sibgene
 import util 
 import math
 
-FUNCTIONS=[marshallscientific.extract_results, medwow.extract_results, ebay.extract_results, equipnet.extract_results, google.extract_results, used_line.extract_results, \
-eurekaspot.extract_results, labcommerce.extract_results, newlifescientific.extract_results, biosurplus.extract_results, sci_bay.extract_results, \
-dotmed.extract_results, sibgene.extract_results, labx.extract_results] #sibgene and labx are the slowest websites to scrape from
+FUNCTIONS=[equipnet.extract_results, \
+labx.extract_results, \
+ebay.extract_results, \
+dotmed.extract_results, \
+google.extract_results, \
+biosurplus.extract_results, \
+medwow.extract_results, \
+labcommerce.extract_results, \
+marshallscientific.extract_results, \
+newlifescientific.extract_results, \
+eurekaspot.extract_results, \
+sci_bay.extract_results, \
+sibgene.extract_results, \
+used_line.extract_results ]
+
+FUNC_DIC={'1': FUNCTIONS[:7], '2' : FUNCTIONS[7:], "all": FUNCTIONS, None: FUNCTIONS[:7]}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
@@ -35,13 +48,14 @@ MIN_RESULTS=3
 
 
 '''
-searches the 14 websites until MAX_RESULTS close results are found or all the websites are searched
+searches the websites in func_group until MAX_RESULTS close results are found or all the websites are searched
 returns search_successful (boolean), message (string), results (list of Results)
 '''
-def do_search(search_term, condition=None):
+def do_search(search_term, condition=None, func_group='1'):
 	results=[]
 	error_message=""
-	for func in FUNCTIONS:
+	functions=FUNC_DIC[func_group]
+	for func in functions:
 		try:
 			print "scraping ",  WEBSITE_NAMES[func]
 			website_results=func(search_term, condition)
@@ -50,8 +64,9 @@ def do_search(search_term, condition=None):
 					results.append(website_result)
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
-		except: 
+		except Exception, e: 
 			print "error scraping ",  WEBSITE_NAMES[func]
+			print "Error was: ", e.message 
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
 			return True, error_message, results
