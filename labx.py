@@ -13,6 +13,7 @@ MAIN_URL = "http://www.labx.com/v2/adsearch/search.cfm?sw="
 DELIMITER = "%20"
 
 def extract_results(item,condition=None):
+        #Url is extended based on condition
         if condition == "new":
                 specific_url = create_url(MAIN_URL,item,DELIMITER) + "&condition=New,New%20or%20Used&adtype=998"
         else:
@@ -23,10 +24,12 @@ def extract_results(item,condition=None):
 
         table = soup.find('tbody', class_='ResultsNewTable')
         results=[]
+        #Check if page has data
         try:
                   rows=table.find_all('tr')
         except:
                   return []
+        #Get 1st 10 results only
         for i in range(min(len(rows),10)):
                   row= rows[i]
                   new_result = Result(row.find('a').get('title'))

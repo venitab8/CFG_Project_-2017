@@ -8,8 +8,6 @@ import urllib2
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
-import re
-import string
 
 MAIN_URL = "http://sibgene.com/index.php/catalogsearch/result/?q="
 DELIMITER = "+"
@@ -18,8 +16,12 @@ def extract_results(item,requested_condition=None):
         page = urllib2.urlopen(create_url(MAIN_URL,item,DELIMITER))
         soup = BeautifulSoup(page,"html.parser" )
         results=[]
-        table = soup.find_all('li',class_='item')
-        
+        #Check for data
+        try:
+                table = soup.find_all('li',class_='item')
+        except:
+                return results
+        #Get 1st 10 results only
         for i in range(min(len(table), 10)):
                 row=table[i]
                 new_result = Result(row.find('a').get('title'))
@@ -33,6 +35,7 @@ def extract_results(item,requested_condition=None):
                 condition = new_soup.find('div',class_='product-collateral').find('div',class_='std').text
                 conditions = ['new','New','used','Used']
                 bad_condition_types = ['bad','poor','not working','broken','not functional']
+                #Check for matching conditions
                 for word in conditions:
                         if word in condition:
                                 if (requested_condition == None and word.lower() == 'used') or \
