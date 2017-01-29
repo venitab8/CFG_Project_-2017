@@ -1,11 +1,10 @@
 """
 @author Venita Boodhoo
 Website: daigger
-Status: In Progress (need to retrieve info for all items on specific pg, price to do)
+Status: Complete
 Comments: For new equipment only
 May return just a result on one page
 """
-
 import urllib2
 from bs4 import BeautifulSoup
 from util import *
@@ -26,22 +25,61 @@ def extract_results(item,condition=None):
         table = soup.find('div',id ="ListingProducts")
 
         try:
-                  rows=table.find('div',class_="boxshad productbox")
+                  #Items are a list
+                  rows=table.find_all('div',class_="boxshad productbox")
         except:
-                  return []
-                
+                  try:
+                          #Returns one item on a specific pg
+                          new_result = Result(soup.find('h1',itemprop='name'))
+                          new_result.url = specific_url
+                          new_result.image_src = HOME_URL+soup.find('div',class_='product-image').find('img').get('src')
+                          items = soup.find_all('tr',class_='ejs-addtocart-section')
+                          for item in items:
+                                #Supplier #
+                                supplier = item.find('span',class_='supplier-code')
+                                if supplier != None:
+                                        new_result.title = new_result.title + supplier.text
+                                new_result.price = item.find('strong',class_='price').text
+                                currency = item.find('span',itemprop='priceCurrency')
+                                if currency == None and is_valid_price(new_result.price):
+                                        results.append(new_result)
+                                elif currency.text == "USD" and is_valid_price(new_result.price):
+                                        results.append(new_result)
+                                #Reset title
+                                new_result.title = soup.find('h1',itemprop='name').text
+                          
+                          return results
+                  except:
+                          return []
+        
+        #For multiple items  
         for row in table.find_all('div',class_="boxshad productbox"):
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = HOME_URL + row.find('a').get('href')
-                new_result.image_src = row.find('img').get('src')
+                print new_result.url
+                new_result.image_src = HOME_URL + row.find('img').get('src')
+                print new_result.image_src
                 specific_page = urllib2.urlopen(new_result.url)
                 new_soup = BeautifulSoup(specific_page,"html.parser")
-                new_result.price = new_soup.find('strong',class_="price").text
-                if is_valid_price(new_result.price):
-                        results.append(new_result)
+                #Get all models of products from specific page
+                items = new_soup.find_all('tr',class_='ejs-addtocart-section')
+                for item in items:
+                        #Supplier #
+                        supplier = item.find('span',class_='supplier-code')
+                        if supplier != None:
+                                new_result.title = new_result.title + supplier.text
+                        new_result.price = item.find('strong',class_='price').text
+                        currency = item.find('span',itemprop='priceCurrency')
+                        if currency == None and is_valid_price(new_result.price):
+                                results.append(new_result)                         
+                        elif currency.text == "USD" and is_valid_price(new_result.price):
+                                results.append(new_result)
+                        #Reset title
+                        new_result.title = row.find('a').get('title')
+                
         return results
 
 def main():
-    print extract_results("balance scale","new")
+    print extract_results("pump","new")
 
 if __name__ == "__main__": main()
