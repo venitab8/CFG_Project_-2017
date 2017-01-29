@@ -3,7 +3,7 @@ Created by Abigail Katcoff (complete)
 
 This class represents one search result corresponding to one item of equipment outputted by a search
 '''
-#TODO: Delete condition attribute
+
 class Result: 
 	def __init__(self, title):
 		self.image_src="http://dhakaprice.com/images/No-image-found.jpg"
