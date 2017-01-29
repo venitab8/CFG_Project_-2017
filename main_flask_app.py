@@ -4,7 +4,6 @@ from flask import Flask
 from flask import render_template, request, redirect
 from os import environ
 import flask_excel as excel
-import json
 
 app = Flask(__name__)
 
