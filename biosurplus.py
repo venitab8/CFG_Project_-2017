@@ -39,7 +39,8 @@ def extract_results(search_term, condition=None):
 	except:
 		return []
 	results=[]
-	for row in rows:
+	for i in range(min(len(rows), 10)):
+		row=rows[i]
 		manufacturer= row.find('p', class_="fps_fp_description").find(text=True)
 		title= row.find('h2', class_="fps_fp_heading").find("a").find(text=True)
 		new_result=Result(manufacturer+ " " + title)

@@ -20,7 +20,7 @@ def extract_results(item,requested_condition=None):
         results=[]
         table = soup.find_all('li',class_='item')
         
-        for i in range(10):
+        for i in range(min(len(table), 10)):
                 row=table[i]
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = row.find('a').get('href')

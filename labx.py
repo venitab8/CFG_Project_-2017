@@ -27,7 +27,7 @@ def extract_results(item,condition=None):
                   rows=table.find_all('tr')
         except:
                   return []
-        for i in range(10):
+        for i in range(min(len(rows),10)):
                   row= rows[i]
                   new_result = Result(row.find('a').get('title'))
                   new_result.url = row.find('a').get('href')
