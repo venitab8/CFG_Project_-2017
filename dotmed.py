@@ -32,7 +32,7 @@ def extract_results(search_word, condition=None):
     for equip in sale_equips:
         title=''.join(equip.find('dt', class_='listing_head').find_all(text=True)).strip()
         equipment=Result(title)
-        equipment.url='http:'+equip.find('dt', class_='listing_head').find('a').get('href')
+        equipment.url='http://www.dotmed.com'+equip.find('dt', class_='listing_head').find('a').get('href')
         img_tag=equip.find('dd',class_='img')
         if img_tag!=None:
             equipment.image_src=img_tag.find('img').get('src')
