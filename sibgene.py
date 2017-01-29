@@ -2,6 +2,7 @@
 @author Venita Boodhoo
 Website: SibGene
 Status: Complete
+This website contains used and new equipment
 """
 
 import urllib2

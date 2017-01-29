@@ -18,7 +18,7 @@ import sibgene
 import util 
 import math
 
-FUNCTIONS=[equipnet.extract_results, \
+USED_FUNCS=[equipnet.extract_results, \
 labx.extract_results, \
 ebay.extract_results, \
 dotmed.extract_results, \
@@ -33,7 +33,8 @@ sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
 
-FUNC_DIC={'1': FUNCTIONS[:7], '2' : FUNCTIONS[7:], "all": FUNCTIONS, None: FUNCTIONS[:7]}
+#split functions into groups to prevent timeouts
+FUNC_DIC={'1': USED_FUNCS[:7], '2' : USED_FUNCS[7:], "all": USED_FUNCS, None: USED_FUNCS[:7]}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
