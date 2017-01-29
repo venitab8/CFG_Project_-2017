@@ -12,7 +12,10 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
 DELIMITER='+'
    
+#Assume most results used on used-line are used, Use this function only to search for used
 def extract_results(search_word, condition=None):
+    if codition=='new':
+        return []
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")

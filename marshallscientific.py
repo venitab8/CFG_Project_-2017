@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Mon Jan  9 18:06:56 2017
@@ -8,12 +9,14 @@ import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
-#Code in Progress
+
 MAIN_URL="http://www.marshallscientific.com/searchresults.asp?Search="
 DELIMITER='+'
 
-
+#Marshall Scientific sells used equipment only. 
 def extract_results(search_word, condition=None):
+    if condition=="new":
+        return []
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
