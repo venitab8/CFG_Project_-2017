@@ -2,6 +2,7 @@
 @author Venita Boodhoo
 Website: LabX
 Status: Complete
+Comment: For both new and used equipment
 """
 
 import urllib2
@@ -21,7 +22,6 @@ def extract_results(item,condition=None):
                 
         page = urllib2.urlopen(specific_url)
         soup = BeautifulSoup(page,"html.parser" )
-
         table = soup.find('tbody', class_='ResultsNewTable')
         results=[]
         #Check if page has data
@@ -30,16 +30,17 @@ def extract_results(item,condition=None):
         except:
                   return []
         #Get 1st 10 results only
-        for i in range(min(len(rows),10)):
+        for i in range(len(rows)):
                   row= rows[i]
                   new_result = Result(row.find('a').get('title'))
                   new_result.url = row.find('a').get('href')
                   new_result.price = get_price(row.find_all('td')[4].contents[0])
-                  new_soup = BeautifulSoup(urllib2.urlopen(new_result.url),"html.parser")
                   number = get_price(new_result.title)
                   new_result.image_src = "https://photos.labx.com/labx/"+number+"/"+number+"-0.jpg"
                   if is_valid_price(new_result.price):
-                    results.append(new_result)
+                          results.append(new_result)
+                          if len(results) == 10:
+                                  return results
         return results
 
 def main():

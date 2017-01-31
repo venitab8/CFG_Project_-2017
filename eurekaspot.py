@@ -1,18 +1,8 @@
 """
 @author Venita Boodhoo & Abigail
 Website: EurekaSpot
-Status: Description debug
-Comment: Search only single words, NOT multiple words because
-         their web search engine includes the "20" between
-         words when it should be recognized as a space
-         
-         e.g. bio%20pump should search bio pump but their
-         code makes it search "bio20pump" which unfortunately
-         I cannot change :(
-
-         Same thing with "+"
-
-Assumes all items are used on this website
+Status: Complete
+Comment: Assumes all items are used on this website
 """
 
 import urllib2
@@ -36,7 +26,7 @@ def extract_results(item,condition=None):
                         specific_url = main_url+row.find('a').get('href')
                         new_result.url = re.sub('%2E','.',specific_url)
                         new_result.image_src = main_url+\
-                                               soup.find_all('td',class_='image')[0].find('img').get('src')
+                                               soup.find('td',class_='image').find('img').get('src')
                         specific_page = urllib2.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         try:
@@ -50,7 +40,7 @@ def extract_results(item,condition=None):
 
                         functional_tag = description_soup.find(text='Functional:')
                         working = functional_tag.find_next('td').text
-                        if "yes" in working or "Yes" in working and is_valid_price(new_result.price):
+                        if "yes" in working.lower() and is_valid_price(new_result.price):
                                 results.append(new_result)                                                
                         
         return results

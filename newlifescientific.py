@@ -9,8 +9,6 @@ import urllib2
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
-import re
-import string
 
 MAIN_URL = "http://newlifescientific.com"
 SEARCH_URL = "http://newlifescientific.com/search?q="
@@ -38,7 +36,7 @@ def extract_results(item,condition=None):
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
                         #Checking for matching conditions
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
-                        if condition != "new" or condition != "New":
+                        if condition.lower() != "new":
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
                                         if type_word not in item_condition and is_valid_price(new_result.price):
