@@ -2,7 +2,7 @@
 @author Venita Boodhoo
 Website: SibGene
 Status: Complete
-This website contains used and new equipment
+Comment: This website contains used and new equipment
 """
 
 import urllib2
@@ -23,11 +23,11 @@ def extract_results(item,requested_condition=None):
         except:
                 return results
         #Get 1st 10 results only
-        for i in range(min(len(table), 10)):
+        for i in range(len(table)):
                 row=table[i]
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = row.find('a').get('href')
-                new_result.price = get_price(str(row.find('span',class_='price').find_all(text=True)[0])\
+                new_result.price = get_price(str(row.find('span',class_='price').find(text=True))\
                                    .encode('utf-8')[1:])
                 new_result.image_src = row.find('img').get('src')
                 
@@ -45,6 +45,8 @@ def extract_results(item,requested_condition=None):
                                         for type_word in bad_condition_types:
                                                 if type_word not in condition and is_valid_price(new_result.price):
                                                         results.append(new_result)
+                                                        if len(results) == 10:
+                                                                return results
         return results
 
 def main():
