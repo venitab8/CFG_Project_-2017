@@ -1,5 +1,5 @@
 """
-@author Venita Boodhoo
+@author Venita Boodhoo & Abigail
 Website: EurekaSpot
 Status: Description debug
 Comment: Search only single words, NOT multiple words because

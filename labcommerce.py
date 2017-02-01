@@ -24,7 +24,6 @@ def extract_results(item,condition=None):
 
                 table = soup.find_all('div',class_="search_result")
                 
-                
                 for row in table:
                         #.encode('utf-8') is used because to convert text to str since
                         #not all of the characters are recognized
@@ -43,7 +42,7 @@ def extract_results(item,condition=None):
                         
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
                         condition_type_text = new_soup.find(text='Condition:')
-                        
+                        #Matches on condition and omits bad conditions
                         if condition_type_text != None:
                                 condition_type = condition_type_text.find_next(text=True)
                                 for word in bad_condition_types:

@@ -12,8 +12,10 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.medwow.com/tag/fronthandler/browse?actions=sales&searchstring='
 DELIMITER='%20'
 
+#Sells used and new 
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
+    url= url if condition!="new" else url +'&Condition=5067'
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', class_='pagebody')
@@ -36,6 +38,6 @@ def extract_results(search_word, condition=None):
     return equips
     
 def main():
-    print extract_results('Hair Removal Laser')
+    print extract_results('Hair Removal Laser', 'new')
 
 if __name__=='__main__': main()

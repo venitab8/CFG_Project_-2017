@@ -21,7 +21,11 @@ def extract_results(item,condition=None):
         if condition != 'new':
                 page = urllib2.urlopen(create_url(SEARCH_URL,item,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
-                table = soup.find_all('li',class_='item')
+                #See if page has data
+                try:
+                        table = soup.find_all('li',class_='item')
+                except:
+                        return results
                 
                 for row in table:
                         new_result = Result(row.find('a').get('title'))
@@ -32,7 +36,7 @@ def extract_results(item,condition=None):
                         specific_page = urllib2.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
-                        
+                        #Checking for matching conditions
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
                         if condition != "new" or condition != "New":
                                 #Only add working good equipment

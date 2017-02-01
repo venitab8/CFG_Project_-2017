@@ -19,34 +19,30 @@ def extract_results(search_word, condition=None):
     page =urllib2.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
 
-    '''
+   
     try:
-        total_categories=product_grid.find_all('div',class_='featured-category-box')
-        #print total_categories
+        product_contents=soup.find('div', class_='products-list-section').find_all('div', class_='products-mnbox-content')
     except:
         return []
-    '''
-    equips=[]
+   
+    results=[]
     '''
     print soup.find('div', class_="eb-productListing eb-list-view")
     if soup.find('div', class_='eb-productListing eb-list-view')!= None:
         product_grid=soup.find('div', class_='eb-productListing eb-list-view')
         print product_grid
     '''
-    product_contents=soup.find_all('div', class_='products-mnbox-content')
+    
     for product_content in product_contents:
-        print product_content
-        print '  '
         title=product_content.find('a').find(text=True).strip()
-     
         equip=Result(title)
         equip.url=home_url+product_content.find('a').get('href')
-       
-        #equip.image=product_content.find('img', class_='lazy').get('data-original')
+        
+        equip.image=product_content.find('img').get('src')
        
         #equip.price=product_content.find('span', class_='price-range').find(text=True).strip()
-        equips.append(equip)
-    return equips
+        results.append(equip)
+    return results
     '''
     cat_grid=soup.find('div', class_='cm').find('div', class_='featured-categories-section focused-featured-categories-section categories-columns-4')
     cats=cat_grid.find('div',class_='featured-cat-title').find_all('a')
