@@ -24,7 +24,8 @@ def run_search(condition=None,sort_by=None):
     search_words = request.args.get('search')
     #split websites we scrape into groups to prevent timeouts. currently func_group only used for used equipment
     func_group = request.args.get('func_group') 
-    is_keyword_matched, message, results= backend.do_search(search_words,condition, func_group, sort_by)
+    is_keyword_matched, message, results= backend.do_search(search_words,condition, func_group)
+    results=util.sort_by_price(results)
     if len(results)>3 or func_group=='2' or condition=='new':
         median = util.price_prettify(util.median_price(results))
         for item in results:
@@ -40,18 +41,6 @@ def download_file(search_words, condition=None):
         exported_list.append([r.title, r.price, r.image_src, r.url])
     return excel.make_response_from_array(exported_list, "xls")
    
-'''
-@app.route('/sort/<search_words>/', methods=['GET'])
-def sort_by(search_words, condition=None):
-    is_keyword_matched, message, results= backend.do_search(search_words,condition)
-    #result=get_template_attribute('/results/<condition>/', 'result')
-    #print result
-    sorted_results= sorted(results,reverse=False)
-    median = util.price_prettify(util.median_price(sorted_results))
-    return render_template('result_sorted.html')
- ''' 
-
-
 
 def finish(self):
          if not self.wfile.closed:
@@ -69,4 +58,3 @@ if __name__== "__main__":
     
     port = int(environ.get('PORT', 5000))
     app.run(host='127.0.0.1', port=port)
-    #app.run()

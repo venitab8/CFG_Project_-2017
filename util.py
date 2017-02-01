@@ -62,29 +62,13 @@ def create_url(main_url, search_term, delimiter):
     return specific_url
 
 '''
-Finds of the min price of any sized list of Results.
-@param results, a List of Result objects
-@return price, a String, indicating the lowest price value
+sorts a list of Results by price
+@param results, a list of Result obects
+@return results, a list of Results sorted by price
 '''
-def min_price(results):
-    #results is list of result objects
-    prices=[]
-    for equip in results:
-        if equip.price!=None and equip.price!='': 
-            prices.append(str_to_float(equip.price))
-    return min(prices)
-
-'''
-Finds of the max price of any sized list of Results.
-@param results, a List of Result objects
-@return price, a String, indicating the highest price value
-'''
-def max_price(results):
-    prices=[]
-    for equip in results:
-        if equip.price!=None and equip.price!='': 
-            prices.append(str_to_float(equip.price)) 
-    return max(prices)
+def sort_by_price(results):
+    results.sort(key=lambda x: str_to_float(x.price), reverse=True)
+    return results
 
 '''
 Finds of the median price of any sized list of Results.

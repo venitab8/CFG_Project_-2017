@@ -36,12 +36,6 @@ def extract_results(search_term, condition=None):
 		new_result=Result(row.find('a', class_='pstl').find(text=True))
 		new_result.url=HOME_URL+row.find('a', class_='pstl').get('href')
 		new_result.price=util.get_price(row.find('span', class_='price').b.find(text=True))
-
-		new_req=urllib2.Request(new_result.url, headers=headers)
-		new_soup=BeautifulSoup(urllib2.urlopen(new_req), "html.parser")
-		print new_result.url
-		new_result.image_src=HOME_URL+ new_soup.find('div', id="main-content-with-search").find('img').get('src')
-
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
 	return results

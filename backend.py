@@ -65,7 +65,6 @@ def do_search(search_term, condition=None, func_group='1'):
             for website_result in website_results:
                 if is_close_match(search_term, website_result.title):
                     results.append(website_result)
-                    results.sort(key=lambda x: x.price, reverse=True)
                 if len(results) >=MAX_RESULTS:
                     return True, error_message, results
         except Exception, e: 
