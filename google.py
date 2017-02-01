@@ -33,6 +33,9 @@ def extract_results(search_term, condition=None):
 		if condition!='new' and ('used' not in str(row.find('span', class_='price'))) :
 			#skip over items that do not say "used" when searching for used items 
 			continue
+		if "eBay" in str(row.find('div', class_='_tyb shop__secondary').text):
+			#many google results overlap with eBay. Do not include these.
+			continue
 		new_result=Result(row.find('a', class_='pstl').find(text=True))
 		new_result.url=HOME_URL+row.find('a', class_='pstl').get('href')
 		new_result.price=util.get_price(row.find('span', class_='price').b.find(text=True))
