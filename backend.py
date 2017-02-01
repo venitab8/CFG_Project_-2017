@@ -33,9 +33,6 @@ sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
 
-#split functions into groups to prevent timeouts
-FUNC_DIC={'1': USED_FUNCS[:7], '2' : USED_FUNCS[7:], "all": USED_FUNCS, None: USED_FUNCS[:7]}
-
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
@@ -49,32 +46,31 @@ MIN_RESULTS=3
 
 
 '''
-search_term: string, condition: string, "new" or "used", func_group (used only for used websites): string, the group of functions to search
-searches the websites in func_group until MAX_RESULTS close results are found or all the websites are searched
-returns search_successful (boolean), message (string), results (list of Results)
+searches a website until MAX_RESULTS close results are found
+@param search_term: string, 
+@param condition: string ("new" or "used") 
+@param website_number: the index of the website to search
+returns website_number_valid (boolean), message (string), results (list of Results)
 '''
-
-def do_search(search_term, condition=None, func_group='1'):
+def search_a_website(search_term, condition=None, website_number=0):
     results=[]
     error_message=""
-    functions=FUNC_DIC[func_group]
-    for func in functions:
-        try:
-            print "scraping ",  WEBSITE_NAMES[func]
-            website_results=func(search_term, condition)
-            for website_result in website_results:
-                if is_close_match(search_term, website_result.title):
-                    results.append(website_result)
-                if len(results) >=MAX_RESULTS:
-                    return True, error_message, results
-        except Exception, e: 
-            print "error scraping ",  WEBSITE_NAMES[func]
-            print "Error was: ", e.message 
-            error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
-        if len(results) >= MAX_RESULTS:
-            return True, error_message, results
-    if len(results) < MIN_RESULTS:
-        return False, error_message, results
+    function_list=USED_FUNCS if condition =='new' else USED_FUNCS
+    if website_number>=len(function_list):
+        return False, error_message, []
+    try:
+        func=function_list[website_number]
+        print "scraping ",  WEBSITE_NAMES[func]
+        website_results=func(search_term, condition)
+        for website_result in website_results:
+            if is_close_match(search_term, website_result.title):
+                results.append(website_result)
+            if len(results) >=MAX_RESULTS:
+                return True, error_message, results
+    except Exception, e: 
+        print "Error scraping ",  WEBSITE_NAMES[func]
+        print "Error was: ", e.message 
+        error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
     return True, error_message, results
 
 '''
