@@ -4,6 +4,7 @@
 Created on Mon Jan  9 18:06:56 2017
 
 @author: thotran
+Marshall Scientific sells used equipment only. 
 """
 import util
 from Result import Result
@@ -13,7 +14,7 @@ from bs4 import BeautifulSoup
 MAIN_URL="http://www.marshallscientific.com/searchresults.asp?Search="
 DELIMITER='+'
 
-#Marshall Scientific sells used equipment only. 
+
 def extract_results(search_word, condition=None):
     if condition=="new":
         return []
@@ -35,10 +36,12 @@ def extract_results(search_word, condition=None):
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
+        if len(equips)>=10:
+            return equips
     return equips
 
 def main():
-    print exact_results('centrifuge')
+    print extract_results('centrifuge')
 
 if __name__=='__main__': main()
     

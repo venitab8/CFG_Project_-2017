@@ -3,6 +3,7 @@
 Created on Fri Jan 13 15:21:14 2017
 
 @author: thotran
+#Sells used and new 
 """
 import util
 from Result import Result
@@ -12,7 +13,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.medwow.com/tag/fronthandler/browse?actions=sales&searchstring='
 DELIMITER='%20'
 
-#Sells used and new 
+
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     url= url if condition!="new" else url +'&Condition=5067'
@@ -35,6 +36,8 @@ def extract_results(search_word, condition=None):
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
+        if len(equips)>=10:
+            return equips
     return equips
     
 def main():
