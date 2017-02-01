@@ -30,6 +30,7 @@ Converts a string to float
 @return number a float representing the price of the equipment
 '''
 def str_to_float(price):
+    price = price.replace('$','')
     price = price.replace(',','')
     return float(price)
 
