@@ -8,11 +8,6 @@
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <!--
-    <link rel=" stylesheet" type="text/css" href="main.css"/>
-
-    <link href="../static/signup.css" rel="stylesheet">
-    -->
 
   </head>
  
@@ -24,7 +19,7 @@
                             <nav>
                               <ul class="nav nav-pills pull-right">
                                 <li role="presentation" class="active"><a href="/">Home</a></li>
-                                <li role="presentation" ><a href="/download/{{search_words}}/">Download Results</a></li>
+                                <li role="presentation" ><a href="/download/{{condition}}/{{search_words}}/">Download Results</a></li>
                               </ul>
                             </nav> 
                             <h3 class="text-muted">Equipment Valuation</h3>
@@ -39,24 +34,7 @@
             {% else %}
             <h2> Free Market Value is: {{median}}</h2>
             {% endif %}  
-         </div>
-<!--
-            <div class="sort_menu">
-                <ul class="nav nav-pills pull-right">
-                    <form id="searchSortForm" method="get" action="/results/{{condition}}/" class="s-inline-form">
-                        <span class="a-size-base">Sort by&nbsp;</span>
-                        <select class="a-spacing-top-mini" style="vertical-align: baseline;" name="sort" id="sort" onchange="this.form.submit()">
-                            <option value="relevancerank">Relevance</option>
-                                        <option value="featured-rank">Featured</option>
-                                        <option value="price-asc-rank">Price: Low to High</option>
-                                        <option value="price-desc-rank">Price: High to Low</option>
-                                        <option value="review-rank">Avg. Customer Review</option>
-                                        </select>
-                        <noscript>&amp;lt;input type="image" src="https://images-na.ssl-images-amazon.com/images/G/01/buttons/go-orange-trans._CB192189913_.gif"  width="21" alt="Go" align="top" value="Go" height="21" border="0" /&amp;gt;</noscript>
-                    </form>
-                </ul> 
-            </div> 
--->          
+         </div>    
       <div class="jumbotron">
     
             {% if condition == "new" %}

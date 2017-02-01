@@ -1,5 +1,5 @@
 from Result import Result
-#import the 14 websites
+#import the 17 websites
 import ebay
 import marshallscientific
 import equipnet
@@ -14,6 +14,9 @@ import biosurplus
 import sci_bay
 import dotmed
 import sibgene
+import daigger
+import coleparmer
+import ika
 
 import util 
 import math
@@ -33,10 +36,21 @@ sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
 
+#TODO include coleparmer
+NEW_FUNCS=[daigger.extract_results, \
+ika.extract_results, \
+dotmed.extract_results, \
+ebay.extract_results, \
+google.extract_results, \
+labx.extract_results, \
+medwow.extract_results, \
+sibgene.extract_results
+] 
+
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
-"marshallscientific"}
+"marshallscientific", daigger.extract_results: "daigger", coleparmer.extract_results: "coleparmer", ika.extract_results: "ika"}
 
 MATCH_RATIO=.8
 
@@ -55,7 +69,7 @@ returns website_number_valid (boolean), message (string), results (list of Resul
 def search_a_website(search_term, condition=None, website_number=0):
     results=[]
     error_message=""
-    function_list=USED_FUNCS if condition =='new' else USED_FUNCS
+    function_list=NEW_FUNCS if condition =='new' else USED_FUNCS
     if website_number>=len(function_list):
         return False, error_message, []
     try:
@@ -87,6 +101,7 @@ def is_close_match(search_term, result_term):
 
 
 def main():
-    print do_search("bio centrifuge")
+    for i in range(10):
+        print search_a_website("centrifuge", condition='new', website_number=i)
 
 if __name__ == "__main__": main()
