@@ -4,6 +4,8 @@ from flask import Flask
 from flask import render_template, request, redirect
 from os import environ
 import flask_excel as excel
+import json
+from flask import get_template_attribute
 
 app = Flask(__name__)
 
@@ -18,20 +20,17 @@ def display_search_page(condition=None):
     return render_template('search_page.html',condition=condition)
 
 @app.route('/results/<condition>/')
-def run_search(condition=None):
+def run_search(condition=None,sort_by=None):
     search_words = request.args.get('search')
     #split websites we scrape into groups to prevent timeouts. currently func_group only used for used equipment
     func_group = request.args.get('func_group') 
-    is_keyword_matched, message, results= backend.do_search(search_words,condition, func_group)
+    is_keyword_matched, message, results= backend.do_search(search_words,condition, func_group, sort_by)
     if len(results)>3 or func_group=='2' or condition=='new':
-        #we have enough results or we searched all our functions
         median = util.price_prettify(util.median_price(results))
         for item in results:
             item.price = util.price_prettify(util.str_to_float(item.price))
         return render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
-    else:
-        #try the next group
-        return redirect('/results/'+ condition + "/?search=" + search_words + "&func_group=" + '2')
+
 
 @app.route('/download/<search_words>/', methods=['GET'])
 def download_file(search_words, condition=None):
@@ -39,8 +38,20 @@ def download_file(search_words, condition=None):
     exported_list=[['Title','Price', 'Image', 'URL']]
     for r in result:
         exported_list.append([r.title, r.price, r.image_src, r.url])
-    print exported_list
     return excel.make_response_from_array(exported_list, "xls")
+   
+'''
+@app.route('/sort/<search_words>/', methods=['GET'])
+def sort_by(search_words, condition=None):
+    is_keyword_matched, message, results= backend.do_search(search_words,condition)
+    #result=get_template_attribute('/results/<condition>/', 'result')
+    #print result
+    sorted_results= sorted(results,reverse=False)
+    median = util.price_prettify(util.median_price(sorted_results))
+    return render_template('result_sorted.html')
+ ''' 
+
+
 
 def finish(self):
          if not self.wfile.closed:
@@ -55,6 +66,7 @@ def finish(self):
          self.rfile.close()
         
 if __name__== "__main__":
+    
     port = int(environ.get('PORT', 5000))
     app.run(host='127.0.0.1', port=port)
     #app.run()

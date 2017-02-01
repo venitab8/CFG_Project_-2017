@@ -9,10 +9,11 @@
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <!--
+    <link rel=" stylesheet" type="text/css" href="main.css"/>
+
     <link href="../static/signup.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="main.css">
     -->
-    
+
   </head>
  
   <body>
@@ -31,17 +32,33 @@
                 
           </div>
 
-      <div class="jumbotron">
-               
+          <div class="jumbotron">
+        
             {% if condition == "new" %}
             <h2> Replacement Value is: {{median}}</h2>
             {% else %}
             <h2> Free Market Value is: {{median}}</h2>
             {% endif %}  
-            </div>
-
+         </div>
+<!--
+            <div class="sort_menu">
+                <ul class="nav nav-pills pull-right">
+                    <form id="searchSortForm" method="get" action="/results/{{condition}}/" class="s-inline-form">
+                        <span class="a-size-base">Sort by&nbsp;</span>
+                        <select class="a-spacing-top-mini" style="vertical-align: baseline;" name="sort" id="sort" onchange="this.form.submit()">
+                            <option value="relevancerank">Relevance</option>
+                                        <option value="featured-rank">Featured</option>
+                                        <option value="price-asc-rank">Price: Low to High</option>
+                                        <option value="price-desc-rank">Price: High to Low</option>
+                                        <option value="review-rank">Avg. Customer Review</option>
+                                        </select>
+                        <noscript>&amp;lt;input type="image" src="https://images-na.ssl-images-amazon.com/images/G/01/buttons/go-orange-trans._CB192189913_.gif"  width="21" alt="Go" align="top" value="Go" height="21" border="0" /&amp;gt;</noscript>
+                    </form>
+                </ul> 
+            </div> 
+-->          
       <div class="jumbotron">
-               
+    
             {% if condition == "new" %}
             <h2> Results for New Equipment with Keywords: {{search_words}}</h2>
             {% else %}
@@ -49,7 +66,7 @@
             {% endif %}
            
                    
-
+   
                    <div class="result_table">
 
                          <table>
@@ -60,14 +77,15 @@
                                         <td style="padding: 0 15px 0 15px">Title</td>
                                         <td style="padding: 0 15px 0 15px">Price</td>
                                     </tr>
-                                    {% for r in result %}
-                                          <tr style="padding: 0 15px 0 15px">
-                                          	<td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
-                                            <td style="padding: 0 15px 0 15px"> <a href={{r.url}} target="_blank"> {{r.title}}</a></td>
-                                            <td style="padding: 0 15px 0 15px">{{r.price}}</td>
-                                            
-                                          </tr>
-                                    {% endfor %}
+
+                                        {% for r in result %}
+                                              <tr style="padding: 0 15px 0 15px">
+                                              <td style="padding: 0 15px 0 15px"><img src={{r.image_src}} alt="No Image" height= "75" width="75"></td>
+                                              <td style="padding: 0 15px 0 15px"> <a href={{r.url}} target="_blank"> {{r.title}}</a></td>
+                                              <td style="padding: 0 15px 0 15px">{{r.price}}</td>
+        
+                                              </tr>
+                                        {% endfor %}
                                 {% else %}
                                    <p style="font-size:25px" > No Results Found </p>
                                 {% endif %}

@@ -3,6 +3,8 @@
 Created on Sun Jan 15 16:04:08 2017
 
 @author: thotran
+
+Assume most results used on used-line are used, Use this function only to search for used
 """
 import util
 from Result import Result
@@ -12,9 +14,9 @@ from bs4 import BeautifulSoup
 MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
 DELIMITER='+'
    
-#Assume most results used on used-line are used, Use this function only to search for used
+
 def extract_results(search_word, condition=None):
-    if codition=='new':
+    if condition=='new':
         return []
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     page =urllib2.urlopen(url)
@@ -34,6 +36,8 @@ def extract_results(search_word, condition=None):
         equipment.price=util.get_price(''.join(price_text))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
+        if len(equips)>=10:
+            return equips
     return equips
 
 def main():

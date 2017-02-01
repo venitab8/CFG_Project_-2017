@@ -3,6 +3,8 @@
 Created on Fri Jan 13 12:32:55 2017
 
 @author: thotran
+
+#Sells used and new equipment
 """
 import util
 from Result import Result
@@ -12,7 +14,7 @@ from bs4 import BeautifulSoup
 MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
 DELIMITER='+'
     
-#Sells used and new equipment
+
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     url= url + '&cond=used' if condition!='new' else url + '&cond=new'
@@ -20,13 +22,6 @@ def extract_results(search_word, condition=None):
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', id='totalListings')
     equips=[]
-    #items for auction
-    '''
-    auction_equips=product_grid.find_all('div',class_='auction_table')
-    for auction_equip in auction_equips:
-        equips.append(Result('Equipment For Auction'))
-    '''
-    #items for sale
     try:
         sale_equips=product_grid.find_all('div', class_='listings_table_d') 
     except:
@@ -47,6 +42,8 @@ def extract_results(search_word, condition=None):
             equipment.price=util.get_price(''.join(price_tag.find_all(text=True)))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
+        if len(equips)>=10:
+            return equips
     return equips
     
 def main():
