@@ -57,6 +57,7 @@ def extract_results(item,condition=None):
 
 '''
 Added by Abigail
+search_terms is a string
 Finds a term that looks like a model number (contains a digit) and returns that term
 If no terms containing digits exist, returns first word 
 '''

@@ -49,6 +49,7 @@ MIN_RESULTS=3
 
 
 '''
+search_term: string, condition: string, "new" or "used", func_group (used only for used websites): string, the group of functions to search
 searches the websites in func_group until MAX_RESULTS close results are found or all the websites are searched
 returns search_successful (boolean), message (string), results (list of Results)
 '''
@@ -58,7 +59,7 @@ def do_search(search_term, condition=None, func_group='1'):
 	functions=FUNC_DIC[func_group]
 	for func in functions:
 		try:
-			print "scraping ",  WEBSITE_NAMES[func]
+			print "Scraping ",  WEBSITE_NAMES[func]
 			website_results=func(search_term, condition)
 			for website_result in website_results:
 				if is_close_match(search_term, website_result.title):
@@ -66,7 +67,7 @@ def do_search(search_term, condition=None, func_group='1'):
 				if len(results) >=MAX_RESULTS:
 					return True, error_message, results
 		except Exception, e: 
-			print "error scraping ",  WEBSITE_NAMES[func]
+			print "Error scraping ",  WEBSITE_NAMES[func]
 			print "Error was: ", e.message 
 			error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
 		if len(results) >= MAX_RESULTS:
@@ -77,6 +78,7 @@ def do_search(search_term, condition=None, func_group='1'):
 
 '''
 checks if the result contains at least MATCH_RATIO of the search words
+search_term, result_term are strings
 '''
 def is_close_match(search_term, result_term):
 	search_words=search_term.split()
