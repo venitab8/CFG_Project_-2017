@@ -44,7 +44,8 @@ ebay.extract_results, \
 google.extract_results, \
 labx.extract_results, \
 medwow.extract_results, \
-sibgene.extract_results
+sibgene.extract_results, \
+coleparmer.extract_results
 ] 
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \

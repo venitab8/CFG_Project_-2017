@@ -11,7 +11,7 @@ from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
 
-MAIN_URL="https://www.coleparmer.com/c/centrifuges?searchterm="
+MAIN_URL="https://www.coleparmer.com/search?searchterm="
 DELIMITER='+'
 HOME_URL='https://www.coleparmer.com'
 
@@ -43,7 +43,7 @@ def extract_results(search_word, condition=None):
     return results
     
 def main():
-    print extract_results('scale')
+    print extract_results('centrifuge')
 
 if __name__=='__main__': main()
     
