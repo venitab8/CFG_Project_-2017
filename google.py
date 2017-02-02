@@ -1,7 +1,6 @@
 '''
 Created by Abigail Katcoff
-TODO: image src's are weird
-
+New and Used Equipment
 '''
 
 import util
@@ -9,6 +8,7 @@ import urllib2
 from bs4 import BeautifulSoup
 from Result import Result
 
+HOME_URL='https://www.google.com'
 MAIN_URL='https://www.google.com/search?output=search&tbm=shop&q='
 DELIMITER= '+'
 
@@ -30,11 +30,14 @@ def extract_results(search_term, condition=None):
 
 	results=[]
 	for row in rows:
-		#ensure that if we're looking for used results to include used results only
 		if condition!='new' and ('used' not in str(row.find('span', class_='price'))) :
+			#skip over items that do not say "used" when searching for used items 
+			continue
+		if "eBay" in str(row.find('div', class_='_tyb shop__secondary').text):
+			#many google results overlap with eBay. Do not include these.
 			continue
 		new_result=Result(row.find('a', class_='pstl').find(text=True))
-		new_result.url='https://www.google.com'+row.find('a', class_='pstl').get('href')
+		new_result.url=HOME_URL+row.find('a', class_='pstl').get('href')
 		new_result.price=util.get_price(row.find('span', class_='price').b.find(text=True))
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)

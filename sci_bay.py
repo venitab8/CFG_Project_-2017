@@ -1,6 +1,6 @@
 '''
 Created by Abigail Katcoff (complete)
-
+This website only contains used equipment
 '''
 
 import urllib2
@@ -12,7 +12,6 @@ MAIN_URL= "http://www.sci-bay.com/?s="
 DELIMITER= '+'
 
 def extract_results(search_term, condition=None):
-	#This website only contains used equipment
 	if condition=='new':
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
@@ -33,6 +32,7 @@ def extract_results(search_term, condition=None):
 		new_result.image_src=result_soup.find('div', class_='images').find('img').get('src')
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
+			if len(results)==10: return results
 	return results
 
 def main():

@@ -40,11 +40,11 @@ def extract_results(item,condition=None):
                                         new_result.title = new_result.title + supplier.text
                                 new_result.price = item.find('strong',class_='price').text
                                 currency = item.find('span',itemprop='priceCurrency')
-                                if currency == None and is_valid_price(new_result.price):
+                                if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
                                         results.append(new_result)
-                                elif currency.text == "USD" and is_valid_price(new_result.price):
-                                        results.append(new_result)
-                                #Reset title
+                                        if len(results)==9:
+                                                return results
+                                #Reset title to original product name for next model of item
                                 new_result.title = soup.find('h1',itemprop='name').text
                           
                           return results
@@ -69,11 +69,11 @@ def extract_results(item,condition=None):
                         new_result.price = item.find('strong',class_='price').text
                         currency = item.find('span',itemprop='priceCurrency')
                         
-                        if currency == None and is_valid_price(new_result.price):
-                                results.append(new_result)                         
-                        elif currency.text == "USD" and is_valid_price(new_result.price):
+                        if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
                                 results.append(new_result)
-                        #Reset title for next model of item
+                                if len(results) == 9:
+                                        return results
+                        #Reset title to original product name for next model of item
                         new_result.title = row.find('a').get('title')
                 
         return results

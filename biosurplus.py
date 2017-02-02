@@ -1,6 +1,6 @@
 '''
 Created by Abigail Katcoff (complete)
-
+This website sells pre-owned equipment
 '''
 import urllib2
 import util
@@ -13,7 +13,6 @@ MAIN_URL= "http://www.biosurplus.com/store/search/?per_page=24&product_search_q=
 DELIMITER= '+'
 
 def extract_results(search_term, condition=None):
-	#This website sells pre-owned equipment
 	if condition=='new':
 		return []
 	headers={
@@ -35,12 +34,12 @@ def extract_results(search_term, condition=None):
 	soup = BeautifulSoup(unzipped_page,"html.parser")
 	table=soup.find('div', class_='product_browse')
 	try:
+		#check if the table
 		rows= table.findAll("div", class_="fps_featured_product")
 	except:
 		return []
 	results=[]
-	for i in range(min(len(rows), 10)):
-		row=rows[i]
+	for row in rows:
 		manufacturer= row.find('p', class_="fps_fp_description").find(text=True)
 		title= row.find('h2', class_="fps_fp_heading").find("a").find(text=True)
 		new_result=Result(manufacturer+ " " + title)
@@ -49,6 +48,7 @@ def extract_results(search_term, condition=None):
 		new_result.url="www.biosurplus.com" +  row.find('a').get('href')
 		if util.is_valid_price(new_result.price):
 			results.append(new_result)
+			if len(results)==10: return results
 	return results
 
 

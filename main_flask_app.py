@@ -4,7 +4,7 @@ from flask import Flask
 from flask import render_template, request, redirect
 from os import environ
 import flask_excel as excel
-import json
+import time
 from flask import get_template_attribute
 
 app = Flask(__name__)
@@ -20,38 +20,48 @@ def display_search_page(condition=None):
     return render_template('search_page.html',condition=condition)
 
 @app.route('/results/<condition>/')
-def run_search(condition=None,sort_by=None):
+def run_search(condition=None):
     search_words = request.args.get('search')
-    #split websites we scrape into groups to prevent timeouts. currently func_group only used for used equipment
-    func_group = request.args.get('func_group') 
-    is_keyword_matched, message, results= backend.do_search(search_words,condition, func_group, sort_by)
-    if len(results)>3 or func_group=='2' or condition=='new':
-        median = util.price_prettify(util.median_price(results))
-        for item in results:
-            item.price = util.price_prettify(util.str_to_float(item.price))
-        return render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
+    #web_index is the  index of the website to begin or continue searching
+    web_index=0 if request.args.get('web_index')==None else int(request.args.get('web_index'))
+    start_time=time.time()
+    continue_searching=True
+    results=[]
+    message=""
+    #time the result to make sure it makes heroku's 30 second timeout
+    #stop searching if we have 10 or more results, run out of time, or finish searching relevant websites
+    #check if web_index is less than 20 to ensure the while loop ends
+    while continue_searching and web_index<20 and time.time()-start_time< 28 and len(results)<10:
+        continue_searching, new_message, new_results= backend.search_a_website(search_words,condition, web_index)
+        results.extend(new_results)
+        message=message+new_message
+        web_index+=1
+    #if we ran out of time and got few results, continue the the search where we left off in a redirect
+    if continue_searching==True and len(results)<4 and web_index<20:
+        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
+    results=util.sort_by_price(results)
+    median = util.price_prettify(util.median_price(results))
+    for item in results:
+        item.price = util.price_prettify(util.str_to_float(item.price))
+    return render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
 
 
-@app.route('/download/<search_words>/', methods=['GET'])
+@app.route('/download/<condition>/<search_words>/', methods=['GET'])
 def download_file(search_words, condition=None):
-    is_keyword_matched, message, result= backend.do_search(search_words,condition)
+    start_time=time.time()
+    web_index=0
+    continue_searching=True
+    results=[]
+    while continue_searching and web_index<20 and time.time()-start_time< 28 and len(results)<10:
+        continue_searching, message, new_results= backend.search_a_website(search_words,condition, web_index)
+        results.extend(new_results)
+        web_index+=1
+    results=util.sort_by_price(results)
     exported_list=[['Title','Price', 'Image', 'URL']]
-    for r in result:
+    for r in results:
         exported_list.append([r.title, r.price, r.image_src, r.url])
     return excel.make_response_from_array(exported_list, "xls")
    
-'''
-@app.route('/sort/<search_words>/', methods=['GET'])
-def sort_by(search_words, condition=None):
-    is_keyword_matched, message, results= backend.do_search(search_words,condition)
-    #result=get_template_attribute('/results/<condition>/', 'result')
-    #print result
-    sorted_results= sorted(results,reverse=False)
-    median = util.price_prettify(util.median_price(sorted_results))
-    return render_template('result_sorted.html')
- ''' 
-
-
 
 def finish(self):
          if not self.wfile.closed:
@@ -69,4 +79,3 @@ if __name__== "__main__":
     
     port = int(environ.get('PORT', 5000))
     app.run(host='127.0.0.1', port=port)
-    #app.run()

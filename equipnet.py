@@ -1,6 +1,6 @@
 '''
 Created by Abigail Katcoff (complete)
-
+This website sells used equipment
 '''
 import util
 import urllib2
@@ -11,7 +11,6 @@ MAIN_URL= "http://www.equipnet.com/search/?q="
 DELIMITER="%20"
 
 def extract_results(search_term, condition=None):
-	#This website sells used equipment
 	if condition=='new':
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
