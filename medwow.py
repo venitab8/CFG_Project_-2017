@@ -41,6 +41,6 @@ def extract_results(search_word, condition=None):
     return equips
     
 def main():
-    print extract_results('Hair Removal Laser', 'new')
+    print extract_results('bump', 'new')
 
 if __name__=='__main__': main()

@@ -38,7 +38,7 @@ used_line.extract_results ]
 
 #TODO include coleparmer
 NEW_FUNCS=[daigger.extract_results, \
-ika.extract_results, \
+#ika.extract_results, \
 dotmed.extract_results, \
 ebay.extract_results, \
 google.extract_results, \

@@ -45,6 +45,6 @@ def extract_results(search_term, condition=None):
 
 
 def main():
-    print extract_results("Beckman Coulter Biomek Workstation")
+    print extract_results("vacuum", "new")
 
 if __name__ == "__main__": main()

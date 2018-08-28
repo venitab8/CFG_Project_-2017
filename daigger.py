@@ -79,6 +79,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("pump","new")
+    print extract_results("vacumm pump","new")
 
 if __name__ == "__main__": main()

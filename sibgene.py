@@ -50,6 +50,6 @@ def extract_results(item,requested_condition=None):
         return results
 
 def main():
-    print extract_results("bio pump")
+    print extract_results("pump", "new")
     
 if __name__ == "__main__": main()

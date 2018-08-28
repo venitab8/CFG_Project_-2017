@@ -11,7 +11,7 @@ from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
 
-MAIN_URL="http://www.ika.com/owa/ika/catalog.search?iString="
+MAIN_URL='https://www.ika.com/en/Products-Lab-Eq'
 DELIMITER='+'
 HOME_URL='http://www.ika.com'
 

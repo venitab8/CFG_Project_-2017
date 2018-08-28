@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup
 from util import *
 from Result import Result
 
-MAIN_URL = "http://www.labx.com/v2/adsearch/search.cfm?sw="
+MAIN_URL = "https://www.labx.com/search?sw="
+#MAIN_URL = "http://www.labx.com/v2/adsearch/search.cfm?sw="
 DELIMITER = "%20"
 
 def extract_results(item,condition=None):
@@ -44,6 +45,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("Bio rad pump")
+    print extract_results("pump", "new")
 
 if __name__ == "__main__": main()
