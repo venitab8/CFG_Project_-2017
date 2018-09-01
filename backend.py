@@ -20,6 +20,7 @@ import ika
 
 import util 
 import math
+import time 
 
 USED_FUNCS=[equipnet.extract_results, \
 labx.extract_results, \
@@ -37,22 +38,35 @@ sibgene.extract_results, \
 used_line.extract_results ]
 
 #TODO include coleparmer
+#NEW_FUNCS=[daigger.extract_results, \
+##ika.extract_results, \
+#dotmed.extract_results, \
+#ebay.extract_results, \
+#google.extract_results, \
+#labx.extract_results, \
+#medwow.extract_results, \
+#sibgene.extract_results
+##coleparmer.extract_results
+#] 
+
 NEW_FUNCS=[daigger.extract_results, \
-#ika.extract_results, \
 dotmed.extract_results, \
 ebay.extract_results, \
 google.extract_results, \
 labx.extract_results, \
 medwow.extract_results, \
-sibgene.extract_results, \
-coleparmer.extract_results
+sibgene.extract_results
 ] 
+
+#WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
+#eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
+#dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
+#"marshallscientific", daigger.extract_results: "daigger", coleparmer.gextract_results: "coleparmer", ika.extract_results: "ika"}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
-"marshallscientific", daigger.extract_results: "daigger", coleparmer.extract_results: "coleparmer", ika.extract_results: "ika"}
-
+"marshallscientific", daigger.extract_results: "daigger"}
 MATCH_RATIO=.8
 
 MAX_RESULTS=10
@@ -103,6 +117,6 @@ def is_close_match(search_term, result_term):
 
 def main():
     for i in range(10):
-        print search_a_website("centrifuge", condition='new', website_number=i)
+        print search_a_website("vacuum bump", condition='new', website_number=i)
 
 if __name__ == "__main__": main()

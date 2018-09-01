@@ -1,0 +1,26 @@
+# Don't track content of these folders
+CFG Final Report - Venita, Abigail and Tho.pdf
+Result.pyc
+Result_Group.py
+Result_Group.pyc
+backend.pyc
+biosurplus.pyc
+bootstrap.py
+coleparmer.pyc
+daigger.pyc
+dotmed.pyc
+ebay.pyc
+equipnet.pyc
+eurekaspot.pyc
+google.pyc
+ika.pyc
+labcommerce.pyc
+labx.pyc
+marshallscientific.pyc
+medwow.pyc
+newlifescientific.pyc
+python-getting-started/
+sci_bay.pyc
+sibgene.pyc
+used_line.pyc
+util.pyc

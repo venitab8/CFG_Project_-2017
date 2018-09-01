@@ -6,6 +6,7 @@ from os import environ
 import flask_excel as excel
 import time
 from flask import get_template_attribute
+import socket
 
 app = Flask(__name__)
 
@@ -31,7 +32,7 @@ def run_search(condition=None):
     #time the result to make sure it makes heroku's 30 second timeout
     #stop searching if we have 10 or more results, run out of time, or finish searching relevant websites
     #check if web_index is less than 20 to ensure the while loop ends
-    while continue_searching and web_index<20 and time.time()-start_time< 28 and len(results)<10:
+    while continue_searching and web_index<10 and time.time()-start_time< 20 and len(results)<10:
         continue_searching, new_message, new_results= backend.search_a_website(search_words,condition, web_index)
         results.extend(new_results)
         message=message+new_message
@@ -52,7 +53,7 @@ def download_file(search_words, condition=None):
     web_index=0
     continue_searching=True
     results=[]
-    while continue_searching and web_index<20 and time.time()-start_time< 28 and len(results)<10:
+    while continue_searching and web_index<20 and time.time()-start_time< 20 and len(results)<10:
         continue_searching, message, new_results= backend.search_a_website(search_words,condition, web_index)
         results.extend(new_results)
         web_index+=1

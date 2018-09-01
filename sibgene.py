@@ -7,15 +7,18 @@ Comment: This website contains used and new equipment
 
 import urllib2
 from bs4 import BeautifulSoup
-from util import *
+import util
 from Result import Result
+import requests
 
 MAIN_URL = "http://sibgene.com/index.php/catalogsearch/result/?q="
 DELIMITER = "+"
 
 def extract_results(item,requested_condition=None):
-        page = urllib2.urlopen(create_url(MAIN_URL,item,DELIMITER))
-        soup = BeautifulSoup(page,"html.parser" )
+        url = util.create_url(MAIN_URL,item,DELIMITER)
+        r = requests.get(url, timeout =3)
+#        page = urllib2.urlopen(create_url(MAIN_URL,item,DELIMITER))
+        soup = BeautifulSoup(r.content,"html.parser" )
         results=[]
         #Check for data
         try:
@@ -27,7 +30,7 @@ def extract_results(item,requested_condition=None):
                 row=table[i]
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = row.find('a').get('href')
-                new_result.price = get_price(str(row.find('span',class_='price').find(text=True))\
+                new_result.price = util.get_price(str(row.find('span',class_='price').find(text=True))\
                                    .encode('utf-8')[1:])
                 new_result.image_src = row.find('img').get('src')
                 
@@ -43,7 +46,7 @@ def extract_results(item,requested_condition=None):
                                         (requested_condition != None and requested_condition.lower()== word.lower()):
                                         #Only add working good equipment
                                         for type_word in bad_condition_types:
-                                                if type_word not in condition and is_valid_price(new_result.price):
+                                                if type_word not in condition and util.is_valid_price(new_result.price):
                                                         results.append(new_result)
                                                         if len(results) == 10:
                                                                 return results

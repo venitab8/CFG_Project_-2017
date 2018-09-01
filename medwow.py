@@ -17,10 +17,9 @@ DELIMITER='%20'
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     url= url if condition!="new" else url +'&Condition=5067'
-    page =urllib2.urlopen(url)
-    soup=BeautifulSoup(page,"html.parser")
-    product_grid=soup.find('div', class_='pagebody')
     try:
+        soup = util.check_exceptions(url)
+        product_grid=soup.find('div', class_='pagebody')
         total_equips=product_grid.find_all('div',class_='el')
     except:
         return []
@@ -41,6 +40,6 @@ def extract_results(search_word, condition=None):
     return equips
     
 def main():
-    print extract_results('bump', 'new')
+    print extract_results('centrifuge')
 
 if __name__=='__main__': main()

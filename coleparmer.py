@@ -43,7 +43,7 @@ def extract_results(search_word, condition=None):
     return results
     
 def main():
-    print extract_results('bump', 'new')
+    print extract_results('vacuum bump')
 
 if __name__=='__main__': main()
     

@@ -10,17 +10,19 @@ import util
 from Result import Result
 import urllib2
 from bs4 import BeautifulSoup
+import requests
 
-MAIN_URL='https://www.ika.com/en/Products-Lab-Eq'
-DELIMITER='+'
+MAIN_URL='https://www.ika.com/en/Products-Lab-Eq/'
+r = requests.get(MAIN_URL, timeout = 4)
+DELIMITER='/'
 HOME_URL='http://www.ika.com'
 
-def extract_results(search_word, condition=None):
-    url=util.create_url(MAIN_URL,search_word,DELIMITER)
-    page =urllib2.urlopen(url)
-    soup=BeautifulSoup(page,"html.parser")
-    product_table=soup.find('table', class_='table_content')
+    
+def extract_results(search_word,condition=None):
+    url=util.create_url(MAIN_URL,search_word, DELIMITER)
     try:
+        soup = util.check_exceptions(url)
+        product_table=soup.find('table', class_='table_content')
         result_links=product_table.find_all('a')
     except:
         return []
@@ -41,7 +43,7 @@ def extract_results(search_word, condition=None):
     return equips
 
 def main():
-    print extract_results('centrifuge')
+    print extract_results('vial')
 
 if __name__=='__main__': main()
     

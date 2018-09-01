@@ -3,6 +3,8 @@ import string
 import numpy
 import math
 from Result import *
+import requests
+from bs4 import BeautifulSoup
 
 '''
 Takes in a string containing the price of the equipment and results the price only (decimal in a string)
@@ -62,6 +64,23 @@ def create_url(main_url, search_term, delimiter):
             specific_url= specific_url + search_words[i]
     return specific_url
 
+
+
+
+def check_exceptions(url, timeout = 5, headers = None):
+    try:
+        response = requests.get(url, timeout = 5, header = None)
+        if response.status_code == 200:
+            return BeautifulSoup(response.content,"html.parser")
+        else:
+            print("Status code: ", response.status_code)
+            print("try again")
+    except requests.Timeout as e:
+        print("This is timeout")
+        print(str(e))
+    except requests.exceptions.RequestException:
+        print ("Error")
+        
 '''
 sorts a list of Results by price
 @param results, a list of Result obects
