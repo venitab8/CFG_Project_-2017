@@ -49,17 +49,17 @@ used_line.extract_results ]
 ##coleparmer.extract_results
 #] 
 
-#NEW_FUNCS=[daigger.extract_results, \
-#dotmed.extract_results, \
-#ebay.extract_results, \
-#google.extract_results, \
-#labx.extract_results, \
-#medwow.extract_results, \
-#sibgene.extract_results
-#] 
 NEW_FUNCS=[daigger.extract_results, \
-dotmed.extract_results
+dotmed.extract_results, \
+ebay.extract_results, \
+google.extract_results, \
+labx.extract_results, \
+medwow.extract_results, \
+sibgene.extract_results
 ] 
+#NEW_FUNCS=[daigger.extract_results, \
+#dotmed.extract_results
+#] 
 #NEW_FUNCS=[daigger.extract_results
 #] 
 
