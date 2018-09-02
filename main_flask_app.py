@@ -38,8 +38,8 @@ def run_search(condition=None):
         message=message+new_message
         web_index+=1
     #if we ran out of time and got few results, continue the the search where we left off in a redirect
-    if continue_searching==True and len(results)<4 and web_index<20:
-        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
+#    if continue_searching==True and len(results)<4 and web_index<20:
+#        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
     results=util.sort_by_price(results)
     median = util.price_prettify(util.median_price(results))
     for item in results:
