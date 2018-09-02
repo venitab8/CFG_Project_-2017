@@ -47,8 +47,20 @@ dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.ex
 "marshallscientific", daigger.extract_results: "daigger"}
 
 page_bins = chunks(cpus, NEW_FUNCS)
-print(cpus)
-#for cpu in range(cpus):
-#    sys.stdout.write("CPU"+str(cpu) + "\n")
-#    #Process that sends a list of pages to the extract func
-#    worker = multi.Process(name =str(cpu), target = )
+print(page_bins)
+for cpu in range(cpus):
+    sys.stdout.write("CPU"+str(cpu) + "\n")
+    #Process that sends a list of pages to the extract func
+    worker = multi.Process(name =str(cpu), target =perform_extraction, args = page_bins[cpu],)
+    worker.start()
+    workers.append(worker)
+    
+for worker in workers:
+    worker.join()
+    
+def perform_extraction(page_ranges):
+    """Extracts data, does preprocessing, writes the data"""
+    # do requests and BeautifulSoup
+    # preprocess the data
+    file_name = multi.current_process().name+'.txt'
+    # write into current process file
