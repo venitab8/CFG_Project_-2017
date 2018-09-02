@@ -49,13 +49,16 @@ used_line.extract_results ]
 ##coleparmer.extract_results
 #] 
 
+#NEW_FUNCS=[daigger.extract_results, \
+#dotmed.extract_results, \
+#ebay.extract_results, \
+#google.extract_results, \
+#labx.extract_results, \
+#medwow.extract_results, \
+#sibgene.extract_results
+#] 
 NEW_FUNCS=[daigger.extract_results, \
-dotmed.extract_results, \
-ebay.extract_results, \
-google.extract_results, \
-labx.extract_results, \
-medwow.extract_results, \
-sibgene.extract_results
+dotmed.extract_results
 ] 
 
 #WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
