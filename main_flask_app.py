@@ -79,4 +79,4 @@ def finish(self):
 if __name__== "__main__":
     
     port = int(environ.get('PORT', 5000))
-    app.run(host='127.0.0.1', port=port)
+    app.run(debug=True, host='127.0.0.1', port=port)
