@@ -21,6 +21,7 @@ import ika
 import util 
 import math
 import time 
+from multiprocessing import Pool
 
 USED_FUNCS=[equipnet.extract_results, \
 labx.extract_results, \
@@ -107,6 +108,28 @@ def search_a_website(search_term, condition=None, website_number=0):
         error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
     return True, error_message, results
 
+
+def search_a_website_2(inputs):
+    (search_term, condition, website_number) = inputs
+    results=[]
+    error_message=""
+    function_list=NEW_FUNCS if condition =='new' else USED_FUNCS
+    if website_number>=len(function_list):
+        return False, error_message, []
+    try:
+        func=function_list[website_number]
+        print "scraping ",  WEBSITE_NAMES[func]
+        website_results=func(search_term, condition)
+        for website_result in website_results:
+            if is_close_match(search_term, website_result.title):
+                results.append(website_result)
+            if len(results) >=MAX_RESULTS:
+                return True, error_message, results
+    except Exception, e: 
+        print "Error scraping ",  WEBSITE_NAMES[func]
+        print "Error was: ", e.message 
+        error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
+    return True, error_message, results
 '''
 checks if the result contains at least MATCH_RATIO of the search words
 search_term, result_term are strings
@@ -119,9 +142,36 @@ def is_close_match(search_term, result_term):
             match_number+=1
     return match_number >= math.ceil(len(search_words)*MATCH_RATIO)
 
-
-def main():
+def searchAllWebsites(keyword, condition="used"):
+    pool = Pool(processes=20)
+    sol = set()
+    result = []
     for i in range(10):
-        print search_a_website("vacuum bump", condition='new', website_number=i)
+        inputs = (keyword, condition, i)
+        n = pool.map_async(search_a_website_2, (inputs,))
+        sol.add(n)
+    for s in sol:
+        try:
+            result.append(s.get(timeout=5))
+        except Exception:
+            print "Taking to long to search a link"
+    return result
+    
+def main():
+    pool = Pool(processes=20)
+    sol = set()
+    result = []
+    for i in range(10):
+        inputs = ("vacuum", "new", i)
+        n = pool.map_async(search_a_website_2, (inputs,))
+        sol.add(n)
+    for s in sol:
+        try:
+            print(s.get(timeout=5))
+            result.append(s.get(timeout=5))
+        except Exception:
+            print "Taking to long to search a link"
+    return result
+    
 
 if __name__ == "__main__": main()
