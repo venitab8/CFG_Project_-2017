@@ -8,7 +8,7 @@ Assume most results used on used-line are used, Use this function only to search
 """
 import util
 from Result import Result
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 #Code in Progress
 MAIN_URL='http://www.used-line.com/search/s_index.cfm?search_term='
@@ -19,7 +19,7 @@ def extract_results(search_word, condition=None):
     if condition=='new':
         return []
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
-    page =urllib2.urlopen(url)
+    page =urllib.request.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('ul', class_='Products_ul')
     try:

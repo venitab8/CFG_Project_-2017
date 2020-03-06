@@ -8,7 +8,7 @@ Website with New products
 """
 import util
 from Result import Result
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 import requests
 
@@ -43,7 +43,7 @@ def extract_results(search_word,condition=None):
     return equips
 
 def main():
-    print extract_results('vial')
+    print (extract_results('vial'))
 
 if __name__=='__main__': main()
     

@@ -2,10 +2,11 @@
 Created by Abigail Katcoff (complete)
 This website sells pre-owned equipment
 '''
-import urllib2
+import urllib.request
 import util
 import gzip
-import StringIO
+from io import StringIO
+import io
 from bs4 import BeautifulSoup
 from Result import Result
 
@@ -24,11 +25,11 @@ def extract_results(search_term, condition=None):
 	'Accept-Language': 'en-US,en;q=0.8',
 	'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'}
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
-	req =urllib2.Request(url, headers=headers)
-	page=urllib2.urlopen(req)
+	req =urllib.request.Request(url, headers=headers)
+	page=urllib.request.urlopen(req)
 	
 	#This page is g-zipped. Unzip it
-	stringified_data = StringIO.StringIO(page.read())
+	stringified_data = io.StringIO(page.read())
 	unzipped_page = gzip.GzipFile(fileobj=stringified_data)
 
 	soup = BeautifulSoup(unzipped_page,"html.parser")
@@ -53,6 +54,6 @@ def extract_results(search_term, condition=None):
 
 
 def main():
-    print extract_results("Beckman Coulter Biomek Workstation")
+    print (extract_results("Beckman Coulter Biomek Workstation"))
 
 if __name__ == "__main__": main()

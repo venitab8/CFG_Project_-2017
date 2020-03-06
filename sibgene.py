@@ -5,7 +5,7 @@ Status: Complete
 Comment: This website contains used and new equipment
 """
 
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 import util
 from Result import Result
@@ -53,6 +53,6 @@ def extract_results(item,requested_condition=None):
         return results
 
 def main():
-    print extract_results("pump", "new")
+    print (extract_results("pump", "new"))
     
 if __name__ == "__main__": main()

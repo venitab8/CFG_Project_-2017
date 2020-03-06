@@ -94,16 +94,16 @@ def search_a_website(search_term, condition=None, website_number=0):
         return False, error_message, []
     try:
         func=function_list[website_number]
-        print "scraping ",  WEBSITE_NAMES[func]
+        print ("scraping ",  WEBSITE_NAMES[func])
         website_results=func(search_term, condition)
         for website_result in website_results:
             if is_close_match(search_term, website_result.title):
                 results.append(website_result)
             if len(results) >=MAX_RESULTS:
                 return True, error_message, results
-    except Exception, e: 
-        print "Error scraping ",  WEBSITE_NAMES[func]
-        print "Error was: ", e.message 
+    except Exception as e: 
+        print ("Error scraping ",  WEBSITE_NAMES[func])
+        print ("Error was: ", e) 
         error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
     return True, error_message, results
 
@@ -122,6 +122,6 @@ def is_close_match(search_term, result_term):
 
 def main():
     for i in range(10):
-        print search_a_website("vacuum bump", condition='new', website_number=i)
+        print (search_a_website("vacuum bump", condition='new', website_number=i))
 
 if __name__ == "__main__": main()

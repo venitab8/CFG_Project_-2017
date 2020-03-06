@@ -8,7 +8,7 @@ Created on Fri Jan 13 12:32:55 2017
 """
 import util
 from Result import Result
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 #Code in Progress  
 MAIN_URL='https://www.dotmed.com/listings/search/equipment.html?key='
@@ -18,7 +18,7 @@ DELIMITER='+'
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
     url= url + '&cond=used' if condition!='new' else url + '&cond=new'
-    page =urllib2.urlopen(url)
+    page =urllib.request.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     product_grid=soup.find('div', id='totalListings')
     equips=[]
@@ -47,5 +47,5 @@ def extract_results(search_word, condition=None):
     return equips
     
 def main():
-    print extract_results('vacuum bump')
+    print (extract_results('vacuum bump'))
 if __name__=='__main__': main()

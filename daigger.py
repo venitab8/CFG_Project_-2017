@@ -4,7 +4,7 @@ Website: daigger
 Status: Complete
 Comments: For new equipment only
 """
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
@@ -18,7 +18,7 @@ def extract_results(item,condition=None):
         if condition != "new":
                 return results
         specific_url = create_url(MAIN_URL,item,DELIMITER)
-        page = urllib2.urlopen(specific_url)
+        page = urllib.request.urlopen(specific_url)
         soup = BeautifulSoup(page,"html.parser" )
 
         table = soup.find('div',id ="ListingProducts")
@@ -57,7 +57,7 @@ def extract_results(item,condition=None):
                 new_result = Result(row.find('a').get('title'))
                 new_result.url = HOME_URL + row.find('a').get('href')
                 new_result.image_src = HOME_URL + row.find('img').get('src')
-                specific_page = urllib2.urlopen(new_result.url)
+                specific_page = urllib.request.urlopen(new_result.url)
                 new_soup = BeautifulSoup(specific_page,"html.parser")
                 #Get all models of products from specific page
                 items = new_soup.find_all('tr',class_='ejs-addtocart-section')
@@ -79,6 +79,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("vacumm pump","new")
+    print (extract_results("vacumm pump","new"))
 
 if __name__ == "__main__": main()

@@ -3,7 +3,7 @@ Created by Abigail Katcoff (complete)
 This website sells used equipment
 '''
 import util
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from Result import Result
 
@@ -14,7 +14,7 @@ def extract_results(search_term, condition=None):
 	if condition=='new':
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
-	page=urllib2.urlopen(url)
+	page=urllib.request.urlopen(url)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='tbl-listings')
 	try:
@@ -33,6 +33,6 @@ def extract_results(search_term, condition=None):
 	return results
 
 def main():
-    print extract_results("Beckman Coulter Biomek Workstation")
+    print (extract_results("Beckman Coulter Biomek Workstation"))
 
 if __name__ == "__main__": main()

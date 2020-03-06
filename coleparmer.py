@@ -8,7 +8,7 @@ Sell new products only
 
 import util
 from Result import Result
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 
 MAIN_URL="https://www.coleparmer.com/search?searchterm="
@@ -17,7 +17,7 @@ HOME_URL='https://www.coleparmer.com'
 
 def extract_results(search_word, condition=None):
     url=util.create_url(MAIN_URL,search_word,DELIMITER)
-    page =urllib2.urlopen(url)
+    page =urllib.request.urlopen(url)
     soup=BeautifulSoup(page,"html.parser")
     try:
         product_contents=soup.find_all('div', class_='products-mnbox-content')
@@ -43,7 +43,7 @@ def extract_results(search_word, condition=None):
     return results
     
 def main():
-    print extract_results('vacuum bump')
+    print (extract_results('vacuum bump'))
 
 if __name__=='__main__': main()
     

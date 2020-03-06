@@ -5,7 +5,7 @@ Status: Complete
 Note: Sells used products only
 """
 
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
@@ -18,7 +18,7 @@ DELIMITER = "+"
 def extract_results(item,condition=None):
         results=[]
         if condition != 'new':
-                page = urllib2.urlopen(create_url(SEARCH_URL,item,DELIMITER)+"&image.x=0&image.y=0")
+                page = urllib.request.urlopen(create_url(SEARCH_URL,item,DELIMITER)+"&image.x=0&image.y=0")
                 soup = BeautifulSoup(page,"html.parser")
                 table = soup.find_all('div',class_="search_result")
                 
@@ -52,6 +52,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("pump")
+    print (extract_results("pump"))
 
 if __name__ == "__main__": main()

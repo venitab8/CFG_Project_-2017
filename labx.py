@@ -5,7 +5,7 @@ Status: Complete
 Comment: For both new and used equipment
 """
 
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 import util 
 from Result import Result
@@ -45,6 +45,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("vacuum pump", "new")
+    print (extract_results("vacuum pump", "new"))
 
 if __name__ == "__main__": main()

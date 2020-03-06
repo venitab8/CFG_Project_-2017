@@ -3,7 +3,7 @@ Created by Abigail Katcoff (complete)
 New and Used Equipment
 '''
 import util
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from Result import Result
 
@@ -19,7 +19,7 @@ def extract_results(search_term, condition=None):
 		url = util.create_url(MAIN_URL, search_term, DELIMITER) + '&LH_BIN=1' + NEW
 	else:
 		url = util.create_url(MAIN_URL, search_term, DELIMITER) + '&LH_BIN=1' + USED
-	page=urllib2.urlopen(url)
+	page=urllib.request.urlopen(url)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', id='ResultSetItems')
 	try:
@@ -37,6 +37,6 @@ def extract_results(search_term, condition=None):
 	return results
 
 def main():
-    print extract_results("vacuum bump")
+    print (extract_results("vacuum bump"))
 
 if __name__ == "__main__": main()

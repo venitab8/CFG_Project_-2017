@@ -7,7 +7,7 @@ Created on Fri Jan 13 15:21:14 2017
 """
 import util
 from Result import Result
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 
 MAIN_URL='http://www.medwow.com/tag/fronthandler/browse?actions=sales&searchstring='
@@ -40,6 +40,6 @@ def extract_results(search_word, condition=None):
     return equips
     
 def main():
-    print extract_results('centrifuge')
+    print (extract_results('centrifuge'))
 
 if __name__=='__main__': main()

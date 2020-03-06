@@ -5,7 +5,7 @@ Status: Complete
 Comment: Assumes all items are used on this website
 """
 
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
@@ -27,7 +27,7 @@ def extract_results(item,condition=None):
                         new_result.url = re.sub('%2E','.',specific_url)
                         new_result.image_src = main_url+\
                                                soup.find('td',class_='image').find('img').get('src')
-                        specific_page = urllib2.urlopen(new_result.url)
+                        specific_page = urllib.request.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         try:
                             new_result.price = get_price(new_soup.find('span',class_='sellprice').text)
@@ -59,6 +59,6 @@ def get_good_search_term(search_terms):
     return "" if len(terms)==0 else terms[0]
 
 def main():
-    print extract_results("pump HX7400")
+    print (extract_results("pump HX7400"))
 
 if __name__ == "__main__": main()

@@ -42,7 +42,7 @@ def extract_results(search_word, condition=None):
     return equips
 
 def main():
-    print extract_results('vacuum')
+    print (extract_results('vacuum'))
 
 if __name__=='__main__': main()
     

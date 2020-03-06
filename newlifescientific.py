@@ -5,7 +5,7 @@ Status: Complete
 Note: Assumes all items are used
 """
 
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
@@ -17,7 +17,7 @@ DELIMITER = "+"
 def extract_results(item,condition=None):
         results = []
         if condition != 'new':
-                page = urllib2.urlopen(create_url(SEARCH_URL,item,DELIMITER))
+                page = urllib.request.urlopen(create_url(SEARCH_URL,item,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
                 #See if page has data
                 try:
@@ -31,7 +31,7 @@ def extract_results(item,condition=None):
                         new_result.price = get_price(row.find('span',class_='price').text)
                         new_result.image_src = row.find('img').get('src')
                         
-                        specific_page = urllib2.urlopen(new_result.url)
+                        specific_page = urllib.request.urlopen(new_result.url)
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
                         #Checking for matching conditions
@@ -46,6 +46,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print extract_results("balance scale")
+    print (extract_results("balance scale"))
 
 if __name__ == "__main__": main()

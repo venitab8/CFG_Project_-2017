@@ -3,7 +3,7 @@ Created by Abigail Katcoff (complete)
 This website only contains used equipment
 '''
 
-import urllib2
+import urllib.request
 import util
 from bs4 import BeautifulSoup
 from Result import Result
@@ -15,7 +15,7 @@ def extract_results(search_term, condition=None):
 	if condition=='new':
 		return []
 	url=util.create_url(MAIN_URL, search_term, DELIMITER)
-	page=urllib2.urlopen(url)
+	page=urllib.request.urlopen(url)
 	soup = BeautifulSoup(page,"html.parser")
 	table=soup.find('div', class_='content-area')
 	rows= table.findAll("article")
@@ -39,10 +39,10 @@ def main():
     results= extract_results("Beckman")
     #Printing the results the usual way gives an error because some elements contain u'2013
     try:
-    	print results
+    	print (results)
     except:
 	    for result in results:
-	    	print result.title, result.url 
-	    	print result.price, result.image_src + "\n"
+	    	print (result.title, result.url)
+	    	print (result.price, result.image_src + "\n")
 
 if __name__ == "__main__": main()
