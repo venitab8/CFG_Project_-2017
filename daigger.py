@@ -5,47 +5,86 @@ Status: Complete
 Comments: For new equipment only
 """
 import urllib.request
+import gzip
+from io import StringIO
+import io
+import time
 from bs4 import BeautifulSoup
 from util import *
 from Result import Result
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 
-MAIN_URL = "http://www.daigger.com/products-search?qs="
-HOME_URL = "http://www.daigger.com"                    
+MAIN_URL = "https://www.daigger.com/searchresults?qs="
+HOME_URL = "https://www.daigger.com"                    
 DELIMITER = "+"
 
 def extract_results(item,condition=None):
         results=[]
         if condition != "new":
                 return results
+        headers={
+        'Host': 'daigger-com.ecomm-nav.com',
+        'Connection': 'keep-alive',
+        'Accept': '*/*',
+        'Referer': 'https://www.daigger.com/searchresults?qs=vacuum+pump',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Chrome/80.0.3987.132, Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
+        'Sec-Fetch-Dest': 'script',
+        'Sec-Fetch-Mode': 'no-cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'Upgrade-Insecure-Requests':'1',
+        'x-runtime':'148ms'}
+        
+        
         specific_url = create_url(MAIN_URL,item,DELIMITER)
-        page = urllib.request.urlopen(specific_url)
-        soup = BeautifulSoup(page,"html.parser" )
-
-        table = soup.find('div',id ="ListingProducts")
+        path_to_chromedriver = 'chromedriver.exe'
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        browser = webdriver.Chrome(executable_path = path_to_chromedriver,options=option)
+        browser.get(specific_url)
+        time.sleep(5)
+        
+        soup = BeautifulSoup(browser.page_source, 'html.parser')
+        table = soup.find('div',id = "ListingProducts")
+   
         #Check for data
         try:
                   #If items are a list
-                  rows=table.find_all('div',class_="boxshad productbox")
+                  #rows=table.find_all('div',class_="container productlisting-container")
+                  rows=table.find_all('div',class_="row-fluid grid-layout ejs-ecomutils-normalized")
+                  print(count(rows),"hi?")
         except:
                   try:
+                          
                           #Returns one item on a specific pg
-                          new_result = Result(soup.find('h1',itemprop='name'))
-                          new_result.url = specific_url
-                          new_result.image_src = HOME_URL+soup.find('div',class_='product-image').find('img').get('src')
-                          items = soup.find_all('tr',class_='ejs-addtocart-section')
+                          title = soup.find('a',class_='product-title').get('title')
+                          url = soup.find('a',class_='product-title').get('href')
+                          img_src = soup.find('div',class_='box-photo').find('img').get('src')
+                          new_result = Result(title)
+                          new_result.url = url
+                          new_result.image_src = img_src
+                          browser.get(new_result.url)       
+                          new_soup = BeautifulSoup(browser.page_source,"html.parser")
+                          items = new_soup.find_all('tr',class_='ejs-addtocart-section')
                           for item in items:
-                                #Supplier #
+                                #Supplier Number
                                 supplier = item.find('span',class_='supplier-code')
                                 if supplier != None:
-                                        new_result.title = new_result.title + supplier.text
+                                        new_result.title = title + supplier.text
                                 new_result.price = item.find('strong',class_='price').text
                                 currency = item.find('span',itemprop='priceCurrency')
+                                
                                 if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
                                         results.append(new_result)
-                                        if len(results)==9:
-                                                return results
-                                #Reset title to original product name for next model of item
-                                new_result.title = soup.find('h1',itemprop='name').text
+                                        if len(results) == 9:
+                                                break
+                                new_result = Result(title)
+                                new_result.url = url
+                                new_result.image_src = img_src
                           
                           return results
                   #No results found
@@ -53,32 +92,36 @@ def extract_results(item,condition=None):
                           return []
         
         #For multiple items  
-        for row in table.find_all('div',class_="boxshad productbox"):
-                new_result = Result(row.find('a').get('title'))
-                new_result.url = HOME_URL + row.find('a').get('href')
-                new_result.image_src = HOME_URL + row.find('img').get('src')
-                specific_page = urllib.request.urlopen(new_result.url)
-                new_soup = BeautifulSoup(specific_page,"html.parser")
+        for row in table.find_all('div',class_="row-fluid grid-layout ejs-ecomutils-normalized"):
+                new_result = Result(row.find('img').get('title'))
+                new_result_title_temp = new_result.title[:]
+                new_result.url = row.find('a').get('href')
+                new_result.image_src = row.find('img').get('src')
+                browser.get(new_result.url)                
+                new_soup = BeautifulSoup(browser.page_source,"html.parser")
                 #Get all models of products from specific page
                 items = new_soup.find_all('tr',class_='ejs-addtocart-section')
                 for item in items:
                         #Supplier Number
                         supplier = item.find('span',class_='supplier-code')
                         if supplier != None:
-                                new_result.title = new_result.title + supplier.text
+                                new_result.title = new_result_title_temp + supplier.text
+                                #print("new title",new_result.title)
                         new_result.price = item.find('strong',class_='price').text
                         currency = item.find('span',itemprop='priceCurrency')
                         
                         if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
                                 results.append(new_result)
                                 if len(results) == 9:
-                                        return results
-                        #Reset title to original product name for next model of item
-                        new_result.title = row.find('a').get('title')
-                
+                                        break
+                        new_result = Result(row.find('img').get('title'))
+                        new_result.url = row.find('a').get('href')
+                        new_result.image_src = row.find('img').get('src')
+                if len(results) == 9:
+                        break
         return results
 
 def main():
-    print (extract_results("vacumm pump","new"))
+    print (extract_results("KIMAX Glass Class A Volumetric Flasks","new"))
 
 if __name__ == "__main__": main()
