@@ -7,8 +7,13 @@ Comment: For both new and used equipment
 
 import urllib.request
 import util 
+import time
+from bs4 import BeautifulSoup
 from Result import Result
-import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 
 MAIN_URL = "https://www.labx.com/search?sw="
 HOME_URL = "https://www.labx.com" 
@@ -21,23 +26,40 @@ def extract_results(item,condition=None):
         else:
                 url = util.create_url(MAIN_URL,item,DELIMITER) + "&condition=467,469"     
         results=[]
+        headers={
+        'Host': 'www.labx.com',
+        'Connection': 'keep-alive',
+        'Accept': '*/*',
+        'Referer': 'https://www.labx.com/item/vacuum-pump-230-v-50-hz/12183467',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Chrome/80.0.3987.132, Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
+        'Sec-Fetch-Dest': 'script',
+        'Sec-Fetch-Mode': 'no-cors',
+        'Sec-Fetch-Site': 'same-site',
+        'Upgrade-Insecure-Requests':'1',
+        'x-runtime':'148ms'}
         #Check if page has data
         try:
-            soup = util.check_exceptions(url)
-            table = soup.find('div', class_='product-grid')
-            rows=table.find_all('div',class_='product-card')
+            path_to_chromedriver = 'chromedriver.exe'
+            option = webdriver.ChromeOptions()
+            option.add_argument('headless')
+            browser = webdriver.Chrome(executable_path = path_to_chromedriver,options=option)
+            browser.get(url)
+            time.sleep(5)
+            soup = BeautifulSoup(browser.page_source,'html.parser')
+            rows = soup.find_all('div',class_='product-card')
         except:
                   return []
         #Get 1st 10 results only
+        print(len(rows))
         for i in range(len(rows)):
-                  row= rows[i]
-                  print(row.contents)
+                  row = rows[i]
                   new_result = Result(row.find('a', class_='card-title').text)
                   new_result.url = HOME_URL + row.find('a').get('href')
                   new_result.price = util.get_price(row.find(class_='price').get_text())
                   number = util.get_price(new_result.title)
-                  #print((row.find('div', class_='card-img-top').contents))
-                  #new_result.image_src = row.find_all('src')
+                  new_result.image_src = row.find('div', class_='card-img-top').find("img").get("src")
                   if util.is_valid_price(new_result.price):
                           results.append(new_result)
                           if len(results) == 9:
@@ -45,6 +67,6 @@ def extract_results(item,condition=None):
         return results
 
 def main():
-    print (extract_results("vacuum pump", "new"))
+    print (extract_results("vacuum pump", "used"))
 
 if __name__ == "__main__": main()
