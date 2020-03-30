@@ -67,9 +67,9 @@ def create_url(main_url, search_term, delimiter):
 
 
 
-def check_exceptions(url, timeout = 5, headers = None):
+def check_exceptions(url, timeout = 5, header = None):
     try:
-        response = requests.get(url, timeout = 5, header = None)
+        response = requests.get(url,timeout,headers=header)
         if response.status_code == 200:
             return BeautifulSoup(response.content,"html.parser")
         else:
@@ -80,7 +80,8 @@ def check_exceptions(url, timeout = 5, headers = None):
         print(str(e))
     except requests.exceptions.RequestException:
         print ("Error")
-        
+    except Exception as e: 
+        print ("Error was: ", e) 
 '''
 sorts a list of Results by price
 @param results, a list of Result obects

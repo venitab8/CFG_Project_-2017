@@ -106,7 +106,6 @@ def extract_results(item,condition=None):
                         supplier = item.find('span',class_='supplier-code')
                         if supplier != None:
                                 new_result.title = new_result_title_temp + supplier.text
-                                #print("new title",new_result.title)
                         new_result.price = item.find('strong',class_='price').text
                         currency = item.find('span',itemprop='priceCurrency')
                         

@@ -6,7 +6,7 @@ import equipnet
 import google
 import medwow
 import used_line
-import eurekaspot
+#import eurekaspot
 import labcommerce
 import newlifescientific
 import labx
@@ -32,7 +32,7 @@ medwow.extract_results, \
 labcommerce.extract_results, \
 marshallscientific.extract_results, \
 newlifescientific.extract_results, \
-eurekaspot.extract_results, \
+#eurekaspot.extract_results, \
 sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
@@ -69,7 +69,7 @@ NEW_FUNCS=[daigger.extract_results
 #"marshallscientific", daigger.extract_results: "daigger", coleparmer.gextract_results: "coleparmer", ika.extract_results: "ika"}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
-eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
+labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
 "marshallscientific", daigger.extract_results: "daigger"}
 MATCH_RATIO=.8
@@ -122,6 +122,6 @@ def is_close_match(search_term, result_term):
 
 def main():
     for i in range(10):
-        print (search_a_website("vacuum bump", condition='new', website_number=i))
+        print (search_a_website("vacuum pump", condition='new', website_number=i))
 
 if __name__ == "__main__": main()

@@ -1,7 +1,7 @@
 """
 @author Venita Boodhoo
 Website: EurekaSpot
-Status: Complete
+Status: N/A from 3/28/2020 website does not appear to exist anymore
 Comment: Assumes all items are used on this website
 """
 
@@ -18,7 +18,7 @@ def extract_results(item,condition=None):
         results=[]
         if condition != "new":
                 search_term=get_good_search_term(item)
-                page = urllib2.urlopen(create_url(search_url,search_term,DELIMITER))
+                page = urllib.request.urlopen(create_url(search_url,search_term,DELIMITER))
                 soup = BeautifulSoup(page,"html.parser" )
                 table = soup.find_all('td',class_='productname')
                 for row in table:
@@ -35,7 +35,7 @@ def extract_results(item,condition=None):
                             continue
                         #Code to add only functional items
                         description_url = main_url+re.sub(' ','%20',new_soup.find('p',id='name').find('a').get('href'))
-                        description_page = urllib2.urlopen(description_url)
+                        description_page = urllib.request.urlopen(description_url)
                         description_soup = BeautifulSoup(description_page,"html.parser")
 
                         functional_tag = description_soup.find(text='Functional:')
