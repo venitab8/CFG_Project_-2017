@@ -36,16 +36,19 @@ def extract_results(item,condition=None):
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
                         #Checking for matching conditions
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
+                        match = False
                         if condition.lower() != "new":
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
                                         if type_word not in item_condition and is_valid_price(new_result.price):
                                                 results.append(new_result)
                                                 break
+                                        if len(results) == 10:
+                                                return results
                 
         return results
 
 def main():
-    print (extract_results("balance scale"))
+    print (extract_results("balance scale","used"))
 
 if __name__ == "__main__": main()
