@@ -5,9 +5,6 @@ Status: Complete
 Comments: For new equipment only
 """
 import urllib.request
-import gzip
-from io import StringIO
-import io
 import time
 from bs4 import BeautifulSoup
 from util import *
@@ -54,9 +51,7 @@ def extract_results(item,condition=None):
         #Check for data
         try:
                   #If items are a list
-                  #rows=table.find_all('div',class_="container productlisting-container")
-                  rows=table.find_all('div',class_="row-fluid grid-layout ejs-ecomutils-normalized")
-                  print(count(rows),"hi?")
+                  rows=table.find_all('div',class_="ejs-productitem span3")
         except:
                   try:
                           
@@ -92,10 +87,10 @@ def extract_results(item,condition=None):
                           return []
         
         #For multiple items  
-        for row in table.find_all('div',class_="row-fluid grid-layout ejs-ecomutils-normalized"):
-                new_result = Result(row.find('img').get('title'))
+        for row in rows:
+                new_result = Result(row.find('a',class_='product-title').get('title'))
                 new_result_title_temp = new_result.title[:]
-                new_result.url = row.find('a').get('href')
+                new_result.url = "https://" + row.find('a').get('href')
                 new_result.image_src = row.find('img').get('src')
                 browser.get(new_result.url)                
                 new_soup = BeautifulSoup(browser.page_source,"html.parser")
@@ -111,16 +106,16 @@ def extract_results(item,condition=None):
                         
                         if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
                                 results.append(new_result)
-                                if len(results) == 9:
+                                if len(results) == 10:
                                         break
                         new_result = Result(row.find('img').get('title'))
                         new_result.url = row.find('a').get('href')
                         new_result.image_src = row.find('img').get('src')
-                if len(results) == 9:
+                if len(results) == 10:
                         break
         return results
 
 def main():
-    print (extract_results("KIMAX Glass Class A Volumetric Flasks","new"))
+    print (extract_results("Polypropylene Volumetric Flasks","new"))
 
 if __name__ == "__main__": main()
