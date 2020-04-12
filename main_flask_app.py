@@ -32,14 +32,19 @@ def run_search(condition=None):
     #time the result to make sure it makes heroku's 30 second timeout
     #stop searching if we have 10 or more results, run out of time, or finish searching relevant websites
     #check if web_index is less than 20 to ensure the while loop ends
-    while continue_searching and web_index<10 and time.time()-start_time< 20 and len(results)<10:
-        continue_searching, new_message, new_results= backend.search_a_website(search_words,condition, web_index)
+#    while continue_searching and web_index<10 and time.time()-start_time< 20 and len(results)<10:
+#        continue_searching, new_message, new_results= backend.search_a_website(search_words,condition, web_index)
+#        results.extend(new_results)
+#        message=message+new_message
+#        web_index+=1
+    outs = backend.searchAllWebsites(search_words,condition)
+    for r in outs:
+        continue_searching, new_message, new_results= r[0]
         results.extend(new_results)
         message=message+new_message
-        web_index+=1
     #if we ran out of time and got few results, continue the the search where we left off in a redirect
-    if continue_searching==True and len(results)<4 and web_index<20:
-        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
+#    if continue_searching==True and len(results)<4 and web_index<20:
+#        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
     results=util.sort_by_price(results)
     median = util.price_prettify(util.median_price(results))
     for item in results:
@@ -79,4 +84,4 @@ def finish(self):
 if __name__== "__main__":
     
     port = int(environ.get('PORT', 5000))
-    app.run(host='127.0.0.1', port=port)
+    app.run(debug=True, host='127.0.0.1', port=port)

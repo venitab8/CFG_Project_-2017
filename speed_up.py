@@ -25,6 +25,7 @@ import coleparmer
 import ika 
 import numpy as np
 import multiprocessing as multi
+import sys
 #split the links into n chunks
 def chunks(n, links):
     return np.array_split(links, n)
@@ -48,6 +49,15 @@ dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.ex
 
 page_bins = chunks(cpus, NEW_FUNCS)
 print(page_bins)
+def perform_extraction(extract_methods):
+    """Extracts data, does preprocessing, writes the data"""
+    for method in extract_methods:
+        method(search_term, condition)
+    # do requests and BeautifulSoup
+    # preprocess the data
+    file_name = multi.current_process().name+'.txt'
+    # write into current process file
+
 for cpu in range(cpus):
     sys.stdout.write("CPU"+str(cpu) + "\n")
     #Process that sends a list of pages to the extract func
@@ -58,9 +68,3 @@ for cpu in range(cpus):
 for worker in workers:
     worker.join()
     
-def perform_extraction(page_ranges):
-    """Extracts data, does preprocessing, writes the data"""
-    # do requests and BeautifulSoup
-    # preprocess the data
-    file_name = multi.current_process().name+'.txt'
-    # write into current process file
