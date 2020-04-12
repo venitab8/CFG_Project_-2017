@@ -14,6 +14,7 @@ pyexcel==0.5.15
 pyexcel-io==0.5.20
 pyexcel-webio==0.1.4
 requests==2.23.0
+selenium==3.141.0
 soupsieve==2.0
 texttable==1.6.2
 urllib3==1.25.8
