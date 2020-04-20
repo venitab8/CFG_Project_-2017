@@ -39,3 +39,24 @@ class Result:
 		if self.origin_website!=None:
 			string=string+"\norigin website: " + self.origin_website
 		return string + "\n"
+	
+	def get_title(self):
+		return self.title
+		
+	def get_url(self):
+		return self.url 
+	
+	def get_price(self):
+		return self.price 
+		
+	def set_title(self,x):
+		self.title = x
+	
+	def set_image_src(self, x):
+		self.image_src = x
+	
+	def set_url(self, x):
+		self.url = x
+		
+	def set_price(self, x):
+		self.price = x

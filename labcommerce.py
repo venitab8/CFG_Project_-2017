@@ -28,26 +28,26 @@ def extract_results(item,condition=None):
                         url = re.sub('/catid/','.php?catid=',row.find('a').get('href'))
                         #Omit last slash
                         specific_url = re.sub('/prodid/','&prodid=',url)[:-1]
-                        new_result.url = MAIN_URL + specific_url
+                        new_result.set_url(MAIN_URL + specific_url)
                         new_soup = BeautifulSoup(urllib.request.urlopen(new_result.url),"html.parser")
                         #Omit surrounding text, get decimal only
-                        new_result.price = get_price(str(new_soup.find('td',class_='price').find_all(text=True)[0]))
+                        new_result.set_price(get_price(str(new_soup.find('td',class_='price').find_all(text=True)[0])))
                         #Omit 1st char (a period)
-                        new_result.image_src = MAIN_URL+new_soup.find('td',align='center')\
-                                               .find('img').get('src')[1:]
+                        new_result.set_image_src(MAIN_URL+new_soup.find('td',align='center')\
+                                               .find('img').get('src')[1:])
                         bad_condition_types = ['bad','poor','not working','broken','not functional']
                         condition_type_text = new_soup.find(text='Condition:')
                         #Matches on condition and omits bad conditions
                         if condition_type_text != None:
                                 condition_type = condition_type_text.find_next(text=True)
                                 for word in bad_condition_types:
-                                        if word not in condition_type and is_valid_price(new_result.price):
+                                        if word not in condition_type and is_valid_price(new_result.get_price()):
                                                 match = True
                                 if match:
                                         results.append(new_result)
                                 if len(results) == 9:
                                         break
-                        elif is_valid_price(new_result.price):
+                        elif is_valid_price(new_result.get_price()):
                                 results.append(new_result)
                         if len(results) == 9:
                                 break     

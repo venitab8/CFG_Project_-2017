@@ -60,17 +60,17 @@ def extract_results(item,condition=None):
                           url = soup.find('a',class_='product-title').get('href')
                           img_src = soup.find('div',class_='box-photo').find('img').get('src')
                           new_result = Result(title)
-                          new_result.url = url
-                          new_result.image_src = img_src
-                          browser.get(new_result.url)       
+                          new_result.set_url(url)
+                          new_result.set_image_src(img_src)
+                          browser.get(new_result.get_url())       
                           new_soup = BeautifulSoup(browser.page_source,"html.parser")
                           items = new_soup.find_all('tr',class_='ejs-addtocart-section')
                           for item in items:
                                 #Supplier Number
                                 supplier = item.find('span',class_='supplier-code')
                                 if supplier != None:
-                                        new_result.title = title + supplier.text
-                                new_result.price = item.find('strong',class_='price').text
+                                        new_result.set_title(title + supplier.text)
+                                new_result.set_price(item.find('strong',class_='price').text)
                                 currency = item.find('span',itemprop='priceCurrency')
                                 
                                 if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
@@ -78,8 +78,8 @@ def extract_results(item,condition=None):
                                         if len(results) == 9:
                                                 break
                                 new_result = Result(title)
-                                new_result.url = url
-                                new_result.image_src = img_src
+                                new_result.set_url(url)
+                                new_result.set_image_src(img_src)
                           
                           return results
                   #No results found
@@ -89,10 +89,10 @@ def extract_results(item,condition=None):
         #For multiple items  
         for row in rows:
                 new_result = Result(row.find('a',class_='product-title').get('title'))
-                new_result_title_temp = new_result.title[:]
-                new_result.url = "https://" + row.find('a').get('href')
-                new_result.image_src = row.find('img').get('src')
-                browser.get(new_result.url)                
+                new_result_title_temp = new_result.get_title()[:]
+                new_result.set_url("https://" + row.find('a').get('href'))
+                new_result.set_image_src(row.find('img').get('src'))
+                browser.get(new_result.get_url())                
                 new_soup = BeautifulSoup(browser.page_source,"html.parser")
                 #Get all models of products from specific page
                 items = new_soup.find_all('tr',class_='ejs-addtocart-section')
@@ -100,8 +100,8 @@ def extract_results(item,condition=None):
                         #Supplier Number
                         supplier = item.find('span',class_='supplier-code')
                         if supplier != None:
-                                new_result.title = new_result_title_temp + supplier.text
-                        new_result.price = item.find('strong',class_='price').text
+                                new_result.set_title(new_result_title_temp + supplier.text)
+                        new_result.set_price(item.find('strong',class_='price').text)
                         currency = item.find('span',itemprop='priceCurrency')
                         
                         if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
@@ -109,8 +109,8 @@ def extract_results(item,condition=None):
                                 if len(results) == 10:
                                         break
                         new_result = Result(row.find('img').get('title'))
-                        new_result.url = row.find('a').get('href')
-                        new_result.image_src = row.find('img').get('src')
+                        new_result.set_url(row.find('a').get('href'))
+                        new_result.set_image_src(row.find('img').get('src'))
                 if len(results) == 10:
                         break
         return results

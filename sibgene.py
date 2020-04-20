@@ -28,7 +28,6 @@ def extract_results(item,requested_condition=None):
         browser.get(url)
         time.sleep(5)
         soup = BeautifulSoup(browser.page_source,'html.parser')
-        #print(soup,"soup")
         results=[]
         #Check for data
         try:
@@ -41,12 +40,11 @@ def extract_results(item,requested_condition=None):
         for i in range(len(rows)):
                 row=rows[i]
                 new_result = Result(row.find('a',class_='product-item-link').text.strip())
-                #print(new_result.title,"t")
-                new_result.url = row.find('a').get('href')
-                new_result.price = util.get_price(str(row.find('span',class_='price').find(text=True))\
-                                   .encode('utf-8')[1:])
-                new_result.image_src = row.find('img').get('src')
-                browser.get(new_result.url)       
+                new_result.set_url(row.find('a').get('href'))
+                new_result.set_price(util.get_price(str(row.find('span',class_='price').find(text=True))\
+                                   .encode('utf-8')[1:]))
+                new_result.set_image_src(row.find('img').get('src'))
+                browser.get(new_result.get_url())       
                 new_soup = BeautifulSoup(browser.page_source,"html.parser")
                 condition = new_soup.find('div',class_='product attribute description').find('div',class_='value').text
                 conditions = ['new','New','used','Used']
@@ -58,7 +56,7 @@ def extract_results(item,requested_condition=None):
                                         (requested_condition != None and requested_condition.lower()== word.lower()):
                                         #Only add working good equipment
                                         for type_word in bad_condition_types:
-                                                if type_word not in condition and util.is_valid_price(new_result.price):
+                                                if type_word not in condition and util.is_valid_price(new_result.get_price()):
                                                         results.append(new_result)
                                                         break
                                                 if len(results) == 10:

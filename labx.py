@@ -52,15 +52,14 @@ def extract_results(item,condition=None):
         except:
                   return []
         #Get 1st 10 results only
-        print(len(rows))
         for i in range(len(rows)):
                   row = rows[i]
                   new_result = Result(row.find('a', class_='card-title').text)
-                  new_result.url = HOME_URL + row.find('a').get('href')
-                  new_result.price = util.get_price(row.find(class_='price').get_text())
-                  number = util.get_price(new_result.title)
-                  new_result.image_src = row.find('div', class_='card-img-top').find("img").get("src")
-                  if util.is_valid_price(new_result.price):
+                  new_result.set_url(HOME_URL + row.find('a').get('href'))
+                  new_result.set_price(util.get_price(row.find(class_='price').get_text()))
+                  number = util.get_price(new_result.get_title())
+                  new_result.set_image_src(row.find('div', class_='card-img-top').find("img").get("src"))
+                  if util.is_valid_price(new_result.get_price()):
                           results.append(new_result)
                           if len(results) == 9:
                                   break

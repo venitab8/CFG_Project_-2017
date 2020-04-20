@@ -27,11 +27,11 @@ def extract_results(item,condition=None):
                 
                 for row in table:
                         new_result = Result(row.find('a').get('title'))
-                        new_result.url = MAIN_URL+row.find('a').get('href')
-                        new_result.price = get_price(row.find('span',class_='price').text)
-                        new_result.image_src = row.find('img').get('src')
+                        new_result.set_url(MAIN_URL+row.find('a').get('href'))
+                        new_result.set_price(get_price(row.find('span',class_='price').text))
+                        new_result.set_image_src(row.find('img').get('src'))
                         
-                        specific_page = urllib.request.urlopen(new_result.url)
+                        specific_page = urllib.request.urlopen(new_result.get_url())
                         new_soup = BeautifulSoup(specific_page,"html.parser")
                         item_condition = new_soup.find('div',class_='box-collateral-content').find('div',class_='std').text
                         #Checking for matching conditions
@@ -40,7 +40,7 @@ def extract_results(item,condition=None):
                         if condition.lower() != "new":
                                 #Only add working good equipment
                                 for type_word in bad_condition_types:
-                                        if type_word not in item_condition and is_valid_price(new_result.price):
+                                        if type_word not in item_condition and is_valid_price(new_result.get_price()):
                                                 results.append(new_result)
                                                 break
                                         if len(results) == 10:
