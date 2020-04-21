@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jan 26 22:29:01 2017
+Modified by Venita Boodhoo 04/2020
 @author: thotran
 Status:Complete
 Sell new products only
@@ -27,23 +28,24 @@ def extract_results(search_word, condition=None):
     results=[]
     for product_content in product_contents:
         equip_url=HOME_URL+product_content.find('a').get('href')
-        models_site=BeautifulSoup(urllib2.urlopen(equip_url),"html.parser")
-        model_descriptions=models_site.find_all('td', class_='description')
-
+        models_site=BeautifulSoup(urllib.request.urlopen(equip_url),"html.parser")
+        model_descriptions=models_site.find('tbody').findChildren('tr')
         for re in model_descriptions:
-            result=Result(re.find('div',{'id':'gaProductName'}).find(text=True).strip())
-            result.image_src='https:'+re.find('img', class_='lazy').get('data-original')
-            result.url=HOME_URL+re.find('a').get('href')
-            price_site=BeautifulSoup(urllib2.urlopen(result.url),"html.parser")
-            result.price=util.get_price(price_site.find('div', class_='price-box').find('span', class_='price-range').find(text=True))
-            if util.is_valid_price(result.price):
+            try:
+                result=Result(re.find('a').get('title'))
+            except:
+                continue
+            result.set_image_src('https:'+re.find('img', class_='lazy').get('data-original'))
+            result.set_url(HOME_URL+re.find('a').get('href'))
+            result.set_price(util.get_price(re.find('span', class_='price-range').text))
+            if util.is_valid_price(result.get_price()):
                 results.append(result)
-            if len(results)>=10:
+            if len(results)==10:
                 return results   
     return results
     
 def main():
-    print (extract_results('vacuum bump'))
+    print (extract_results('vacuum pump'))
 
 if __name__=='__main__': main()
     
