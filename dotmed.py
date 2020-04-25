@@ -39,7 +39,6 @@ def extract_results(search_word, condition=None):
 		return equips
 
 	for equip in sale_equips:
-		print(equip)
 		title=equip.find('h4').find('a').text.strip()
 		equipment=Result(title)
 		equipment.set_url(HOME_URL+equip.find('div', class_='row').find('a').get('href'))
@@ -52,5 +51,5 @@ def extract_results(search_word, condition=None):
 	return equips
 	
 def main():
-	print (extract_results('vacuum pump','new'))
+	print (extract_results('vacuum pump','used'))
 if __name__=='__main__': main()
