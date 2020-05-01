@@ -1,5 +1,6 @@
 '''
 Created by Abigail Katcoff (complete)
+Modified by Venita Boodhoo (05/2020)
 This website only contains used equipment
 '''
 
@@ -22,15 +23,15 @@ def extract_results(search_term, condition=None):
 
 	results=[]
 	for row in rows:
-		new_result=Result(row.find('h1', class_="entry-title").find("a").find(text=True))
+		new_result=Result(row.find('h1', class_="entry-title").find("a").text)
 		result_url=row.find('a').get('href')
 
 		#scrape from the result's page
-		result_soup=BeautifulSoup(urllib2.urlopen(result_url),"html.parser")
-		new_result.url=result_url
-		new_result.price=util.get_price(result_soup.find('span', class_="amount").find(text=True))
-		new_result.image_src=result_soup.find('div', class_='images').find('img').get('src')
-		if util.is_valid_price(new_result.price):
+		result_soup=BeautifulSoup(urllib.request.urlopen(result_url),"html.parser")
+		new_result.set_url(result_url)
+		new_result.set_price(util.get_price(result_soup.find('span', class_="amount").text))
+		new_result.set_image_src(result_soup.find('div', class_='images').find('img').get('src'))
+		if util.is_valid_price(new_result.get_price()):
 			results.append(new_result)
 			if len(results)==10: return results
 	return results

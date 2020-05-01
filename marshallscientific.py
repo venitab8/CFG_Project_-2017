@@ -35,7 +35,7 @@ def extract_results(search_word, condition=None):
         equipment.set_image_src('https:'+equip.find('img').get('src'))
         price_text=equip.find('div', class_='product_productprice').text
         equipment.set_price(util.get_price(''.join(price_text)))
-        if util.is_valid_price(equipment.price):
+        if util.is_valid_price(equipment.get_price()):
             equips.append(equipment)
         if len(equips)==10:
             return equips
