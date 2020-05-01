@@ -73,7 +73,7 @@ def extract_results(item,condition=None):
                                 new_result.set_price(item.find('strong',class_='price').text)
                                 currency = item.find('span',itemprop='priceCurrency')
                                 
-                                if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
+                                if (currency == None or currency.text == "USD") and is_valid_price(new_result.get_price()):
                                         results.append(new_result)
                                         if len(results) == 9:
                                                 break
@@ -104,7 +104,7 @@ def extract_results(item,condition=None):
                         new_result.set_price(item.find('strong',class_='price').text)
                         currency = item.find('span',itemprop='priceCurrency')
                         
-                        if (currency == None or currency.text == "USD") and is_valid_price(new_result.price):
+                        if (currency == None or currency.text == "USD") and is_valid_price(new_result.get_price()):
                                 results.append(new_result)
                                 if len(results) == 10:
                                         break
