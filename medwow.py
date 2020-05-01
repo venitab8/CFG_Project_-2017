@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jan 13 15:21:14 2017
-
+Modified by Venita Boodhoo (05/2020)
 @author: thotran
 #Sells used and new 
 """
@@ -29,17 +29,17 @@ def extract_results(search_word, condition=None):
         items_details=equip.find('div', class_='item_details').find_all(text=True)
         title=' '.join(items_details).strip()
         equipment=Result(title)
-        equipment.url=equip.find('div',class_='image').find('a',class_='item_number').get('href')
-        equipment.image_src=equip.find('div',class_='image').find('img').get('src')
+        equipment.set_url(equip.find('div',class_='image').find('a',class_='item_number').get('href'))
+        equipment.set_image_src(equip.find('div',class_='image').find('img').get('src'))
         price_text=equip.find('div', class_='price').find(text=True) if equip.find('span', class_='price_element')==None else equip.find('span', class_='price_element').find(text=True)
-        equipment.price=util.get_price(''.join(price_text))
+        equipment.set_price(util.get_price(''.join(price_text)))
         if util.is_valid_price(equipment.price):
             equips.append(equipment)
-        if len(equips)>=10:
+        if len(equips)==10:
             return equips
     return equips
     
 def main():
-    print (extract_results('centrifuge'))
+    print (extract_results('centrifuge',"new"))
 
 if __name__=='__main__': main()
