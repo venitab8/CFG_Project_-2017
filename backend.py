@@ -1,3 +1,9 @@
+'''
+Modified by Venita Boodhoo
+05/2020 - Removed obsolete eurekaspot and removed ika from search
+
+'''
+
 from Result import Result
 #import the 17 websites
 import ebay
@@ -16,7 +22,7 @@ import dotmed
 import sibgene
 import daigger
 import coleparmer
-import ika
+#import ika
 
 import util 
 import math
@@ -37,41 +43,21 @@ sci_bay.extract_results, \
 sibgene.extract_results, \
 used_line.extract_results ]
 
-#TODO include coleparmer
-#NEW_FUNCS=[daigger.extract_results, \
-##ika.extract_results, \
-#dotmed.extract_results, \
-#ebay.extract_results, \
-#google.extract_results, \
-#labx.extract_results, \
-#medwow.extract_results, \
-#sibgene.extract_results
-##coleparmer.extract_results
-#] 
-
-#NEW_FUNCS=[daigger.extract_results, \
-#dotmed.extract_results, \
-#ebay.extract_results, \
-#google.extract_results, \
-#labx.extract_results, \
-#medwow.extract_results, \
-#sibgene.extract_results
-#] 
-#NEW_FUNCS=[daigger.extract_results, \
-#dotmed.extract_results
-#] 
-NEW_FUNCS=[daigger.extract_results
+NEW_FUNCS=[daigger.extract_results, \
+#ika.extract_results, \
+dotmed.extract_results, \
+ebay.extract_results, \
+google.extract_results, \
+labx.extract_results, \
+medwow.extract_results, \
+sibgene.extract_results, \
+coleparmer.extract_results
 ] 
-
-#WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
-#eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
-#dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
-#"marshallscientific", daigger.extract_results: "daigger", coleparmer.gextract_results: "coleparmer", ika.extract_results: "ika"}
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
 labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
-"marshallscientific", daigger.extract_results: "daigger"}
+"marshallscientific", daigger.extract_results: "daigger", coleparmer.extract_results: "coleparmer",}
 MATCH_RATIO=.8
 
 MAX_RESULTS=10
