@@ -27,6 +27,7 @@ import coleparmer
 import util 
 import math
 import time 
+from multiprocessing import Pool
 
 USED_FUNCS=[equipnet.extract_results, \
 labx.extract_results, \
@@ -76,7 +77,7 @@ def search_a_website(search_term, condition=None, website_number=0):
     results=[]
     error_message=""
     function_list=NEW_FUNCS if condition =='new' else USED_FUNCS
-    if website_number>=len(function_list):
+    if website_number == len(function_list):
         return False, error_message, []
     try:
         func=function_list[website_number]
@@ -93,6 +94,21 @@ def search_a_website(search_term, condition=None, website_number=0):
         error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
     return True, error_message, results
 
+def searchAllWebsites(keyword, condition="used"):
+    pool = Pool(processes=20)
+    sol = set()
+    result = []
+    for i in range(10):
+        inputs = (keyword, condition, i)
+        n = pool.map_async(search_a_website_2, (inputs,))
+        sol.add(n)
+    for s in sol:
+        try:
+            result.append(s.get(timeout=5))
+        except Exception as e:
+            print ("Error:Taking to long to search a link -",e)
+    return result
+    
 '''
 checks if the result contains at least MATCH_RATIO of the search words
 search_term, result_term are strings
@@ -105,9 +121,44 @@ def is_close_match(search_term, result_term):
             match_number+=1
     return match_number >= math.ceil(len(search_words)*MATCH_RATIO)
 
-
+def search_a_website_2(inputs):
+    (search_term, condition, website_number) = inputs
+    results=[]
+    error_message=""
+    function_list=NEW_FUNCS if condition =='new' else USED_FUNCS
+    if website_number == len(function_list):
+        return False, error_message, []
+    try:
+        func=function_list[website_number]
+        print ("scraping ",  WEBSITE_NAMES[func])
+        website_results=func(search_term, condition)
+        for website_result in website_results:
+            if is_close_match(search_term, website_result.title):
+                results.append(website_result)
+            if len(results) >= MAX_RESULTS:
+                return True, error_message, results
+    except Exception as e: 
+        print ("Error scraping ",  WEBSITE_NAMES[func])
+        print ("Error was: ", e)
+        error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
+    return True, error_message, results
+    
 def main():
+    pool = Pool(processes=20)
+    sol = set()
+    result = []
     for i in range(10):
-        print (search_a_website("vacuum pump", condition='new', website_number=i))
+        #print (search_a_website("vacuum pump", condition='new', website_number=i))
+        inputs = ("vacuum", "new", i)
+        n = pool.map_async(search_a_website_2, (inputs,))
+        sol.add(n)
+    for s in sol:
+        try:
+            print(s,"s is s")
+            #print(s.get(timeout=5))
+            result.append(s.get(timeout=5))
+        except Exception as e:
+            print ("Error:Taking to long to search a link -",e)
+    return result
 
 if __name__ == "__main__": main()

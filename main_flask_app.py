@@ -48,7 +48,7 @@ def run_search(condition=None):
     results=util.sort_by_price(results)
     median = util.price_prettify(util.median_price(results))
     for item in results:
-        item.price = util.price_prettify(util.str_to_float(item.price))
+        item.set_price(util.price_prettify(util.str_to_float(item.get_price())))
     return render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
 
 

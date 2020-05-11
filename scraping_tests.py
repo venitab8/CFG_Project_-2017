@@ -7,7 +7,7 @@ import equipnet
 import google
 import medwow
 import used_line
-import eurekaspot
+#import eurekaspot
 import labcommerce
 import newlifescientific
 import labx
@@ -20,7 +20,7 @@ FUNCTIONS=[biosurplus.extract_results, \
 dotmed.extract_results, \
 ebay.extract_results, \
 equipnet.extract_results, \
-eurekaspot.extract_results, \
+#eurekaspot.extract_results, \
 google.extract_results, \
 labcommerce.extract_results, \
 labx.extract_results, \
@@ -33,7 +33,7 @@ used_line.extract_results ]
 
 
 WEBSITE_NAMES={ebay.extract_results : "ebay" , equipnet.extract_results : "equipnet" , google.extract_results : "google" , used_line.extract_results : "used line", \
-eurekaspot.extract_results : "eurekaspot", labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
+labcommerce.extract_results :"labcommerce", newlifescientific.extract_results :"newlifescientific", biosurplus.extract_results: "biosurplus" , sci_bay.extract_results : "sci_bay", \
 dotmed.extract_results : "dotmed" , sibgene.extract_results: "sibgene" , labx.extract_results : "labx", medwow.extract_results: "medwow", marshallscientific.extract_results: \
 "marshallscientific"}
 
