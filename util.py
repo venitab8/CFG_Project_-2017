@@ -108,9 +108,9 @@ def median_price(results):
     prices.sort()
     length = len(prices)
     if length % 2 == 0:
-        if abs(prices[(length-1)/2]-avg) <= abs(prices[(length+1)/2]-avg):
-            return prices[(length-1)/2]
-        return prices[(length+1)/2]
+        if abs(prices[math.floor((length-1)/2)]-avg) <= abs(prices[math.ceil((length+1)/2)]-avg):
+            return prices[math.floor((length-1)/2)]
+        return prices[math.ceil((length+1)/2)]
     #Odd length prices list
-    return prices[(length-1)/2]
+    return prices[math.floor((length-1)/2)]
     

@@ -94,7 +94,7 @@ def search_a_website(search_term, condition=None, website_number=0):
         error_message=error_message + "Error scraping %s.\n" %(WEBSITE_NAMES[func])
     return True, error_message, results
 
-def searchAllWebsites(keyword, condition="used"):
+def searchAllWebsites(keyword, condition=None):
     pool = Pool(processes=20)
     sol = set()
     result = []
@@ -104,7 +104,7 @@ def searchAllWebsites(keyword, condition="used"):
         sol.add(n)
     for s in sol:
         try:
-            result.append(s.get(timeout=5))
+            result.append(s.get(timeout=20))
         except Exception as e:
             print ("Error:Taking to long to search a link -",e)
     return result
@@ -154,9 +154,8 @@ def main():
         sol.add(n)
     for s in sol:
         try:
-            print(s,"s is s")
             #print(s.get(timeout=5))
-            result.append(s.get(timeout=5))
+            result.append(s.get(timeout=20))
         except Exception as e:
             print ("Error:Taking to long to search a link -",e)
     return result

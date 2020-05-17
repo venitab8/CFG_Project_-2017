@@ -20,7 +20,6 @@ def extract_results(search_term, condition=None):
             url = url + '&tbs=vw:l,mr:1,new:1'
         else:
             url = url + '&tbs=vw:l,mr:1,new:3'
-        print(url)
         headers={
         'Connection': 'keep-alive',
         'Accept': 'text/html',

@@ -9,6 +9,7 @@ from flask import get_template_attribute
 import socket
 
 app = Flask(__name__)
+transfer_results=[]
 
 @app.route('/')
 def main_page():
@@ -24,11 +25,11 @@ def display_search_page(condition=None):
 def run_search(condition=None):
     search_words = request.args.get('search')
     #web_index is the  index of the website to begin or continue searching
-    web_index=0 if request.args.get('web_index')==None else int(request.args.get('web_index'))
-    start_time=time.time()
-    continue_searching=True
-    results=[]
+    # web_index=0 if request.args.get('web_index')==None else int(request.args.get('web_index'))
+    # start_time=time.time()
+    # continue_searching=True
     message=""
+    results=[]
     #time the result to make sure it makes heroku's 30 second timeout
     #stop searching if we have 10 or more results, run out of time, or finish searching relevant websites
     #check if web_index is less than 20 to ensure the while loop ends
@@ -46,27 +47,42 @@ def run_search(condition=None):
 #    if continue_searching==True and len(results)<4 and web_index<20:
 #        return redirect("/results/%s/?web_index=%s&search=%s" %(condition, web_index, search_words))
     results=util.sort_by_price(results)
+    global transfer_results
+    transfer_results = results
     median = util.price_prettify(util.median_price(results))
     for item in results:
         item.set_price(util.price_prettify(util.str_to_float(item.get_price())))
-    return render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
+    try:
+        response = render_template('result_page.html', search_words=search_words,result=results, median=median,message=message, condition=condition)
+        return response
+    except Exception as e: 
+        print ("Error was: ", e)
+        return "here1"
 
 
 @app.route('/download/<condition>/<search_words>/', methods=['GET'])
 def download_file(search_words, condition=None):
     start_time=time.time()
-    web_index=0
-    continue_searching=True
+    # web_index=0
+    # continue_searching=True
     results=[]
-    while continue_searching and web_index<20 and time.time()-start_time< 20 and len(results)<10:
-        continue_searching, message, new_results= backend.search_a_website(search_words,condition, web_index)
-        results.extend(new_results)
-        web_index+=1
-    results=util.sort_by_price(results)
+    global transfer_results
+    #print(transfer_results,"transfer_results")
+    results = transfer_results 
+    # while continue_searching and web_index<20 and time.time()-start_time< 20 and len(results)<10:
+        # continue_searching, message, new_results= backend.search_a_website(search_words,condition, web_index)
+        # results.extend(new_results)
+        # web_index+=1
+    # results=util.sort_by_price(results)
     exported_list=[['Title','Price', 'Image', 'URL']]
     for r in results:
         exported_list.append([r.title, r.price, r.image_src, r.url])
-    return excel.make_response_from_array(exported_list, "xls")
+    try:
+        response = excel.make_response_from_array(exported_list, "xls",file_name="Results")
+        return response
+    except Exception as e: 
+        print ("Error was: ", e)
+        return "here"
    
 
 def finish(self):
