@@ -10,7 +10,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.1
 lml==0.0.9
 MarkupSafe==1.1.1
-numpy==1.18.1
+numpy==1.22.0
 pyexcel==0.5.15
 pyexcel-io==0.5.20
 pyexcel-webio==0.1.4
